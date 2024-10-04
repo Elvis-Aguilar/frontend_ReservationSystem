@@ -1,0 +1,157 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container {
+  text-align: center;
+  background-color: #ffffff;
+  padding: 20px 10px;
+  border-radius: 5px;
+  width: 90%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 34px;
+  color: #060d3e;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: black;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 0 40px;
+  display: inline-block;
+}
+
+p {
+  color: black;
+  font-size: 18px;
+  padding: 0 60px;
+  text-align: left;
+}
+
+.moresub {
+  color: gray;
+  font-size: 18px;
+  padding: 0 60px;
+  text-align: left;
+}
+
+.custom-input {
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+}
+
+.input-label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  font-size: 16px;
+  color: black;
+}
+
+.submit-button {
+  background-color: #5343ea;
+  color: white;
+  margin-top: 20px;
+  width: 150px;
+  height: 40px;
+  border-radius: 60px;
+  border: none;
+  cursor: pointer;
+}
+
+.button-container {
+  margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-bar {
+    padding: 10px;
+  }
+
+  .company-name {
+    font-size: 18px;
+  }
+
+  .login-button,
+  .register-button {
+    width: 80px;
+    height: 35px;
+    margin-left: 5px;
+  }
+
+  .card {
+    width: 90vw;
+    margin: 20px auto;
+  }
+
+  .container {
+    width: 95%;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  .subtitle,
+  .moresub {
+    font-size: 16px;
+  }
+
+  .submit-button {
+    width: 120px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-button,
+  .register-button {
+    width: 70px;
+    height: 30px;
+  }
+
+  .card {
+    width: 95vw;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .subtitle,
+  .moresub {
+    font-size: 14px;
+  }
+
+  .submit-button {
+    width: 100px;
+    height: 30px;
+  }
+}

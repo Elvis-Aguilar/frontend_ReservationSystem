@@ -1,0 +1,138 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container {
+  text-align: center;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  width: 90%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 34px;
+  color: #040a2e;
+}
+
+.subtitle {
+  color: black;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+p {
+  color: black;
+  font-size: 18px;
+}
+
+.moresub {
+  color: gray;
+  font-size: 18px;
+}
+
+.form-field {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.custom-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 16px;
+  color: black;
+}
+
+.submit-button {
+  background-color: #09249e;
+  color: white;
+  margin-top: 20px;
+  width: 150px;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:hover{
+    background-color: #3051e8;
+}
+
+@media (max-width: 768px) {
+  .nav-bar {
+    padding: 10px;
+  }
+
+  .company-name {
+    font-size: 18px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .card {
+    width: 90vw;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  .subtitle,
+  p,
+  .moresub {
+    font-size: 16px;
+  }
+
+  .submit-button {
+    width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .company-name {
+    font-size: 16px;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .card {
+    width: 95vw;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .subtitle,
+  p,
+  .moresub {
+    font-size: 14px;
+  }
+
+  .submit-button {
+    width: 100px;
+  }
+}
