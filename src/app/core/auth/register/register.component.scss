@@ -22,7 +22,7 @@ body {
     background-color: white;
     width: 35%;
     max-width: 400px;
-    padding: 40px;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-right: 15px;
@@ -39,12 +39,12 @@ body {
 
         h2 {
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         input {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             margin-bottom: 15px;
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -86,7 +86,7 @@ body {
 /* Welcome */
 .welcome-section {
     background-color: #3498db;
-    width: 35%;
+    width: 40%;
     max-width: 400px;
     padding: 40px;
     display: flex;
