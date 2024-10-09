@@ -8,9 +8,9 @@
   
       <div class="form-group">
         <label for="email">Correo Electrónico</label>
-        <input id="email" type="email" class="custom-input">
+        <input id="email" type="email" class="custom-input" [(ngModel)]="email">
       </div>
-      <button class="submit-button">Buscar</button>
+      <button class="submit-button" (click)="findAccount()">Buscar</button>
     </div>
   </section>
   
