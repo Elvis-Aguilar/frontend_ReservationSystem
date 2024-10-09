@@ -10,9 +10,9 @@
         <div class="form-field">
             <br>
             <label for="code">Código</label>
-            <input id="code" type="number" class="custom-input" />
+            <input id="code" type="number" class="custom-input"  [(ngModel)]="code" />
         </div>
 
-        <button class="submit-button">Confirmar</button>
+        <button class="submit-button" (click)="signinfMFA()">Confirmar</button>
     </div>
 </div>
