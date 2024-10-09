@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 interface Product {
   id: number;
@@ -19,7 +20,7 @@ interface Category {
 @Component({
   selector: 'app-servicios',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './servicios.component.html',
   styleUrl: './servicios.component.scss'
 })

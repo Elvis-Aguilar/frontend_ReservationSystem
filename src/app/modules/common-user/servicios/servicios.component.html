@@ -54,7 +54,7 @@
   
           <div class="p-4 flex justify-between">
     <!--            <button (click)="addToCart(product)" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Agregar al carrito</button -->
-            <a  class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Ver</a>
+            <a [routerLink]="['/user/detail/:idservice']" routerLinkActive="router-link-active"  class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Ver</a>
           </div>
         </div>
       </ng-container>
