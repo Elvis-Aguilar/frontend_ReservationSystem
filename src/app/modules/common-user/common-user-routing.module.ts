@@ -5,13 +5,14 @@ import { AppointmentsComponent } from './appointments/appointments.component';
 import { ReservationComponent } from './reservation/reservation.component';
 import { ServiciosComponent } from './servicios/servicios.component';
 import { SettingsComponent } from './settings/settings.component';
+import { DetailServiceComponent } from './detail-service/detail-service.component';
 
 const routes: Routes = [
   {
     path:'citas', component: AppointmentsComponent
   },
   {
-    path:'reservaciones/:iduser', component: ReservationComponent
+    path:'reservaciones', component: ReservationComponent
   },
   {
     path:'servicios', component: ServiciosComponent
@@ -19,6 +20,9 @@ const routes: Routes = [
   {
     path:'configuracion', component: SettingsComponent
   },
+  {
+    path: 'detail/:idservice', component: DetailServiceComponent
+  }
 ];
 
 @NgModule({
