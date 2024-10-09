@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { createCalendar, viewDay, viewMonthAgenda, viewMonthGrid, viewWeek,createViewWeek } from '@schedule-x/calendar'
 import { CalendarComponent } from "@schedule-x/angular";
 import { createEventModalPlugin } from '@schedule-x/event-modal'
@@ -8,12 +9,14 @@ import '@schedule-x/theme-default/dist/index.css'
 @Component({
   selector: 'app-appointments',
   standalone: true,
-  imports: [RouterOutlet, CalendarComponent],
+  imports: [RouterOutlet, CalendarComponent, CommonModule],
   templateUrl: './appointments.component.html',
   styleUrl: './appointments.component.scss'
 })
 export class AppointmentsComponent {
   title = 'angular-example';
+  isModalOpen = false;
+
   calendarApp = createCalendar({
     events: [
       {
@@ -38,6 +41,7 @@ export class AppointmentsComponent {
         end: '2024-12-04 10:35',
       }
     ],
+//Colores, se puede editar cambiando el leisure o agregando otro
     calendars: {
       leisure: {
         colorName: 'leisure',
@@ -53,7 +57,18 @@ export class AppointmentsComponent {
         },
       },
     }
+    //Para las vistas de los calendarios en dias, mes y semana
     , views: [createViewWeek(),  viewDay, viewMonthGrid, viewMonthAgenda],
+    //Para ver la fecha al darle click
     plugins:[createEventModalPlugin()]
   })
+
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
+
 }

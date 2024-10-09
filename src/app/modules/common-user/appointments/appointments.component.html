@@ -8,7 +8,7 @@
   </div>
 
   <div class="flex justify-end">
-    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+    <button (click)="openModal()" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
       Agendar
     </button>
   </div>
@@ -18,3 +18,47 @@
       <sx-calendar [calendarApp]="calendarApp"></sx-calendar>
     </div>
   </main>
+
+<!-- Modal -->
+<div [ngClass]="{'block': isModalOpen, 'hidden': !isModalOpen}" class="fixed z-50 inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+  <div class="bg-white rounded-lg p-6 shadow-lg w-full max-w-4xl"> 
+    <h2 class="text-xl font-bold mb-4 text-center">Datos del Cliente</h2>
+    
+    <form class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
+      <div>
+        <label class="block mb-2">Teléfono</label>
+        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="Teléfono">
+      </div>
+      <div>
+        <label class="block mb-2">Servicios</label>
+        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+          <option>Seleccionar servicio</option>
+          <!-- Agregar nuestros aquí -->
+        </select>
+      </div>
+      <div>
+        <label class="block mb-2">Hora</label>
+        <input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-lg" min="08:00" max="21:00">
+      </div>
+      <div>
+        <label class="block mb-2">Monto Preliminar (Q)</label>
+        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="200" disabled>
+      </div>
+      <div>
+        <label class="block mb-2">Cancha/Doctor/Estilista</label>
+        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+          <option>Seleccionar</option>
+          <!-- Aqui configuracion nuestra opciones -->
+        </select>
+      </div>
+      <div class="flex items-center">
+        <input type="checkbox" class="mr-2">
+        <label>Aceptar Términos y Condiciones: Al no asistir se le cobrara Q500 en su siguiente servicio</label>
+      </div>
+    </form>
+    <div class="text-center mt-6">
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">RESERVAR</button>
+    </div>
+    <button (click)="closeModal()" class="mt-4 text-gray-600 hover:text-gray-800">Cerrar</button>
+  </div>
+</div>
