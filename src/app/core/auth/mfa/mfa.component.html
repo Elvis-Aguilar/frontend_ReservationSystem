@@ -4,25 +4,27 @@
         <br>
         <h2>Autenticación de 2 factores</h2>
         <p class="subtitle">Proteje tu Cuenta</p>
-        <p class="moresub">Descarga la app Google Authenticator en tu móvil. Escanea el código QR o ingresa el código.</p>
+        <p class="moresub">Descarga la app Google Authenticator en tu móvil. Escanea el código QR o ingresa el código.
+        </p>
 
-        <!--
-        <div *ngIf="qrCodeUrl">
+        <div>
+            @if (qrCodeUrl) {
             <qrcode [qrdata]="qrCodeUrl" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+            <div class="subtitle">{{ secretKey }}</div>
+            }@else {
+            <label for="code-input" class="input-label">Código</label>
+            }
         </div>
-        -->
-        <!--        <div class="subtitle">{{ secretKey }}</div>-->
-
         <p class="moresub">Ingresa el código que te aparece en la aplicación</p>
         <br>
         <div>
             <label for="code-input" class="input-label">Código</label>
-               <!--     <input [(ngModel)]="code" id="code-input" type="number" class="custom-input"> -->
+               <input [(ngModel)]="code" id="code-input" type="number" class="custom-input"> 
         </div>
 
         <div class="button-container">
-            <button class="submit-button">Confirmar</button>
-            <button class="submit-button">Saltar</button>
+            <button class="submit-button" (click)="enableMFA()">Confirmar</button>
+            <button class="submit-button" (click)="redirectionUser()">Saltar</button>
         </div>
     </div>
 </div>

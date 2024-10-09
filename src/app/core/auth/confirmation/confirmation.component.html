@@ -11,9 +11,9 @@
       <div class="form-field">
         <br>
         <label for="code">Código</label>
-        <input id="code" type="number" class="custom-input" />
+        <input [(ngModel)]="code" id="code" type="number" class="custom-input" />
       </div>
-      <button class="btn submit-button">Confirmar</button>
+      <button ton (click)="confirm()" class="btn submit-button">Confirmar</button>
     </div>
   </section>
   
