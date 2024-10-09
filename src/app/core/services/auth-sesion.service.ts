@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { ApiConfigService } from '../../config/services/api-config.service';
 import { SignUpDto, TokenDto, UserDto } from '../interfaces/auth-sesion';
 import { Observable } from 'rxjs';
-import { SignInMFAModel, SignInModel } from '../interfaces/sesion';
+import { RecoverPasswordModel, SignInMFAModel, SignInModel } from '../interfaces/sesion';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +37,14 @@ export class AuthSesionService {
 
   signinMFA(signInMFAModel: SignInMFAModel): Observable<any> {
     return this._http.post<any>(`${this.apiConfig.API_AUTH}/sign-in/2fa`, signInMFAModel)
+  }
+
+  recoverPassword(recoverPasswordModel: RecoverPasswordModel) {
+    return this._http.post<any>(`${this.apiConfig.API_AUTH}/recover-password`, recoverPasswordModel)
+  }
+
+  recoverPasswordConfirmation(email: string, code: string) {
+    return this._http.put<any>(`${this.apiConfig.API_AUTH}/recover-password`, { email, code })
   }
 
 
