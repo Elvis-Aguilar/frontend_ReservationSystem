@@ -3,9 +3,9 @@
         <h1>Reservas</h1>
         <div class="login-form">
             <h2>Login</h2>
-            <form action="#"> 
-                <input type="email" placeholder="Correo Electrónico" required>
-                <input type="password" placeholder="Contraseña" required>
+            <form [formGroup]="loginForm" (ngSubmit)="login()"> 
+                <input type="email" placeholder="Correo Electrónico" required formControlName="email">
+                <input type="password" placeholder="Contraseña" required formControlName="password">
                 <button type="submit">Ingresar</button>
             </form>
             <p>¿Olvidaste tu cuenta? <a href="#">Recuperar</a></p>
