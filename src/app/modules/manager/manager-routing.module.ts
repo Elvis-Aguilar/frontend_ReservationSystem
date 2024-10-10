@@ -12,7 +12,7 @@ const routes: Routes = [
   {
     path:'citas-admin', component: AppointmentsAdminComponent
   },
-  {
+  { 
     path:'reportes', component: BillingComponent
   },
   {

@@ -21,15 +21,15 @@ export class AppointmentsComponent {
     events: [
       {
         id: '1',
-        title: 'Event 1',
+        title: 'Mi Event',
         start: '2024-10-09 03:00',
         end: '2024-10-09 04:00',
       },
       {
         id: '2',
-        title: 'Event 2',
+        title: 'Ocupado',
         description: 'Discuss the new project',
-        location: 'Starbucks',
+        location: 'Mi empresa',
         start: '2024-10-10 04:00',
         end: '2024-10-10 05:00',
         calendarId: 'leisure'
@@ -46,8 +46,8 @@ export class AppointmentsComponent {
       leisure: {
         colorName: 'leisure',
         lightColors: {
-          main: '#1c7df9',
-          container: '#d2e7ff',
+          main: '#fd2f02',
+          container: '#ec7a61',
           onContainer: '#002859',
         },
         darkColors: {
