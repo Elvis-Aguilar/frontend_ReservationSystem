@@ -7,7 +7,7 @@ import { BusinessComponent } from './business/business.component';
 import { ClientsComponent } from './clients/clients.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { SettingsComponent } from './settings/settings.component';
-
+import { ServiceComponent } from './service/service.component';
 const routes: Routes = [
   {
     path:'citas-admin', component: AppointmentsAdminComponent
@@ -26,6 +26,9 @@ const routes: Routes = [
   },
   {
     path:'configuracion', component: SettingsComponent
+  },
+  {
+    path:'servicios', component: ServiceComponent
   }
 
 ];

@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LandingLayoutComponent } from './shared/layouts/landing-layout/landing-layout.component';
 import { AuthLayoutComponent } from './shared/layouts/auth-layout/auth-layout.component';
 import { ClientLayoutComponent } from './shared/layouts/client-layout/client-layout.component';
+import { ManagerLayoutComponent } from './shared/layouts/manager-layout/manager-layout.component';
 export const routes: Routes = [
     {
         path: '',
@@ -20,7 +21,7 @@ export const routes: Routes = [
     },
     {
         path: 'manager',
-        component: ClientLayoutComponent,
+        component: ManagerLayoutComponent,
         loadChildren:() => import('./modules/manager/manager.module').then(m => m.ManagerModule)
     },
 ];
