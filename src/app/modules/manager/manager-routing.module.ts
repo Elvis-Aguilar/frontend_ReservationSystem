@@ -8,6 +8,7 @@ import { ClientsComponent } from './clients/clients.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { SettingsComponent } from './settings/settings.component';
 import { ServiceComponent } from './service/service.component';
+import { EditServiceComponent } from './edit-service/edit-service.component';
 const routes: Routes = [
   {
     path:'citas-admin', component: AppointmentsAdminComponent
@@ -29,8 +30,10 @@ const routes: Routes = [
   },
   {
     path:'servicios', component: ServiceComponent
+  },
+  {
+    path: 'nuevo-servicio/:idservicio', component: EditServiceComponent
   }
-
 ];
 
 @NgModule({

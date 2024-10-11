@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { RouterModule } from '@angular/router';
 interface Product {
   id: number;
   name: string;
@@ -18,7 +20,7 @@ interface Category {
 @Component({
   selector: 'app-service',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink,RouterModule],
   templateUrl: './service.component.html',
   styleUrl: './service.component.scss'
 })
