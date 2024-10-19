@@ -32,7 +32,7 @@ const routes: Routes = [
     path:'servicios', component: ServiceComponent
   },
   {
-    path: 'nuevo-servicio/:idservicio', component: EditServiceComponent
+    path: 'nuevo-servicio/:idservicio/:action', component: EditServiceComponent
   }
 ];
 
