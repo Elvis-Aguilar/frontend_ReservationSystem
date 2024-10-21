@@ -46,6 +46,7 @@ export class BusinessComponent {
         cancellationSurcharge: [this.businessConfiguration.cancellationSurcharge, Validators.required],
         maxDaysUpdate: [this.businessConfiguration.maxDaysUpdate, Validators.required],
         maxHoursUpdate: [this.businessConfiguration.maxHoursUpdate, Validators.required],
+        employeeElection: [this.businessConfiguration.employeeElection,Validators.required ]
       })
       return true
     }
@@ -79,6 +80,7 @@ export class BusinessComponent {
       cancellationSurcharge: [null, Validators.required],
       maxDaysUpdate: [null, Validators.required],
       maxHoursUpdate: [null, Validators.required],
+      employeeElection : [null, Validators.required],
     })
   }
 

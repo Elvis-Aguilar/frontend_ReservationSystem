@@ -11,4 +11,5 @@ export interface BusinessConfigurationDto{
     cancellationSurcharge: number;
     maxDaysUpdate: number;
     maxHoursUpdate: number;
+    employeeElection:boolean;
 }
