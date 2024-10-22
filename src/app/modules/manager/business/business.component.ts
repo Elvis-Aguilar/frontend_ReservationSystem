@@ -4,11 +4,11 @@ import { UploadImgService } from '../../../config/services/upload-img.service';
 import { ManagmentService } from '../utils/services/managment.service';
 import Swal from 'sweetalert2';
 import { BusinessConfigurationDto } from '../utils/models/business-congifuration.dto';
-
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-business',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './business.component.html',
   styleUrl: './business.component.scss'
 })
@@ -105,8 +105,12 @@ export class BusinessComponent {
         const value = await this.uploadService.saveImg(this.formData).toPromise(); // Convertimos a Promesa
         this.registerForm.value.logoUrl = value.url;
       } catch (err) {
-        console.error('Error al subir la imagen: ', err);
-        // TODO: manejar errores, por ejemplo, mostrar un mensaje de "intente de nuevo"
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al subir la imagen',
+          text: 'Ocurrió un problema al intentar subir la imagen. Por favor, intente de nuevo.',
+          confirmButtonText: 'Aceptar'
+        });
       }
     }
   }
@@ -123,7 +127,12 @@ export class BusinessComponent {
           this.businessConfiguration = value
           this.msgOK()
         }, error: err => {
-          //TODO: manejar el error
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al actualizar la configuración',
+            text: 'Ocurrió un problema al intentar actualizar la configuración del negocio. Por favor, intente de nuevo.',
+            confirmButtonText: 'Aceptar'
+          });
         }
       })
     } else {
@@ -132,7 +141,12 @@ export class BusinessComponent {
           this.businessConfiguration = value
           this.msgOK()
         }, error: err => {
-          //TODO: manejar el error
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al crear la configuración',
+            text: 'Ocurrió un problema al intentar crear la configuración del negocio. Por favor, intente de nuevo.',
+            confirmButtonText: 'Aceptar'
+          });
         }
       })
     }
