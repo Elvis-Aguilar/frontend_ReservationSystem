@@ -53,13 +53,13 @@ export class MfaComponent {
     const roleUpper = session.role.toUpperCase()
     switch (roleUpper) {
       case "ADMIN":
-        this.router.navigate(['manager/product'])
+        this.router.navigate(['manager/configuracion'])
         break
       case "AYUDANTE":
-        this.router.navigate(['manager/product'])
+        this.router.navigate(['manager/configuracion'])
         break
       case "CLIENTE":
-        this.router.navigate(['app/product'])
+        this.router.navigate(['user/configuracion'])
         break
     }
   }

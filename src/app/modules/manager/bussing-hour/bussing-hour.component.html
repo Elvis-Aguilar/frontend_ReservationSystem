@@ -1,0 +1,113 @@
+<div class="container mx-auto p-5">
+  <h1 class="text-2xl font-bold mb-4">Horarios de Negocio</h1>
+  <div class="overflow-x-auto"> <!-- Habilita el scroll horizontal -->
+    <table class="min-w-full bg-white border border-gray-300 mb-4 table-auto"> <!-- Cambiar a table-auto -->
+      <thead>
+        <tr>
+          <th class="border px-2 py-2 text-left text-xs">Día</th>
+          <th class="border px-2 py-2 text-left text-xs">Hora de Apertura</th>
+          <th class="border px-2 py-2 text-left text-xs">Hora de Cierre</th>
+          <th class="border px-2 py-2 text-left text-xs">Estado</th>
+          <th class="border px-2 py-2 text-left text-xs">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (hour of businessHours; track hour) {
+        <tr>
+          <td class="border px-2 py-2 text-sm">{{ hour.dayOfWeek }}</td>
+          <td class="border px-2 py-2 text-sm">{{ hour.isClosed ? 'Cerrado' : hour.openingTime }}</td>
+          <td class="border px-2 py-2 text-sm">{{ hour.isClosed ? 'Cerrado' : hour.closingTime }}</td>
+          <td class="border px-2 py-2 text-sm">{{ hour.status }}</td>
+          <td class="border px-2 py-2 text-sm">
+            <button (click)="openModal(hour)" class="bg-blue-500 text-white px-2 py-1 rounded">Editar</button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="text-xl font-bold mt-8 mb-4">Días Especiales</h2>
+  <div class="overflow-x-auto"> <!-- Habilita el scroll horizontal -->
+    <table class="min-w-full bg-white border border-gray-300 mb-4 table-auto"> <!-- Cambiar a table-auto -->
+      <thead>
+        <tr>
+          <th class="border px-2 py-2 text-left text-xs">Fecha</th>
+          <th class="border px-2 py-2 text-left text-xs">Día de la Semana</th>
+          <th class="border px-2 py-2 text-left text-xs">Estado</th>
+          <th class="border px-2 py-2 text-left text-xs">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (specialDay of specialDays; track specialDays) {
+        <tr>
+          <td class="border px-2 py-2 text-sm">{{ specialDay.date }}</td>
+          <td class="border px-2 py-2 text-sm">{{ getDayOfWeek(specialDay.date) }}</td>
+          <td class="border px-2 py-2 text-sm">{{ specialDay.isClosed ? 'Cerrado' : 'Abierto' }}</td>
+          <td class="border px-2 py-2 text-sm">
+            <button (click)="openSpecialDayModal(specialDay)" class="bg-blue-500 text-white px-2 py-1 rounded">Editar</button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4">
+    <button (click)="addSpecialDay()" class="bg-green-500 text-white px-4 py-2 rounded">Agregar Día Especial</button>
+  </div>
+
+  <!-- Modal para Horarios -->
+  <div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white rounded p-6 w-11/12 max-w-md"> <!-- Ajustar el ancho en pantallas pequeñas -->
+      <h2 class="text-lg font-bold mb-4">{{ isEditing ? 'Editar Horario' : 'Agregar Horario' }}</h2>
+      <form [formGroup]="businessHourForm">
+        <div class="mb-4">
+          <label class="block">Día de la Semana:</label>
+          <input formControlName="dayOfWeek" class="border rounded w-full" placeholder="Ej: Lunes" />
+        </div>
+        <div class="mb-4">
+          <label class="block">Hora de Apertura:</label>
+          <input type="time" formControlName="openingTime" class="border rounded w-full" />
+        </div>
+        <div class="mb-4">
+          <label class="block">Hora de Cierre:</label>
+          <input type="time" formControlName="closingTime" class="border rounded w-full" />
+        </div>
+        <div class="mb-4">
+          <label class="block">Estado:</label>
+          <select formControlName="status" class="border rounded w-full">
+            <option value="available">Disponible</option>
+            <option value="unavailable">No Disponible</option>
+          </select>
+        </div>
+        <div class="flex justify-end">
+          <button type="button" (click)="saveChanges()" class="bg-blue-500 text-white px-4 py-2 rounded">Guardar</button>
+          <button type="button" (click)="closeModal()" class="ml-2 bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para Días Especiales -->
+  <div id="special-day-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white rounded p-6 w-11/12 max-w-md"> <!-- Ajustar el ancho en pantallas pequeñas -->
+      <h2 class="text-lg font-bold mb-4">{{ isEditingSpecialDay ? 'Editar Día Especial' : 'Agregar Día Especial' }}</h2>
+      <form [formGroup]="specialDayForm">
+        <div class="mb-4">
+          <label class="block">Fecha:</label>
+          <input type="date" formControlName="date" class="border rounded w-full" />
+        </div>
+        <div class="mb-4">
+          <label class="block">Si dejas el espacio en blanco se marcará como abierto:</label>
+          <label class="block">Estado:</label>
+          <input type="checkbox" formControlName="isClosed" class="mr-2" /> Cerrado
+        </div>
+        <div class="flex justify-end">
+          <button type="button" (click)="saveSpecialDayChanges()" class="bg-blue-500 text-white px-4 py-2 rounded">Guardar</button>
+          <button type="button" (click)="closeSpecialDayModal()" class="ml-2 bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
