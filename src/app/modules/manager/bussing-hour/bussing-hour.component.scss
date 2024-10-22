@@ -24,3 +24,14 @@
     justify-content: center;
   }
 }
+
+/* Asegura que las tablas se comporten bien en pantallas pequeñas */
+@media (max-width: 640px) {
+  table {
+    font-size: 0.8rem; /* Reduce el tamaño de la fuente en pantallas pequeñas */
+  }
+
+  th, td {
+    padding: 0.5rem; /* Reduce el padding en celdas */
+  }
+}

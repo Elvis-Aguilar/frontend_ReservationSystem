@@ -40,13 +40,13 @@ export class SigninMfaComponent {
         //TODO: redireccionar a area de trabajo.
         switch (value.role) {
           case "ADMIN":
-            this.router.navigate(['manager/product'])
+            this.router.navigate(['manager/configuracion'])
             break
           case "AYUDANTE":
-            this.router.navigate(['manager/product'])
+            this.router.navigate(['manager/configuracion'])
             break
           case "CLIENTE":
-            this.router.navigate(['app/product'])
+            this.router.navigate(['user/configuracion'])
             break
           default:
             this.router.navigate(['session/login'])

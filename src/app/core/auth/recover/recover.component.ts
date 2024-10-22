@@ -49,13 +49,13 @@ export class RecoverComponent {
         //TODO: redirigi area de trabajo
         switch (roleUpper) {
           case "ADMIN":
-            this.router.navigate(['manager/settings'])
+            this.router.navigate(['manager/configuracion'])
             break
           case "AYUDANTE":
-            this.router.navigate(['manager/settings'])
+            this.router.navigate(['manager/configuracion'])
             break
           case "CLIENTE":
-            this.router.navigate(['app/settings'])
+            this.router.navigate(['user/configuracion'])
             break
         }
       },
