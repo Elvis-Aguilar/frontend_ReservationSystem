@@ -17,6 +17,11 @@ export class ApiConfigService {
     //magment module
     API_BUSINESS_CONFIG = `${this.API_BASE}/business/config`
 
+    //services
+
+    API_SERVICES = `${this.API_BASE}/services`
+
+
     //upload image
     API_UPLOAD = `${this.API_BASE}/images`
 }
