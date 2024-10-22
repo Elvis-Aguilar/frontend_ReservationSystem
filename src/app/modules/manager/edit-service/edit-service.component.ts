@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BusinessConfigurationDto } from '../utils/models/business-congifuration.dto';
@@ -17,6 +17,8 @@ import { ServiceDto } from '../utils/models/service.dto';
   styleUrl: './edit-service.component.scss'
 })
 export class EditServiceComponent implements OnInit {
+
+  @Input('idservicio') servicioId!: string;
 
   file!: File
   formData!: FormData
@@ -76,12 +78,12 @@ export class EditServiceComponent implements OnInit {
     // Cargar el servicio :v
   }
 
-  async register() {
+  async updateService() {
     if (!this.validForm()) return
 
     await this.uplogadImag()
 
-    this.serviceService.createBussinesConfig(this.registerForm.value).subscribe({
+    this.serviceService.updateService(Number(this.servicioId), this.registerForm.value).subscribe({
       next: value => {
         this.serviceDto = value
         this.msgOK()
@@ -95,16 +97,76 @@ export class EditServiceComponent implements OnInit {
 
   }
 
-  updateService() {
+
+  async register() {
+    if (!this.validForm()) return
+
+    await this.uplogadImag()
+
+    this.serviceService.createService(this.registerForm.value).subscribe({
+      next: value => {
+        this.serviceDto = value
+        this.msgOK()
+        this.router.navigate(['manager/servicios'])
+      },
+      error: err => {
+        //TODO: manejo de errores, error al crear axdxd
+        console.log(err);
+      }
+    })
 
   }
 
-  deleteService() {
 
+  deleteService() {
+    Swal.fire({
+      title: "Esta seguro de Eliminar el Servicio?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Si, continuar",
+      denyButtonText: `No, cancelar!`
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.serviceService.deleted(Number(this.servicioId)).subscribe({
+          next: value => {
+            this.router.navigate(['manager/servicios'])
+            Swal.fire("Eliiminado con exito!", "", "success");
+          },
+          error: err => {
+            this.msgErr()
+          }
+        })
+
+      } else if (result.isDenied) {
+        Swal.fire("No se realizo ninguan accions", "", "info");
+      }
+    });
+  }
+
+  private editService(): boolean {
+    if (this.servicioId && this.servicioId !== ':idservicio') {
+      this.serviceService.getServiceById(Number(this.servicioId)).subscribe({
+        next: value => {
+          this.registerForm = this.formBuilder.group({
+            name: [value.name, Validators.required],
+            price: [value.price, Validators.required],
+            description: [value.description, Validators.required],
+            duration: [value.duration, Validators.required],
+            status: [value.status, Validators.required],
+            location: [value.location, Validators.required],
+            peopleReaches: [value.peopleReaches, Validators.required],
+            imageUrl: [value.imageUrl],
+          })
+          return true
+        }
+      })
+    }
+    return false
   }
 
   private initRegisterFrom() {
-
+    if (this.editService()) return
     this.registerForm = this.formBuilder.group({
       name: [null, Validators.required],
       price: [null, Validators.required],
@@ -141,6 +203,14 @@ export class EditServiceComponent implements OnInit {
       title: "Proceso terminado con Exito",
       text: "Servicio creado con Exito!",
       icon: "success"
+    });
+  }
+
+  msgErr() {
+    Swal.fire({
+      title: "Proceso no terminado",
+      text: "Ha ocurrido un error al intentar eliminar el servicio",
+      icon: "error"
     });
   }
 

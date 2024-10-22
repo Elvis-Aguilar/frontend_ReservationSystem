@@ -14,7 +14,28 @@ export class ServiceService {
 
   constructor() { }
 
-  createBussinesConfig(service: ServiceDto): Observable<ServiceDto> {
+  createService(service: ServiceDto): Observable<ServiceDto> {
     return this._http.post<ServiceDto>(`${this.apiConfig.API_SERVICES}`, service)
   }
+
+  getServicesAvailable():Observable<ServiceDto[]> {
+    return this._http.get<ServiceDto[]>(`${this.apiConfig.API_SERVICES}/available`)
+  }
+
+  getServicesUnAvailable():Observable<ServiceDto[]> {
+    return this._http.get<ServiceDto[]>(`${this.apiConfig.API_SERVICES}/unavailable`)
+  }
+
+  getServiceById(id:number):Observable<ServiceDto> {
+    return this._http.get<ServiceDto>(`${this.apiConfig.API_SERVICES}/${id}`)
+  }
+
+  updateService(id:number, serviceDto:ServiceDto): Observable<ServiceDto> {
+    return this._http.put<ServiceDto>(`${this.apiConfig.API_SERVICES}/${id}`, serviceDto)
+  }
+
+  deleted(id:number): Observable<any> {
+    return this._http.delete<any>(`${this.apiConfig.API_SERVICES}/${id}`)
+  }
+  
 }
