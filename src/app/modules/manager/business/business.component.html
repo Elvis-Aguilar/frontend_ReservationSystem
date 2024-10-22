@@ -1,5 +1,5 @@
 @if(mostarForm){
-  <form class="flex justify-center items-center min-h-screen bg-gray-100 pt-10" [formGroup]="registerForm"
+<form class="flex justify-center items-center min-h-screen bg-gray-100 pt-10" [formGroup]="registerForm"
   (submit)="register()">
   <div class="bg-blue-50 p-8 rounded-lg shadow-md w-11/12 md:w-8/12 lg:w-6/12">
     <h2 class="text-2xl font-bold text-center text-blue-700 mb-6">Configuración del Negocio</h2>
@@ -12,8 +12,8 @@
 
     <div class="mb-6">
       <label for="logo_url" class="block mb-1 text-sm font-medium text-gray-700">Subir Logo:</label>
-      <input type="file" id="logo_url" class="w-full border border-gray-300 rounded-md mb-2"  formControlName="logoUrl"
-      (change)="onFileSelected($event)">
+      <input type="file" id="logo_url" class="w-full border border-gray-300 rounded-md mb-2" formControlName="logoUrl"
+        (change)="onFileSelected($event)">
       <div class="bg-gray-100 border border-gray-300 rounded-lg w-32 h-32 flex justify-center items-center">
         <img src={{businessConfiguration.logoUrl}} alt="Logo de la Empresa"
           class="w-full h-full object-cover rounded-lg">
@@ -73,6 +73,15 @@
         <input type="number" id="max_hours_use" class="w-full p-2.5 border border-gray-300 rounded-md"
           placeholder="Ej: 72" formControlName="maxHoursUpdate">
       </div>
+    </div>
+
+    <div>
+      <label for="business_type" class="block mb-1 text-sm font-medium text-gray-700">Perminir Al Usuario</label>
+      <select id="business_type" class="w-full p-2.5 border border-gray-300 rounded-md" formControlName="employeeElection">
+        <option value="">Seleccionar Tipo</option>
+        <option value=true>Perminir que los usuarios elijan al que los ateiende</option>
+        <option value=false>Equilibrar la carga de los trabajadores</option>
+      </select>
     </div>
 
     <div class="flex justify-center mt-6">

@@ -3,7 +3,6 @@ import { Injectable, inject } from '@angular/core';
 import { ApiConfigService } from '../../../../config/services/api-config.service';
 import { Observable } from 'rxjs';
 import { BusinessConfigurationDto } from '../models/business-congifuration.dto';
-import { UploadImgService } from '../../../../config/services/upload-img.service';
 
 @Injectable({
   providedIn: 'root'

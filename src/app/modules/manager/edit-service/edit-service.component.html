@@ -1,4 +1,4 @@
-<div class="product-edit">
+<form class="product-edit" [formGroup]="registerForm">
   <div class="card-container bg-white p-8 rounded-lg shadow-md w-full">
     <h2 class="text-2xl font-bold text-center text-blue-700 mb-6">
       {{ action === 'edit' ? 'Editar Servicio' : 'Crear Servicio' }}
@@ -8,90 +8,72 @@
       <!-- Nombre del Servicio -->
       <div>
         <label for="name" class="block mb-1 text-sm font-medium text-gray-700">Nombre del Servicio:</label>
-        <input 
-          name="name"
-          id="name"
-          type="text"
-          class="w-full p-2.5 border border-gray-300 rounded-md"
-          placeholder="Nombre del Servicio"
-          required />
+        <input name="name" id="name" type="text" class="w-full p-2.5 border border-gray-300 rounded-md"
+          placeholder="Nombre del Servicio" required   formControlName="name"/>
       </div>
 
       <!-- Precio -->
       <div>
         <label for="price" class="block mb-1 text-sm font-medium text-gray-700">Precio:</label>
-        <input
-          name="price"
-          id="price"
-          type="number"
-          class="w-full p-2.5 border border-gray-300 rounded-md"
-          placeholder="Precio"
-          required />
+        <input name="price" id="price" type="number" class="w-full p-2.5 border border-gray-300 rounded-md"
+          placeholder="Precio" required  formControlName="price"/>
       </div>
 
       <!-- Duración -->
       <div>
         <label for="duration" class="block mb-1 text-sm font-medium text-gray-700">Duración:</label>
-        <input 
-          name="duration"
-          id="duration"
-          type="time"
-          class="w-full p-2.5 border border-gray-300 rounded-md"
-          placeholder="Duración"
-          required />
+        <input name="duration" id="duration" type="time" class="w-full p-2.5 border border-gray-300 rounded-md"
+          placeholder="Duración" required  formControlName="duration"/>
       </div>
 
       <!-- Descripción -->
       <div>
         <label for="description" class="block mb-1 text-sm font-medium text-gray-700">Descripción:</label>
-        <textarea 
-          name="description"
-          id="description"
-          class="w-full p-2.5 border border-gray-300 rounded-md"
-          placeholder="Descripción del servicio"
-          required></textarea>
+        <textarea name="description" id="description" class="w-full p-2.5 border border-gray-300 rounded-md"
+          placeholder="Descripción del servicio" required  formControlName="description"></textarea>
       </div>
 
+      @if (businessConfiguration && businessConfiguration.businessType === 'RENTALS') {
       <!-- Cantidad de Personas -->
       <div>
         <label for="people_reaches" class="block mb-1 text-sm font-medium text-gray-700">Cantidad de Personas:</label>
-        <input 
-          name="people_reaches"
-          id="people_reaches"
-          type="number"
-          class="w-full p-2.5 border border-gray-300 rounded-md"
-          placeholder="Cantidad de Personas"
-          required />
+        <input name="people_reaches" id="people_reaches" type="number"
+          class="w-full p-2.5 border border-gray-300 rounded-md" placeholder="Cantidad de Personas" required
+          formControlName="peopleReaches" />
       </div>
 
       <!-- Ubicación -->
       <div>
         <label for="location" class="block mb-1 text-sm font-medium text-gray-700">Ubicación:</label>
-        <input 
-          name="location"
-          id="location"
-          type="text"
-          class="w-full p-2.5 border border-gray-300 rounded-md"
-          placeholder="Ubicación" />
+        <input name="location" id="location" type="text" class="w-full p-2.5 border border-gray-300 rounded-md"
+          placeholder="Ubicación"  formControlName="location" />
       </div>
+      }
 
       <!-- Imagen -->
       <div>
         <label for="image" class="block mb-1 text-sm font-medium text-gray-700">Imagen del Servicio:</label>
-        <input (change)="onFileSelected($event)"
-          name="image"
-          id="image"
-          type="file"
-          class="w-full p-2.5 border border-gray-300 rounded-md"
-          accept="image/*" />
+        <input (change)="onFileSelected($event)" name="image" id="image" type="file"
+          class="w-full p-2.5 border border-gray-300 rounded-md" accept="image/*" />
       </div>
     </div>
+
+    <!-- Estado del Servicio -->
+    <div class="py-5 mx-2">
+      <label for="status" class="block mb-1 text-sm font-medium text-gray-700">Estado del Servicio:</label>
+      <select name="status" id="status" class="w-full p-2.5 border border-gray-300 rounded-md" required
+      formControlName="status">
+        <option value="" disabled selected>Seleccionar Estado</option>
+        <option value="AVAILABLE">Disponible</option>
+        <option value="UNAVAILABLE">No Disponible</option>
+      </select>
+    </div>
+
 
     <!-- Acciones -->
     <div class="flex justify-center mt-6">
       <!-- Botón de Crear -->
-      <button *ngIf="action === 'nuevo'"
-        (click)="saveService()"
+      <button *ngIf="action === 'nuevo'" (click)="register()"
         class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-md">
         Crear Servicio
       </button>
@@ -109,4 +91,4 @@
       </div>
     </div>
   </div>
-</div>
+</form>
