@@ -15,6 +15,7 @@ export class ApiConfigService {
 
     //magment module
     API_BUSINESS_CONFIG = `${this.API_BASE}/business/config`
+    API_BUSINESS_HOURS = `${this.API_BASE}/business/hours`
 
     //services
     API_SERVICES = `${this.API_BASE}/services`

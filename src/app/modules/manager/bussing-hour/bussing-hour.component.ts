@@ -1,16 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { BusinessHour } from '../utils/models/business-hours.dto';
+import { BusinessHoursService } from '../utils/services/business-hours.service';
+import Swal from 'sweetalert2';
 
-interface BusinessHour {
-  id: number;
-  dayOfWeek: string;
-  openingTime: string;
-  closingTime: string;
-  isClosed: boolean;
-  status: string;
-  specificDate?: string;
-}
 
 interface SpecialDay {
   id: number;
@@ -28,15 +22,11 @@ interface SpecialDay {
 })
 
 export class BussingHourComponent {
-  businessHours: BusinessHour[] = [
-    { id: 1, dayOfWeek: 'Monday', openingTime: '09:00', closingTime: '18:00', status: "available", isClosed: false },
-    { id: 2, dayOfWeek: 'Tuesday', openingTime: '09:00', closingTime: '18:00', status: "available", isClosed: false },
-    { id: 3, dayOfWeek: 'Wednesday', openingTime: '09:00', closingTime: '18:00', status: "available", isClosed: false },
-    { id: 4, dayOfWeek: 'Thursday', openingTime: '09:00', closingTime: '18:00', status: "available", isClosed: false },
-    { id: 5, dayOfWeek: 'Friday', openingTime: '09:00', closingTime: '18:00', status: "available", isClosed: false },
-    { id: 6, dayOfWeek: 'Saturday', openingTime: '10:00', closingTime: '14:00', status: "available", isClosed: false },
-    { id: 7, dayOfWeek: 'Sunday', openingTime: 'Closed', closingTime: 'Closed', status: "unavailable", isClosed: true },
-  ];
+
+
+  businessHours: BusinessHour[] = []
+
+  private readonly businessHoursService = inject(BusinessHoursService)
 
   specialDays: SpecialDay[] = [
     { id: 1, date: '2024-10-31', isClosed: true }, // Halloween
@@ -51,7 +41,11 @@ export class BussingHourComponent {
   formBuilder: any;
 
   constructor(private fb: FormBuilder) {
+    this.getBussinesGeneral()
     this.businessHourForm = this.fb.group({
+      id: 1,
+      business: 3,
+      specificDate: [''],
       dayOfWeek: [''],
       openingTime: [''],
       closingTime: [''],
@@ -64,26 +58,55 @@ export class BussingHourComponent {
     });
   }
 
+  getBussinesGeneral() {
+    this.businessHoursService.getBussinesConfiguration().subscribe({
+      next: value => {
+        this.businessHours = value
+      }
+    })
+  }
+
+  traductDayOfWeek(day: string): string {
+    switch (day.toUpperCase()) {
+      case 'MONDAY':
+        return 'Lunes';
+      case 'TUESDAY':
+        return 'Martes';
+      case 'WEDNESDAY':
+        return 'Miércoles';
+      case 'THURSDAY':
+        return 'Jueves';
+      case 'FRIDAY':
+        return 'Viernes';
+      case 'SATURDAY':
+        return 'Sábado';
+      case 'SUNDAY':
+        return 'Domingo';
+      default:
+        return 'Día no válido';
+    }
+  }
+
 
   private initBusinessHourForm() {
     this.businessHourForm = this.formBuilder.group({
-//Estos son los campos visibles en el formulario
+      //Estos son los campos visibles en el formulario
       dayOfWeek: [null, Validators.required],
       openingTime: [null, Validators.required],
       closingTime: [null, Validators.required],
-      status: ['available', Validators.required], 
-//Estos son los campos adicionales que no aparecen en el formulario
-      business_id: [null, Validators.required] 
+      status: ['available', Validators.required],
+      //Estos son los campos adicionales que no aparecen en el formulario
+      business_id: [null, Validators.required]
     });
   }
 
   private initSpecialDayForm() {
     this.specialDayForm = this.formBuilder.group({
-//Estos son los campos visibles porque solo interesa el día especial
+      //Estos son los campos visibles porque solo interesa el día especial
       date: [null, Validators.required],
       isClosed: [false],
 
-//Estos son los campos visibles porque solo interesa el día especial
+      //Estos son los campos visibles porque solo interesa el día especial
       business_id: [null, Validators.required],
       day_of_week: [null],
       opening_time: ['00:00:00'],
@@ -94,11 +117,13 @@ export class BussingHourComponent {
 
   saveChanges() {
     if (this.businessHourForm.valid) {
-      const formValues = this.businessHourForm.value;
-
-      console.log('Datos del formulario listos para enviar:', formValues);
-      alert(formValues)
-      // Aquí puedes enviar los datos al backend
+      this.businessHoursService.UpdateBussinesHourt(this.businessHourForm.value, this.businessHourForm.value.id).subscribe({
+        next: value =>{
+          this.msgOk()
+          console.log('Datos del formulario listos para enviarsssss:', value);
+          this.getBussinesGeneral();
+        }
+      })
     } else {
       console.log('Formulario inválido');
     }
@@ -123,7 +148,7 @@ export class BussingHourComponent {
     }
   }
 
-//Para abrir los modals
+  //Para abrir los modals
 
   openModal(day?: BusinessHour) {
     if (day) {
@@ -179,4 +204,13 @@ export class BussingHourComponent {
   trackBySpecialDay(index: number, item: SpecialDay): number {
     return item.id;
   }
+
+  msgOk() {
+    Swal.fire({
+      title: "Actulizacion exitosa",
+      text: "Los Cambios de su Horario se realizaron con exito",
+      icon: "success"
+    });
+  }
+
 }
