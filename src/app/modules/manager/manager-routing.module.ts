@@ -10,7 +10,12 @@ import { SettingsComponent } from './settings/settings.component';
 import { ServiceComponent } from './service/service.component';
 import { EditServiceComponent } from './edit-service/edit-service.component';
 import { BussingHourComponent } from './bussing-hour/bussing-hour.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+
 const routes: Routes = [
+  {
+    path:'inicio', component: DashboardComponent
+  },
   {
     path:'citas-admin', component: AppointmentsAdminComponent
   },

@@ -1,0 +1,35 @@
+<div class="container mx-auto px-4 py-6">
+    <h1 class="text-3xl font-semibold mb-6 text-center text-blue-600">Bienvenido</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Bloque 1: Reservas Activas -->
+      <div class="bg-blue-100 p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+        <h2 class="text-xl font-semibold text-blue-600">Servicios</h2>
+        <p class="mt-2 text-gray-600">Revisa que servicios de la empresa ofrece.</p>
+        <a routerLink="/user/servicios" class="mt-4 inline-block text-blue-500 hover:underline">Ver más</a>
+      </div>
+  
+      <!-- Bloque 2: Historial de Reservas -->
+      <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+        <h2 class="text-xl font-semibold">Reservaciones</h2>
+        <p class="mt-2 text-gray-600">Revisa todas tus reservas anteriores.</p>
+        <a routerLink="/user/reservaciones" class="mt-4 inline-block text-blue-500 hover:underline">Ver más</a>
+      </div>
+  
+      <!-- Bloque 3: Crear Nueva Reserva -->
+      <div class="bg-blue-100 p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+        <h2 class="text-xl font-semibold text-blue-600">Reserva</h2>
+        <p class="mt-2 text-gray-600">Agenda las reservas que necesites ahora.</p>
+        <a routerLink="/user/citas" class="mt-4 inline-block text-blue-500 hover:underline">Iniciar</a>
+      </div>
+  
+      <!-- Bloque 4: Configuración de Perfil -->
+      <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+        <h2 class="text-xl font-semibold">Configuración de Perfil</h2>
+        <p class="mt-2 text-gray-600">Actualiza la información de tu perfil.</p>
+        <button [routerLink]="['/user/configuracion']" routerLinkActive="router-link-active"  class="mt-4 inline-block text-blue-500 hover:underline">Editar</button>
+      </div>
+  
+    </div>
+  </div>
+  

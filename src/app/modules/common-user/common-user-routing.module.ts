@@ -6,8 +6,11 @@ import { ReservationComponent } from './reservation/reservation.component';
 import { ServiciosComponent } from './servicios/servicios.component';
 import { SettingsComponent } from './settings/settings.component';
 import { DetailServiceComponent } from './detail-service/detail-service.component';
-
+import { DashboardComponent } from './dashboard/dashboard.component';
 const routes: Routes = [
+  {
+    path:'dashboard', component: DashboardComponent
+  },
   {
     path:'citas', component: AppointmentsComponent
   },
