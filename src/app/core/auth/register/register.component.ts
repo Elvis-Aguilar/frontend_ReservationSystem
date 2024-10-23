@@ -53,40 +53,58 @@ export class RegisterComponent {
   }
 
   register() {
-    //valid paswword equals
+    console.log("register() fue llamado");
+  //Para validar si todo esta vacio en cuestion de los inputs  
+    if (!this.registerForm.valid) {
+      const hasEmptyFields = Object.keys(this.registerForm.controls).some(
+        (key) => this.registerForm.get(key)?.invalid
+      );
+  
+      if (hasEmptyFields) {
+        Swal.fire({
+          title: "Error en el Registro",
+          text: "Por favor, completa todos los campos obligatorios.",
+          icon: "error"
+        });
+      }
+      
+      return;
+    }
+    // Valida si las contraseñas coinciden
     if (this.registerForm.value.password !== this.registerForm.value.passwordConfirm) {
       Swal.fire({
-        title: "Confirmar Contrasenia",
-        text: "Las contrasenias no considen",
-        icon: "info"
+        title: "Error de Contraseña",
+        text: "Las contraseñas no coinciden.",
+        icon: "error"
       });
-      return
+      return;
     }
-
+  
+    // Continúa con el registro
     const signUpDto: SignUpDto = this.maperSignUpDto();
     this.authService.signUp(signUpDto).subscribe({
-      next: value =>{
-        localStorage.setItem("current_user", value.email)
-        this.router.navigate(["session/confirmacion"])
+      next: value => {
+        localStorage.setItem("current_user", value.email);
+        this.router.navigate(["session/confirmacion"]);
       },
-      error: err =>{
-           // Manejar errores específicos
+      error: err => {
+        // Maneja errores del backend
         if (err.status === 400 && err.error.message.includes('Email')) {
           Swal.fire({
             title: "Error de Registro",
-            text: "El correo electrónico ya está en uso",
+            text: "El correo electrónico ya está en uso.",
             icon: "error"
           });
         } else if (err.status === 400 && err.error.message.includes('CUI')) {
           Swal.fire({
             title: "Error de Registro",
-            text: "El CUI ya está registrado",
+            text: "El CUI ya está registrado.",
             icon: "error"
           });
         } else if (err.status === 400 && err.error.message.includes('NIT')) {
           Swal.fire({
             title: "Error de Registro",
-            text: "El NIT ya está registrado",
+            text: "El NIT ya está registrado.",
             icon: "error"
           });
         } else {
@@ -97,9 +115,7 @@ export class RegisterComponent {
           });
         }
       }
-    })
-
+    });
   }
-
-
+  
 }
