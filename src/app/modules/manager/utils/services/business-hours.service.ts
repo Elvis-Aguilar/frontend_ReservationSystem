@@ -5,20 +5,28 @@ import { BusinessHour } from "../models/business-hours.dto"
 import { Observable } from "rxjs"
 
 @Injectable({
-    providedIn: 'root'
-  })
-  export class BusinessHoursService {
-  
-    private readonly _http = inject(HttpClient)
-    private readonly apiConfig = inject(ApiConfigService)
-  
-    constructor() { }
-  
-    getBussinesConfiguration(): Observable<BusinessHour[]> {
-      return this._http.get<BusinessHour[]>(`${this.apiConfig.API_BUSINESS_HOURS}`)
-    }
+  providedIn: 'root'
+})
+export class BusinessHoursService {
 
-    UpdateBussinesHourt(buss: BusinessHour, id:number): Observable<BusinessHour> {
-      return this._http.put<BusinessHour>(`${this.apiConfig.API_BUSINESS_HOURS}/${id}`,buss)
-    }
+  private readonly _http = inject(HttpClient)
+  private readonly apiConfig = inject(ApiConfigService)
+
+  constructor() { }
+
+  getBussinesConfiguration(): Observable<BusinessHour[]> {
+    return this._http.get<BusinessHour[]>(`${this.apiConfig.API_BUSINESS_HOURS}/all-general`)
   }
+
+  getHoursBusinessSpecificDate(): Observable<BusinessHour[]> {
+    return this._http.get<BusinessHour[]>(`${this.apiConfig.API_BUSINESS_HOURS}/all-specific`)
+  }
+
+  UpdateBussinesHourt(buss: BusinessHour, id: number): Observable<BusinessHour> {
+    return this._http.put<BusinessHour>(`${this.apiConfig.API_BUSINESS_HOURS}/${id}`, buss)
+  }
+
+  createdBusinessHours(buss: BusinessHour): Observable<BusinessHour> {
+    return this._http.post<BusinessHour>(`${this.apiConfig.API_BUSINESS_HOURS}`, buss)
+  }
+}

@@ -6,12 +6,6 @@ import { BusinessHoursService } from '../utils/services/business-hours.service';
 import Swal from 'sweetalert2';
 
 
-interface SpecialDay {
-  id: number;
-  date: string;
-  isClosed: boolean;
-}
-
 
 @Component({
   selector: 'app-bussing-hour',
@@ -25,14 +19,7 @@ export class BussingHourComponent {
 
 
   businessHours: BusinessHour[] = []
-
-  private readonly businessHoursService = inject(BusinessHoursService)
-
-  specialDays: SpecialDay[] = [
-    { id: 1, date: '2024-10-31', isClosed: true }, // Halloween
-    { id: 2, date: '2024-12-25', isClosed: true }, // Navidad
-  ];
-
+  specialDays: BusinessHour[] = []
   businessHourForm: FormGroup;
   specialDayForm: FormGroup;
 
@@ -40,8 +27,12 @@ export class BussingHourComponent {
   isEditingSpecialDay = false;
   formBuilder: any;
 
+  private readonly businessHoursService = inject(BusinessHoursService)
+
+
   constructor(private fb: FormBuilder) {
     this.getBussinesGeneral()
+    this.getAllSpecificDate();
     this.businessHourForm = this.fb.group({
       id: 1,
       business: 3,
@@ -53,8 +44,15 @@ export class BussingHourComponent {
     });
 
     this.specialDayForm = this.fb.group({
-      date: [''],
-      isClosed: [false]
+      id: 1,
+      business: 3,
+      specificDate: ['2024-10-31'],
+      dayOfWeek: ['MONDAY'],
+      openingTime: ['00:00'],
+      closingTime: ['00:00'],
+      status: ['AVAILABLE'],
+      availableAreas: 1,
+      availableWorkers: 1
     });
   }
 
@@ -108,7 +106,6 @@ export class BussingHourComponent {
 
       //Estos son los campos visibles porque solo interesa el día especial
       business_id: [null, Validators.required],
-      day_of_week: [null],
       opening_time: ['00:00:00'],
       closing_time: ['00:00:00'],
       status: ['AVAILABLE', Validators.required]
@@ -118,9 +115,8 @@ export class BussingHourComponent {
   saveChanges() {
     if (this.businessHourForm.valid) {
       this.businessHoursService.UpdateBussinesHourt(this.businessHourForm.value, this.businessHourForm.value.id).subscribe({
-        next: value =>{
+        next: value => {
           this.msgOk()
-          console.log('Datos del formulario listos para enviarsssss:', value);
           this.getBussinesGeneral();
         }
       })
@@ -129,20 +125,38 @@ export class BussingHourComponent {
     }
   }
 
+  getAllSpecificDate() {
+    this.businessHoursService.getHoursBusinessSpecificDate().subscribe({
+      next: value => {
+        this.specialDays = value
+      }
+    })
+  }
+
   saveSpecialDayChanges() {
     if (this.specialDayForm.valid) {
-      // Aquí asigna si hay valores adicionales antes de enviar al backend
       const formValues = this.specialDayForm.value;
+      if (this.isEditingSpecialDay) {
+        this.businessHoursService.UpdateBussinesHourt(this.specialDayForm.value, this.specialDayForm.value.id)
+        .subscribe({
+          next: value => {
+            this.msgOk()
+            this.getAllSpecificDate()
+          }
+        })
 
-      // Si 'isClosed' está marcado, marcamos el status como 'UNAVAILABLE'
-      formValues.status = formValues.isClosed ? 'UNAVAILABLE' : 'AVAILABLE';
-
-      const specificDate = new Date(formValues.date);
-      const dayOfWeek = specificDate.toLocaleString('en-US', { weekday: 'long' }).toUpperCase();
-      formValues.day_of_week = dayOfWeek;
-
-      console.log('Datos del formulario listos para enviar:', formValues);
-      //Aqui envialo
+      } else {
+        this.businessHoursService.createdBusinessHours(formValues).subscribe({
+          next: value => {
+            this.msgOkCreate();
+            this.getAllSpecificDate();
+            console.log(value);
+          },
+          error: err => {
+            console.log(err);
+          }
+        })
+      }
     } else {
       console.log('Formulario inválido');
     }
@@ -162,12 +176,21 @@ export class BussingHourComponent {
     modal.classList.remove('hidden');
   }
 
-  openSpecialDayModal(day?: SpecialDay) {
+  openSpecialDayModal(day?: BusinessHour) {
     if (day) {
       this.specialDayForm.patchValue(day);
       this.isEditingSpecialDay = true;
     } else {
-      this.specialDayForm.reset();
+      this.specialDayForm = this.fb.group({
+        business: 3,
+        specificDate: ['2024-10-31'],
+        dayOfWeek: ['MONDAY'],
+        openingTime: ['00:00'],
+        closingTime: ['00:00'],
+        status: ['AVAILABLE'],
+        availableAreas: 1,
+        availableWorkers: 1
+      });
       this.isEditingSpecialDay = false;
     }
     const modal = document.getElementById('special-day-modal')!;
@@ -201,7 +224,7 @@ export class BussingHourComponent {
     return item.id;
   }
 
-  trackBySpecialDay(index: number, item: SpecialDay): number {
+  trackBySpecialDay(index: number, item: BusinessHour): number {
     return item.id;
   }
 
@@ -209,6 +232,14 @@ export class BussingHourComponent {
     Swal.fire({
       title: "Actulizacion exitosa",
       text: "Los Cambios de su Horario se realizaron con exito",
+      icon: "success"
+    });
+  }
+
+  msgOkCreate() {
+    Swal.fire({
+      title: "Horario especifico creado",
+      text: "El horario con fecha especifico ha sido creado con exito",
       icon: "success"
     });
   }
