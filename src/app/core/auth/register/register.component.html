@@ -24,7 +24,7 @@
                 <input type="password" placeholder="Confirmar Contraseña" required formControlName="passwordConfirm">
                 <button type="submit" [disabled]="registerForm.invalid">Registrar</button>
             </form>
-            <p>¿Ya tienes Cuenta? <a href="#">Login</a></p>
+            <p>¿Ya tienes Cuenta? <a [routerLink]="['/session/login']">Login</a></p>
         </div>
     </div> 
 </div>

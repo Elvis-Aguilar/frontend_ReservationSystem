@@ -4,11 +4,11 @@ import Swal from 'sweetalert2';
 import { SignUpDto } from '../../interfaces/auth-sesion';
 import { AuthSesionService } from '../../services/auth-sesion.service';
 import { Router } from '@angular/router';
-
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -62,7 +62,6 @@ export class RegisterComponent {
       });
       return
     }
-    //TODO: validaciones de otros tipos, IMPLEMENTAR @DAVID
 
     const signUpDto: SignUpDto = this.maperSignUpDto();
     this.authService.signUp(signUpDto).subscribe({
@@ -71,7 +70,32 @@ export class RegisterComponent {
         this.router.navigate(["session/confirmacion"])
       },
       error: err =>{
-        //TODO: manejar el error, ejemplo, que el correo no sea unico, el nit, o el cui *MOSTRAR MENSAJE*
+           // Manejar errores específicos
+        if (err.status === 400 && err.error.message.includes('Email')) {
+          Swal.fire({
+            title: "Error de Registro",
+            text: "El correo electrónico ya está en uso",
+            icon: "error"
+          });
+        } else if (err.status === 400 && err.error.message.includes('CUI')) {
+          Swal.fire({
+            title: "Error de Registro",
+            text: "El CUI ya está registrado",
+            icon: "error"
+          });
+        } else if (err.status === 400 && err.error.message.includes('NIT')) {
+          Swal.fire({
+            title: "Error de Registro",
+            text: "El NIT ya está registrado",
+            icon: "error"
+          });
+        } else {
+          Swal.fire({
+            title: "Error Inesperado",
+            text: "Hubo un problema al registrar. Inténtalo más tarde.",
+            icon: "error"
+          });
+        }
       }
     })
 
