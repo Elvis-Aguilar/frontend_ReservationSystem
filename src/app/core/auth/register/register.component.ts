@@ -54,7 +54,8 @@ export class RegisterComponent {
 
   register() {
     console.log("register() fue llamado");
-  //Para validar si todo esta vacio en cuestion de los inputs  
+
+    //Para validar si todo esta vacio en cuestion de los inputs  
     if (!this.registerForm.valid) {
       const hasEmptyFields = Object.keys(this.registerForm.controls).some(
         (key) => this.registerForm.get(key)?.invalid
