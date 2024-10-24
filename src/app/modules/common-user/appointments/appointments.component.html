@@ -1,64 +1,79 @@
-  <div class="titule">
-    <h2>
-      Calendario
-    </h2>
-    <h3>
-      Horario de Atencion 8:00 AM a 10 PM:
-    </h3>
-  </div>
+<div class="titule">
+  <h2>
+    Calendario
+  </h2>
+  <h3>
+    Horario de Atencion (Consulte horarios atencion)
+  </h3>
+</div>
 
-  <div class="flex justify-end">
-    <button (click)="openModal()" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-      Agendar
-    </button>
-  </div>
+<div class="flex justify-end">
+  <button (click)="openModal()" type="button"
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+    Agendar
+  </button>
+</div>
 
-  <main class="main">
-    <div class="content">
-      <sx-calendar [calendarApp]="calendarApp"></sx-calendar>
-    </div>
-  </main>
+<main class="main">
+  <div class="content">
+    <sx-calendar [calendarApp]="calendar"></sx-calendar>
+  </div>
+</main>
 
 <!-- Modal -->
-<div [ngClass]="{'block': isModalOpen, 'hidden': !isModalOpen}" class="fixed z-50 inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-  <div class="bg-white rounded-lg p-6 shadow-lg w-full max-w-4xl"> 
+@if (registerForm) {
+<div [ngClass]="{'block': isModalOpen, 'hidden': !isModalOpen}"
+  class="fixed z-50 inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+  <div class="bg-white rounded-lg p-6 shadow-lg w-full max-w-4xl">
     <h2 class="text-xl font-bold mb-4 text-center">Datos del Cliente</h2>
-    
-    <form class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
+
+    <form class="grid grid-cols-1 md:grid-cols-2 gap-6" [formGroup]="registerForm" (submit)="register()">
       <div>
         <label class="block mb-2">Teléfono</label>
-        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="Teléfono">
+        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="Teléfono"
+          [value]="userDto.phone" disabled>
       </div>
       <div>
         <label class="block mb-2">Servicios</label>
-        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-          <option>Seleccionar servicio</option>
+        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg" formControlName="service" (click)="claclMontoPreliminar()">
+          <option *ngFor="let category of services" [value]="category.id">{{ category.name }}</option>
           <!-- Agregar nuestros aquí -->
         </select>
       </div>
       <div>
-        <label class="block mb-2">Hora</label>
-        <input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-lg" min="08:00" max="21:00">
+        <label class="block mb-2">Hora {{horasAtencion}}</label>
+        <input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-lg" min="08:00" max="21:00"
+          formControlName="startDate">
       </div>
       <div>
         <label class="block mb-2">Monto Preliminar (Q)</label>
-        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="200" disabled>
+        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="200" disabled
+        [value]="montoPreliminar">
       </div>
       <div>
-        <label class="block mb-2">Cancha/Doctor/Estilista</label>
-        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
-          <option>Seleccionar</option>
+        <label class="block mb-2">Seleccione el encargado</label>
+        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg" formControlName="employeeId">
+          <option *ngFor="let category of employee" [value]="category.id">{{ category.name }}</option>
           <!-- Aqui configuracion nuestra opciones -->
+        </select>
+      </div>
+      <div>
+        <label class="block mb-2">Metodo de pago</label>
+        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg" formControlName="paymentMethod">
+          <option value='CASH'>EFECTIVO</option>
+          <option value='CARD'>TARJETA</option>
         </select>
       </div>
       <div class="flex items-center">
         <input type="checkbox" class="mr-2">
-        <label>Aceptar Términos y Condiciones: Al no asistir se le cobrara Q500 en su siguiente servicio</label>
+        <label>Aceptar Términos y Condiciones: Al no asistir se le cobrara en su siguiente servicio</label>
+      </div>
+      <div class="text-center mt-6">
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">RESERVAR</button>
       </div>
     </form>
-    <div class="text-center mt-6">
-      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">RESERVAR</button>
-    </div>
+
     <button (click)="closeModal()" class="mt-4 text-gray-600 hover:text-gray-800">Cerrar</button>
   </div>
 </div>
+}

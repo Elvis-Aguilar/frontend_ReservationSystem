@@ -20,6 +20,10 @@ export class ApiConfigService {
     //services
     API_SERVICES = `${this.API_BASE}/services`
 
+    //services
+    API_APPOINTMENT = `${this.API_BASE}/appointment`
+
+
     //upload image
     API_UPLOAD = `${this.API_BASE}/images`
 }

@@ -74,13 +74,10 @@ export class SettingsComponent {
 
     await this.uplogadImag()
 
-    console.log(this.registerForm);
-
     this.userService.updatePrfile(Number(this.id), this.registerForm.value).subscribe({
       next: value => {
         this.userDto = value
         this.msgOk()
-        console.log(this.userDto);
       },
       error: err => {
         //TODO: manejar el error
