@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-
-interface Product {
+import { ServiceService } from './../../manager/utils/services/service.service';
+import { ServiceDto } from './../../manager/utils/models/service.dto';
+import { RouterModule } from '@angular/router';interface Product {
   id: number;
   name: string;
   description: string;
@@ -24,10 +25,12 @@ interface Category {
   templateUrl: './servicios.component.html',
   styleUrl: './servicios.component.scss'
 })
-export class ServiciosComponent implements OnInit {
-  products: Product[] = []; 
-  filteredProducts: Product[] = []; 
+export class ServiciosComponent {
+  products: ServiceDto[] = [];
+  filteredProducts: ServiceDto[] = [];
   categories: Category[] = [];
+
+  private readonly serviceService = inject(ServiceService)
 
   ngOnInit() {
     // Datos falsos de categorías
@@ -37,38 +40,7 @@ export class ServiciosComponent implements OnInit {
       { id: 3, name: 'Ropa' },
     ];
 
-    // Datos falsos de productos
-    this.products = [
-      {
-        id: 1,
-        name: 'Servicio 1',
-        description: 'Descripción del Servicio 1',
-        price: 100,
-        state: 'Disponible',
-        categoryId: 1,
-        imageUrls: ['https://static.nationalgeographic.es/files/styles/image_3200/public/75552.ngsversion.1422285553360.jpg?w=1900&h=1267']
-      },
-      {
-        id: 2,
-        name: 'Servicio 2',
-        description: 'Descripción del Servicio 2',
-        price: 200,
-        state: 'Disponible',
-        categoryId: 2,
-        imageUrls: ['https://static.nationalgeographic.es/files/styles/image_3200/public/75552.ngsversion.1422285553360.jpg?w=1900&h=1267']
-      },
-      {
-        id: 3,
-        name: 'Servicio 3',
-        description: 'Descripción del Servicio 3',
-        price: 300,
-        state: 'No disponible',
-        categoryId: 3,
-        imageUrls: ['https://static.nationalgeographic.es/files/styles/image_3200/public/75552.ngsversion.1422285553360.jpg?w=1900&h=1267']
-      }
-    ];
-
-    this.filteredProducts = this.products;
+    this.getServices()
   }
 
   onSearch(event: any) {
@@ -76,6 +48,7 @@ export class ServiciosComponent implements OnInit {
     this.filteredProducts = this.products.filter(product => product.name.toLowerCase().includes(query));
   }
 
+/*
   onFilterChange(filter: string) {
     if (filter === 'available') {
       this.filteredProducts = this.products.filter(product => product.state === 'Disponible');
@@ -85,9 +58,33 @@ export class ServiciosComponent implements OnInit {
       this.filteredProducts = this.products;
     }
   }
+*/
+ 
+getServices() {
+    // Obtener los servicios disponibles
+    this.serviceService.getServicesAvailable().subscribe({
+      next: value => {
+        this.filteredProducts = [...this.filteredProducts, ...value];
+      }
+    });
 
-  onCategoryChange(categoryId: number) {
-    this.filteredProducts = this.products.filter(product => product.categoryId === categoryId);
+    // Obtener los servicios no disponibles
+    this.serviceService.getServicesUnAvailable().subscribe({
+      next: value => {
+        this.filteredProducts = [...this.filteredProducts, ...value];
+      }
+    });
+  }
+
+  getStatus(estate: string): string {
+    switch (estate) {
+      case 'AVAILABLE':
+        return 'DISPONIBLE'
+      case 'UNAVAILABLE':
+        return 'NO DISPONIBLE'
+      default:
+        return 'NO DISPONIBLE'
+    }
   }
 
   addToCart(product: Product) {
