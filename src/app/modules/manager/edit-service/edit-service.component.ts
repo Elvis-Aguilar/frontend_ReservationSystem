@@ -69,7 +69,12 @@ export class EditServiceComponent implements OnInit {
         this.registerForm.value.imageUrl = value.url;
       } catch (err) {
         console.error('Error al subir la imagen: ', err);
-        // TODO: manejar errores, por ejemplo, mostrar un mensaje de "intente de nuevo"
+        await Swal.fire({
+          icon: 'error',
+          title: 'Error al subir la imagen',
+          text: 'Intente de nuevo más tarde o verifique su conexión.',
+          confirmButtonText: 'Aceptar',
+        });
       }
     }
   }
@@ -92,6 +97,7 @@ export class EditServiceComponent implements OnInit {
       error: err => {
         //TODO: manejo de errores, error al crear axdxd
         console.log(err);
+        
       }
     })
 

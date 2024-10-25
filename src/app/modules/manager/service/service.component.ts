@@ -31,24 +31,20 @@ export class ServiceComponent {
   products: ServiceDto[] = [];
   filteredProducts: ServiceDto[] = [];
   categories: Category[] = [];
+  searchQuery: string = '';
+  maxPrice: number = 1000;
+  selectedPrice: number = 1000;
 
 
   private readonly serviceService = inject(ServiceService)
 
 
   ngOnInit() {
-    // Datos falsos de categorías
-    this.categories = [
-      { id: 1, name: 'Tecnología' },
-      { id: 2, name: 'Hogar' },
-      { id: 3, name: 'Ropa' },
-    ];
     this.getServices()
   }
-
   onSearch(event: any) {
-    const query = event.target.value.toLowerCase();
-    this.filteredProducts = this.products.filter(product => product.name.toLowerCase().includes(query));
+    this.searchQuery = event.target.value.toLowerCase();
+    this.filterProducts();
   }
 
   /**
@@ -63,6 +59,18 @@ export class ServiceComponent {
   }
    */
 
+  onPriceFilter(event: any) {
+    this.selectedPrice = event.target.value;
+    this.filterProducts();
+  }
+
+  filterProducts() {
+    this.filteredProducts = this.products.filter(product => {
+      const matchesSearch = product.name.toLowerCase().includes(this.searchQuery);
+      const matchesPrice = product.price <= this.selectedPrice;
+      return matchesSearch && matchesPrice;
+    });
+  }
 
   addToCart(product: Product) {
 
@@ -74,17 +82,17 @@ export class ServiceComponent {
   }
 
   getServices() {
-    // Obtener los servicios disponibles
     this.serviceService.getServicesAvailable().subscribe({
       next: value => {
-        this.filteredProducts = [...this.filteredProducts, ...value];
+        this.products = value;
+        this.filteredProducts = [...this.products];
       }
     });
 
-    // Obtener los servicios no disponibles
     this.serviceService.getServicesUnAvailable().subscribe({
       next: value => {
-        this.filteredProducts = [...this.filteredProducts, ...value];
+        this.products = [...this.products, ...value];
+        this.filteredProducts = [...this.products];
       }
     });
   }

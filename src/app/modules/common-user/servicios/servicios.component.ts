@@ -28,50 +28,46 @@ interface Category {
 export class ServiciosComponent {
   products: ServiceDto[] = [];
   filteredProducts: ServiceDto[] = [];
-  categories: Category[] = [];
+  searchQuery: string = '';
+  maxPrice: number = 1000;
+  selectedPrice: number = 1000;
 
   private readonly serviceService = inject(ServiceService)
 
   ngOnInit() {
-    // Datos falsos de categorías
-    this.categories = [
-      { id: 1, name: 'Tecnología' },
-      { id: 2, name: 'Hogar' },
-      { id: 3, name: 'Ropa' },
-    ];
-
-    this.getServices()
+    this.getServices();
   }
 
   onSearch(event: any) {
-    const query = event.target.value.toLowerCase();
-    this.filteredProducts = this.products.filter(product => product.name.toLowerCase().includes(query));
+    this.searchQuery = event.target.value.toLowerCase();
+    this.filterProducts();
   }
 
-/*
-  onFilterChange(filter: string) {
-    if (filter === 'available') {
-      this.filteredProducts = this.products.filter(product => product.state === 'Disponible');
-    } else if (filter === 'popular') {
-      this.filteredProducts = this.products.filter(product => product.price > 150);
-    } else {
-      this.filteredProducts = this.products;
-    }
+  onPriceFilter(event: any) {
+    this.selectedPrice = event.target.value;
+    this.filterProducts();
   }
-*/
- 
-getServices() {
-    // Obtener los servicios disponibles
+
+  filterProducts() {
+    this.filteredProducts = this.products.filter(product => {
+      const matchesSearch = product.name.toLowerCase().includes(this.searchQuery);
+      const matchesPrice = product.price <= this.selectedPrice;
+      return matchesSearch && matchesPrice;
+    });
+  }
+
+  getServices() {
     this.serviceService.getServicesAvailable().subscribe({
       next: value => {
-        this.filteredProducts = [...this.filteredProducts, ...value];
+        this.products = value;
+        this.filteredProducts = [...this.products];
       }
     });
 
-    // Obtener los servicios no disponibles
     this.serviceService.getServicesUnAvailable().subscribe({
       next: value => {
-        this.filteredProducts = [...this.filteredProducts, ...value];
+        this.products = [...this.products, ...value];
+        this.filteredProducts = [...this.products];
       }
     });
   }
@@ -79,16 +75,15 @@ getServices() {
   getStatus(estate: string): string {
     switch (estate) {
       case 'AVAILABLE':
-        return 'DISPONIBLE'
+        return 'DISPONIBLE';
       case 'UNAVAILABLE':
-        return 'NO DISPONIBLE'
+        return 'NO DISPONIBLE';
       default:
-        return 'NO DISPONIBLE'
+        return 'NO DISPONIBLE';
     }
   }
 
   addToCart(product: Product) {
-
     console.log('Servicio agregado al carrito:', product);
   }
 
