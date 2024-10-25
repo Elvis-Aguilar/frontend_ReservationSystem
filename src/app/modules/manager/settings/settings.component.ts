@@ -80,7 +80,11 @@ export class SettingsComponent {
         this.msgOk()
       },
       error: err => {
-        //TODO: manejar el error
+        Swal.fire({
+          title: "Ups!",
+          text: "Error revice la informacion subida",
+          icon: "error"
+        });
         console.log(err);
       }
     })
@@ -107,7 +111,11 @@ export class SettingsComponent {
         this.registerForm.value.imageUrl = value.url;
       } catch (err) {
         console.error('Error al subir la imagen: ', err);
-        // TODO: manejar errores, por ejemplo, mostrar un mensaje de "intente de nuevo"
+        Swal.fire({
+          title: "Ups!",
+          text: "Error al subir imagen",
+          icon: "error"
+        });
       }
     }
   }
@@ -118,7 +126,7 @@ export class SettingsComponent {
       Swal.fire({
         title: "Formulario incompleto",
         text: "Todos los campos son obligatorios",
-        icon: "info"
+        icon: "error"
       });
       return false
     }
