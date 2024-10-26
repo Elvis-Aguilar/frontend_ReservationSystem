@@ -7,6 +7,8 @@ import { UserService } from '../utils/services/user.service';
 import { ServiceDto } from '../utils/models/service.dto';
 import { employeDto } from '../../common-user/utils/models/employes.dto';
 import { appointmentReportDto } from '../utils/models/appointment.dto';
+import { firstValueFrom } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-appointments-admin',
@@ -24,6 +26,7 @@ export class AppointmentsAdminComponent {
   appointmenReports: appointmentReportDto[] = []
   role = ''
   id = 1
+  dropdownStates: boolean[] = [];
 
   private readonly serviceService = inject(ServiceService)
   private readonly employeService = inject(EmployeeService)
@@ -86,6 +89,24 @@ export class AppointmentsAdminComponent {
     });
   }
 
+  async completed(id: number) {
+    try {
+
+      await firstValueFrom(this.appointmentService.completed(id));
+      this.msgOK()
+      this.appointmenReports = [];
+      await this.getAllAppointment();
+      this.prepararAppointmesReport();
+    } catch (error) {
+      this.msgOKSinFactura()
+      console.log(error);
+      this.appointmenReports = [];
+      await this.getAllAppointment();
+      this.prepararAppointmesReport();
+      console.error('Error al completar la cita:', error);
+    }
+  }
+
 
   getDateOnly(dateTime: string): string {
     return dateTime.split("T")[0];
@@ -122,6 +143,10 @@ export class AppointmentsAdminComponent {
   }
 
 
+  toggleDropdown(index: number) {
+    // Solo abre el dropdown correspondiente y cierra los demás
+    this.dropdownStates = this.dropdownStates.map((state, i) => (i === index ? !state : false));
+  }
 
   prepararAppointmesReport() {
     if (this.role === 'ADMIN') {
@@ -151,8 +176,23 @@ export class AppointmentsAdminComponent {
         }
       })
     }
+    this.dropdownStates = Array(this.appointmenReports.length).fill(false);
   }
 
+  msgOK() {
+    Swal.fire({
+      title: "Proceso completado",
+      text: "La cita se a marcado como completado y se le envio la factura con exito!",
+      icon: "success"
+    });
+  }
 
+  msgOKSinFactura() {
+    Swal.fire({
+      title: "Proceso completado",
+      text: "La cita se a marcado como completado, pero no se pudo enviar la factura, la podra ver desde la pagina!",
+      icon: "info"
+    });
+  }
 
 }
