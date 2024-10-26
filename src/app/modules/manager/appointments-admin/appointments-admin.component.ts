@@ -1,4 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AppointmentDto } from '../../common-user/utils/models/appointment.dto';
+import { ServiceService } from '../utils/services/service.service';
+import { EmployeeService } from '../../common-user/utils/services/employe.service';
+import { AppointmentService } from '../../common-user/utils/services/appointment.service';
+import { UserService } from '../utils/services/user.service';
+import { ServiceDto } from '../utils/models/service.dto';
+import { employeDto } from '../../common-user/utils/models/employes.dto';
+import { appointmentReportDto } from '../utils/models/appointment.dto';
 
 @Component({
   selector: 'app-appointments-admin',
@@ -8,5 +16,143 @@ import { Component } from '@angular/core';
   styleUrl: './appointments-admin.component.scss'
 })
 export class AppointmentsAdminComponent {
+
+  appointments: AppointmentDto[] = []
+  services: ServiceDto[] = [];
+  employee: employeDto[] = []
+  customers: employeDto[] = []
+  appointmenReports: appointmentReportDto[] = []
+  role = ''
+  id = 1
+
+  private readonly serviceService = inject(ServiceService)
+  private readonly employeService = inject(EmployeeService)
+  private readonly appointmentService = inject(AppointmentService)
+  private readonly userService = inject(UserService)
+
+  async ngOnInit() {
+    this.id = JSON.parse(localStorage.getItem("session") || "{'id': ''}").id
+    this.role = JSON.parse(localStorage.getItem("session") || "{'role': ''}").role
+    await this.getEmployees();
+    await this.getServices();
+    await this.getAllAppointment();
+    await this.getCustomers()
+    this.prepararAppointmesReport();
+  }
+
+  getAllAppointment(): Promise<void> {
+    return new Promise((resolve) => {
+      this.appointmentService.getAllAppointment().subscribe({
+        next: value => {
+          this.appointments = value;
+          console.log(value);
+
+          resolve();
+        }
+      });
+    });
+  }
+
+  getServices(): Promise<void> {
+    return new Promise((resolve) => {
+      this.serviceService.getServicesAvailable().subscribe({
+        next: value => {
+          this.services = value;
+          resolve();
+        }
+      });
+    });
+  }
+
+  getEmployees(): Promise<void> {
+    return new Promise((resolve) => {
+      this.employeService.getEmployees().subscribe({
+        next: value => {
+          this.employee = value;
+          resolve();
+        }
+      });
+    });
+  }
+
+  getCustomers(): Promise<void> {
+    return new Promise((resolve) => {
+      this.userService.getAllCustomers().subscribe({
+        next: value => {
+          this.customers = value;
+          resolve();
+        }
+      });
+    });
+  }
+
+
+  getDateOnly(dateTime: string): string {
+    return dateTime.split("T")[0];
+  }
+
+  getTimeOnly(dateTime: string): string {
+    return dateTime.split("T")[1];
+  }
+
+  findCustormer(id: number): string {
+    return this.customers.find(cus => cus.id === id)?.name || ''
+  }
+
+  findEmployee(id: number): string {
+    return this.employee.find(cus => cus.id === id)?.name || ''
+  }
+
+  findService(id: number): string {
+    return this.services.find(cus => cus.id === id)?.name || ''
+  }
+
+  traducirEstad(estad: string): string {
+    switch (estad) {
+      case 'RESERVED':
+        return 'RESERVADO'
+      case 'COMPLETED':
+        return 'COMPLETADO'
+      case 'CANCELED':
+        return 'CANCELED'
+      default:
+        return 'RESERVADO'
+
+    }
+  }
+
+
+
+  prepararAppointmesReport() {
+    if (this.role === 'ADMIN') {
+      this.appointments.forEach(app => {
+        this.appointmenReports.push({
+          fecha: this.getDateOnly(app.startDate),
+          horaInicio: this.getTimeOnly(app.startDate),
+          cliente: this.findCustormer(app.customer),
+          estado: this.traducirEstad(app.status),
+          servicio: this.findService(app.service),
+          empleado: this.findEmployee(app.employeeId),
+          appointment: app
+        })
+      })
+    } else {
+      this.appointments.forEach(app => {
+        if (app.employeeId === this.id) {
+          this.appointmenReports.push({
+            fecha: this.getDateOnly(app.startDate),
+            horaInicio: this.getTimeOnly(app.startDate),
+            cliente: this.findCustormer(app.customer),
+            estado: this.traducirEstad(app.status),
+            servicio: this.findService(app.service),
+            empleado: this.findEmployee(app.employeeId),
+            appointment: app
+          })
+        }
+      })
+    }
+  }
+
+
 
 }
