@@ -25,4 +25,8 @@ export class AppointmentService {
     completed(id:number): Observable<AppointmentDto> {
         return this._http.patch<AppointmentDto>(`${this.apiConfig.API_APPOINTMENT}/${id}`, "appointment")
     }
+
+    canceled(id:number): Observable<AppointmentDto> {
+        return this._http.patch<AppointmentDto>(`${this.apiConfig.API_APPOINTMENT}/canceled/${id}`, "appointment")
+    }
 }

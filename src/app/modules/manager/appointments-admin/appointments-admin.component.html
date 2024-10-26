@@ -39,7 +39,7 @@
 
                             <div class="dropdown-content" [class.show]="dropdownStates[$index]">
                                 <a href="javascript:void(0)" (click)="completed(item.appointment.id)">Completado</a>
-                                <a href="javascript:void(0)">No se presento</a>
+                                <a href="javascript:void(0)" (click)="canceled(item.appointment.id)">No se presento</a>
                             </div>
                         </div>
                     </td>

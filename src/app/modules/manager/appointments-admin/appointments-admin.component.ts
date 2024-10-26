@@ -90,21 +90,65 @@ export class AppointmentsAdminComponent {
   }
 
   async completed(id: number) {
-    try {
+    Swal.fire({
+      title: "Esta seguro de Marcar como Completada la cita?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Si, continuar",
+      denyButtonText: `No, cancelar!`
+    }).then(async (result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        try {
+          await firstValueFrom(this.appointmentService.completed(id));
+          this.msgOK()
+          this.appointmenReports = [];
+          await this.getAllAppointment();
+          this.prepararAppointmesReport();
+        } catch (error) {
+          this.msgOKSinFactura()
+          console.log(error);
+          this.appointmenReports = [];
+          await this.getAllAppointment();
+          this.prepararAppointmesReport();
+          console.error('Error al completar la cita:', error);
+        }
+      } else if (result.isDenied) {
+        Swal.fire("No se realizo ninguan accions", "", "info");
+      }
+    });
+  }
 
-      await firstValueFrom(this.appointmentService.completed(id));
-      this.msgOK()
-      this.appointmenReports = [];
-      await this.getAllAppointment();
-      this.prepararAppointmesReport();
-    } catch (error) {
-      this.msgOKSinFactura()
-      console.log(error);
-      this.appointmenReports = [];
-      await this.getAllAppointment();
-      this.prepararAppointmesReport();
-      console.error('Error al completar la cita:', error);
-    }
+
+  async canceled(id: number) {
+    Swal.fire({
+      title: "Esta seguro de Marcar como Cancelada la cita?",
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: "Si, continuar",
+      denyButtonText: `No, cancelar!`
+    }).then(async (result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        try {
+          await firstValueFrom(this.appointmentService.canceled(id));
+          this.msgOKCanceled()
+          this.appointmenReports = [];
+          await this.getAllAppointment();
+          this.prepararAppointmesReport();
+        } catch (error) {
+          this.msgOKSinNotifi()
+          console.log(error);
+          this.appointmenReports = [];
+          await this.getAllAppointment();
+          this.prepararAppointmesReport();
+          console.error('Error al completar la cita:', error);
+        }
+      } else if (result.isDenied) {
+        Swal.fire("No se realizo ninguan accions", "", "info");
+      }
+    });
+    
   }
 
 
@@ -184,6 +228,22 @@ export class AppointmentsAdminComponent {
       title: "Proceso completado",
       text: "La cita se a marcado como completado y se le envio la factura con exito!",
       icon: "success"
+    });
+  }
+
+  msgOKCanceled() {
+    Swal.fire({
+      title: "Proceso completado",
+      text: "La cita se a marcado como Cancelada y se le envio la notificacion al correo del usuario!",
+      icon: "info"
+    });
+  }
+
+  msgOKSinNotifi() {
+    Swal.fire({
+      title: "Proceso completado",
+      text: "La cita se a marcado como Cancelada y No se le envio la notificacion al correo del usuario!",
+      icon: "info"
     });
   }
 
