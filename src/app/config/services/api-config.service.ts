@@ -22,7 +22,7 @@ export class ApiConfigService {
 
     //services
     API_APPOINTMENT = `${this.API_BASE}/appointment`
-
+    API_CANCELLATION = `${this.API_BASE}/cancellation`
 
     //upload image
     API_UPLOAD = `${this.API_BASE}/images`
