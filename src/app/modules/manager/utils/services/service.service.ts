@@ -59,4 +59,25 @@ export class ServiceService {
     });
   }
 
+  downloadReportSalesExcel(salesReportDtoPdf: ServiceSendDto) {
+    // Realiza la petición POST enviando el objeto en el body
+    this._http.post(`${this.apiConfig.API_SERVICES}/download-excel`, salesReportDtoPdf, {
+      responseType: 'blob' // Importante para manejar el Excel como Blob
+    }).subscribe({
+      next: (response) => {
+        // Descargar el archivo Excel
+        const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'reporte_servicios.xlsx'; // Nombre del archivo descargado
+        a.click();
+        window.URL.revokeObjectURL(url); // Limpia la URL temporal
+      },
+      error: (err) => {
+        console.error('Error al descargar el Excel:', err);
+      }
+    });
+  }
+
 }

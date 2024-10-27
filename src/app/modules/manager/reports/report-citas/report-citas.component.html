@@ -4,7 +4,7 @@
         <button class="submit-button" (click)="realizarReport()">Realizar Reporte</button>
         @if (appointmenReports.length > 0) {
         <button class="submit-button pdf" (click)="exportPDf()">Exporar PDF</button>
-        <button class="submit-button pdf">Exporar Excel</button>
+        <button class="submit-button pdf" (click)="exportExcel()">Exporar Excel</button>
         }
     </div>
 

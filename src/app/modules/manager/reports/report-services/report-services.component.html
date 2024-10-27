@@ -1,10 +1,10 @@
 <main>
     <div class="header">
-        <h2>Reporte de General de Citas</h2>
+        <h2>Reporte de General de Servicios</h2>
         <button class="submit-button" (click)="realizarReport()">Realizar Reporte</button>
         @if (serviceReport.length > 0) {
         <button class="submit-button pdf" (click)="exportPDf()">Exporar PDF</button>
-        <button class="submit-button pdf">Exporar Excel</button>
+        <button class="submit-button pdf" (click)="exportExcel()">Exporar Excel</button>
         }
     </div>
 

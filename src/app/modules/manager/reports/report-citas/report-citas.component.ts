@@ -192,5 +192,15 @@ export class ReportCitasComponent {
     this.appointmentService.downloadReport(send)
   }
 
+  exportExcel(){
+    const send: appointmentReportSendDto = {
+      items: this.appointmenReports,
+      total: this.totol,
+      rangeDate: this.startDate + ' - '+ this.endDate,
+      filtro: this.appointmenReports[0].estado
+    }
+    this.appointmentService.downloadReportSalesExcel(send)
+  }
+
 
 }

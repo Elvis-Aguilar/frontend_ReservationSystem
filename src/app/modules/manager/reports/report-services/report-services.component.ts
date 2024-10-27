@@ -157,5 +157,15 @@ export class ReportServicesComponent {
     this.serviceService.downloadReport(send)
   }
 
+  exportExcel(){
+    const send: ServiceSendDto = {
+      items: this.serviceReport,
+      total: this.totol,
+      rangeDate: this.startDate + ' - ' + this.endDate,
+      filtro: this.selectedFilter
+    }
+    this.serviceService.downloadReportSalesExcel(send)
+  }
+
 
 }

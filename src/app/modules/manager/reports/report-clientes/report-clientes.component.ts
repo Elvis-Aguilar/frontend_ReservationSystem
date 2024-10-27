@@ -168,4 +168,13 @@ export class ReportClientesComponent {
 
   }
 
+  exportExcel(){
+    const send: clietnReportSend = {
+      items: this.clientReport,
+      rangeDate: this.startDate + ' - ' + this.endDate,
+      filtro: this.selectedFilter
+    }
+    this.cancellationService.downloadReportSalesExcel(send)
+  }
+
 }
