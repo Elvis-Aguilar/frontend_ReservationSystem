@@ -7,5 +7,6 @@ export interface appointmentReportDto{
     estado:string;
     servicio:string;
     empleado:string;
+    price?:number;
     appointment:AppointmentDto;
 }
