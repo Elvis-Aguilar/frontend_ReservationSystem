@@ -26,4 +26,7 @@ export class ApiConfigService {
 
     //upload image
     API_UPLOAD = `${this.API_BASE}/images`
+
+    //callaborator
+    API_COLLABORATOR = `${this.API_BASE}/api/callaborator`
 }
