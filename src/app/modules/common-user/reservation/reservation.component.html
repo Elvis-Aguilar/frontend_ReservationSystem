@@ -33,27 +33,41 @@
               </span>
             </td>
             <td class="py-3 px-4 text-gray-800">{{ appointment.paymentMethod }}</td>
+
             <td class="py-3 px-4 text-center">
+
+              <div class="flex justify-center space-x-2">
                 <button 
-                class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-4 rounded text-sm" 
-                [disabled]="!isCancellationAllowed(appointment)"
-                (click)="cancelAppointment(appointment)">
-                Cancelar
-              </button>
-              </td>
-              
+                  class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-4 rounded text-sm" 
+                  [disabled]="!isCancellationAllowed(appointment)"
+                  (click)="cancelAppointment(appointment)">
+                  Cancelar
+                </button>
+            
+                <button 
+                  class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-4 rounded text-sm"
+                  (click)="showPdfMessage(appointment.id)">
+                  PDF
+                </button>
+              </div>
+
+            </td>
+                          
           </tr>
         </tbody>
       </table>
     </div>
+
+        <!-- Mensaje si no hay pedidos -->
+        <div *ngIf="appointments.length === 0" class="text-center mt-6 text-gray-600">
+          <p>No hay pedidos disponibles.</p>
+        </div>
     <br>
     <br>
+    
 <h4 class="text-l font-semibold text-center mb-2 text-gray-800"> Nota</h4>
     <h5 class="text-l font-semibold text-center mb-2 text-gray-800">Si se pasa de la fecha sin cancelar se bloqueará el boton y se le Multará por parte del personal administrativo y se le notificará</h5>
     <h5 class="text-l font-semibold text-center mb-2 text-gray-800">Si cancela una hora antes se le cobrará una multa y se le notificará</h5>  
-    <!-- Mensaje si no hay pedidos -->
-    <div *ngIf="appointments.length === 0" class="text-center mt-6 text-gray-600">
-      <p>No hay pedidos disponibles.</p>
-    </div>
+
   </div>
   

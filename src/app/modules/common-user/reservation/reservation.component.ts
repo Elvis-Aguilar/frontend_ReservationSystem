@@ -78,6 +78,16 @@ export class ReservationComponent implements OnInit {
     return timeRemaining > 0 && timeRemaining >= 3600000; // Permitir si falta más de una hora
   }
 
+  showPdfMessage(appointmentId: number) {
+    Swal.fire({
+      title: 'Detalles de la Venta',
+      text: `ID de la venta: ${appointmentId}\nID del usuario: ${this.userId}`,
+      icon: 'info',
+      confirmButtonText: 'Aceptar'
+    });
+  }
+  
+
   cancelAppointment(appointment: AppointmentDto) {
     const now = new Date();
     const endDate = new Date(appointment.endDate);
