@@ -29,15 +29,16 @@
                       'bg-green-100 text-green-700': appointment.status === 'RESERVED',
                       'bg-red-100 text-red-700': appointment.status === 'CANCELLED'
                     }">
-                {{ appointment.status }}
+                {{ translateStatus(appointment.status) }}
               </span>
             </td>
-            <td class="py-3 px-4 text-gray-800">{{ appointment.paymentMethod }}</td>
+            <td class="py-3 px-4 text-gray-800">{{ translatePaymentMethod(appointment.paymentMethod) }}</td>
 
             <td class="py-3 px-4 text-center">
-
               <div class="flex justify-center space-x-2">
+
                 <button 
+                  *ngIf="appointment.status === 'RESERVED'"
                   class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-4 rounded text-sm" 
                   [disabled]="!isCancellationAllowed(appointment)"
                   (click)="cancelAppointment(appointment)">
@@ -45,13 +46,13 @@
                 </button>
             
                 <button 
+                  *ngIf="appointment.status === 'COMPLETED'"
                   class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-4 rounded text-sm"
                   (click)="showPdfMessage(appointment.id)">
                   PDF
                 </button>
               </div>
-
-            </td>
+            </td>           
                           
           </tr>
         </tbody>

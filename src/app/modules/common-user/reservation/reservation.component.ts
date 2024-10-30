@@ -75,8 +75,8 @@ export class ReservationComponent implements OnInit {
     const now = new Date();
     const endDate = new Date(appointment.endDate);
     const timeRemaining = endDate.getTime() - now.getTime();
-    return timeRemaining > 0 && timeRemaining >= 3600000; // Permitir si falta más de una hora
-  }
+    return timeRemaining > 0; // Permitir la cancelación si aún está en el rangos
+}
 
   showPdfMessage(appointmentId: number) {
     this.appointmentService.downloadBill(appointmentId)
@@ -89,31 +89,56 @@ export class ReservationComponent implements OnInit {
     const timeRemaining = endDate.getTime() - now.getTime();
 
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: "¡No podrás revertir esto!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, cancelar'
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, cancelar'
     }).then((result) => {
-      if (result.isConfirmed) {
-        // Declaramos `canceled` si queda menos de una hora o `cancelAppointment` en otro caso
-        const cancelObservable = timeRemaining <= 3600000
-          ? this.appointmentService.canceled(appointment.id)
-          : this.appointmentService.cancelAppointment(appointment.id);
+        if (result.isConfirmed) {
+            // Si queda menos de una hora, usamos `canceled`
+            const cancelObservable = timeRemaining <= 3600000
+                ? this.appointmentService.canceled(appointment.id)
+                : this.appointmentService.cancelAppointment(appointment.id);
 
-        cancelObservable.subscribe({
-          next: () => {
-            Swal.fire('Cancelado!', 'La cita ha sido cancelada.', 'success');
-            this.loadUserAppointments();
-          },
-          error: (error) => {
-            Swal.fire('Error!', 'No se pudo cancelar la cita.', 'error');
-            console.error('Error al cancelar la cita:', error);
-          }
-        });
-      }
+            cancelObservable.subscribe({
+                next: () => {
+                    Swal.fire('Cancelado!', 'La cita ha sido cancelada.', 'success');
+                    this.loadUserAppointments();
+                },
+                error: (error) => {
+                    Swal.fire('Error!', 'No se pudo cancelar la cita.', 'error');
+                    console.error('Error al cancelar la cita:', error);
+                }
+            });
+        }
     });
+}
+
+
+translateStatus(status: string): string {
+  switch (status) {
+    case 'RESERVED':
+      return 'RESERVADO';
+    case 'CANCELED':
+      return 'CANCELADO';
+    case 'COMPLETED':
+      return 'COMPLETADO'; 
+    default:
+      return 'Estado desconocido';
   }
+}
+
+translatePaymentMethod(paymentMethod: string): string {
+  switch (paymentMethod) {
+    case 'CASH':
+      return 'EFECTIVO';
+    case 'CARD':
+      return 'TARJETA';
+    default:
+      return 'Método de pago desconocido';
+  }
+}
 }
