@@ -82,6 +82,8 @@ export class EditServiceComponent implements OnInit {
   }
 
   validForm(): boolean {
+    console.log(this.registerForm.value);
+    
     if (!this.registerForm.valid) {
       Swal.fire({
         title: "Formulario incompleto",
@@ -191,8 +193,8 @@ export class EditServiceComponent implements OnInit {
             description: [value.description, Validators.required],
             duration: [value.duration, Validators.required],
             status: [value.status, Validators.required],
-            location: [value.location, Validators.required],
-            peopleReaches: [value.peopleReaches, Validators.required],
+            location: [value.location],
+            peopleReaches: [value.peopleReaches],
             imageUrl: [value.imageUrl],
           })
           return true
