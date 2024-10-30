@@ -8,7 +8,7 @@
 </div>
 
 <div class="flex justify-end">
-  <button type="button"
+  <button (click)="openModal2()" type="button"
     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
     Horario Atencion
   </button>
@@ -81,3 +81,59 @@
   </div>
 </div>
 }
+
+<!-- Modal -->
+<div [ngClass]="{'block': isModalOpen2, 'hidden': !isModalOpen2}"
+  class="fixed z-50 inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+  <div class="bg-white rounded-lg p-4 shadow-lg w-full max-w-lg mx-4">
+    <h2 class="text-xl font-bold mb-2 text-center">Horario de Atención</h2>
+
+    <!-- Tabla de Horarios de Negocio -->
+    <h1 class="text-xl font-bold mb-2">Horarios de Negocio (formato 24H)</h1>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-300 mb-4 table-auto">
+        <thead>
+          <tr>
+            <th class="border px-1 py-1 text-left text-xs">Día</th>
+            <th class="border px-1 py-1 text-left text-xs">Hora de Apertura</th>
+            <th class="border px-1 py-1 text-left text-xs">Hora de Cierre</th>
+            <th class="border px-1 py-1 text-left text-xs">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hour of businessHours">
+            <td class="border px-1 py-1 text-sm">{{ hour.dayOfWeek.toUpperCase() }}</td>
+            <td class="border px-1 py-1 text-sm">{{ hour.status === 'UNAVAILABLE' ? 'Cerrado' : hour.openingTime }}</td>
+            <td class="border px-1 py-1 text-sm">{{ hour.status === 'UNAVAILABLE' ? 'Cerrado' : hour.closingTime }}</td>
+            <td class="border px-1 py-1 text-sm">{{ hour.status === 'UNAVAILABLE' ? 'CERRADO' : 'ABIERTO' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tabla de Días Especiales -->
+    <h2 class="text-xl font-bold mt-6 mb-2">Días Especiales</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-300 mb-4 table-auto">
+        <thead>
+          <tr>
+            <th class="border px-1 py-1 text-left text-xs">Fecha</th>
+            <th class="border px-1 py-1 text-left text-xs">Hora de Apertura</th>
+            <th class="border px-1 py-1 text-left text-xs">Hora de Cierre</th>
+            <th class="border px-1 py-1 text-left text-xs">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let specialDay of specialDays">
+            <td class="border px-1 py-1 text-sm">{{ specialDay.specificDate }}</td>
+            <td class="border px-1 py-1 text-sm">{{ specialDay.openingTime }}</td>
+            <td class="border px-1 py-1 text-sm">{{ specialDay.closingTime }}</td>
+            <td class="border px-1 py-1 text-sm">{{ specialDay.status === 'UNAVAILABLE' ? 'CERRADO' : 'ABIERTO' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button (click)="closeModal2()" class="mt-4 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded">Cerrar</button>
+  </div>
+</div>

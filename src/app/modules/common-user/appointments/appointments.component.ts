@@ -44,6 +44,7 @@ export class AppointmentsComponent {
 
   title = 'angular-example';
   isModalOpen = false;
+  isModalOpen2 = false;
   id: number = 1
 
   userDto!: UserDto;
@@ -354,6 +355,13 @@ export class AppointmentsComponent {
 
   closeModal() {
     this.isModalOpen = false;
+  }
+
+  openModal2(){
+    this.isModalOpen2 = true;
+  }
+  closeModal2() {
+    this.isModalOpen2 = false;
   }
 
   formatDateTime(dateTime: string): string {
