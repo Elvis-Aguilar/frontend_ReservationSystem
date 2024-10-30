@@ -60,7 +60,7 @@ export class RegisterComponent {
       const hasEmptyFields = Object.keys(this.registerForm.controls).some(
         (key) => this.registerForm.get(key)?.invalid
       );
-  
+
       if (hasEmptyFields) {
         Swal.fire({
           title: "Error en el Registro",
@@ -68,7 +68,7 @@ export class RegisterComponent {
           icon: "error"
         });
       }
-      
+
       return;
     }
     // Valida si las contraseñas coinciden
@@ -80,7 +80,7 @@ export class RegisterComponent {
       });
       return;
     }
-  
+
     // Continúa con el registro
     const signUpDto: SignUpDto = this.maperSignUpDto();
     this.authService.signUp(signUpDto).subscribe({
@@ -110,13 +110,13 @@ export class RegisterComponent {
           });
         } else {
           Swal.fire({
-            title: "Error Inesperado",
-            text: "Hubo un problema al registrar. Inténtalo más tarde.",
-            icon: "error"
+            title: "Revise su correo Inesperado",
+            text: "Se detecto un error al intentar mandar el correo, por favor verifique, si su correo llego, sino intnte mas tarde",
+            icon: "question"
           });
         }
       }
     });
   }
-  
+
 }

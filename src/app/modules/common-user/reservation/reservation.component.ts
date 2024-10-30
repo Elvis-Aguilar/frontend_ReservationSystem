@@ -79,12 +79,7 @@ export class ReservationComponent implements OnInit {
   }
 
   showPdfMessage(appointmentId: number) {
-    Swal.fire({
-      title: 'Detalles de la Venta',
-      text: `ID de la venta: ${appointmentId}\nID del usuario: ${this.userId}`,
-      icon: 'info',
-      confirmButtonText: 'Aceptar'
-    });
+    this.appointmentService.downloadBill(appointmentId)
   }
   
 

@@ -39,7 +39,8 @@
       </div>
       <div>
         <label class="block mb-2">Servicios</label>
-        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg" formControlName="service" (click)="claclMontoPreliminar()">
+        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg" formControlName="service"
+          (click)="claclMontoPreliminar()">
           <option *ngFor="let category of services" [value]="category.id">{{ category.name }}</option>
           <!-- Agregar nuestros aquí -->
         </select>
@@ -52,8 +53,9 @@
       <div>
         <label class="block mb-2">Monto Preliminar (Q)</label>
         <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="200" disabled
-        [value]="montoPreliminar">
+          [value]="montoPreliminar">
       </div>
+      @if (businessConfiguration.employeeElection) {
       <div>
         <label class="block mb-2">Seleccione el encargado</label>
         <select class="w-full px-3 py-2 border border-gray-300 rounded-lg" formControlName="employeeId">
@@ -61,6 +63,7 @@
           <!-- Aqui configuracion nuestra opciones -->
         </select>
       </div>
+      }
       <div>
         <label class="block mb-2">Metodo de pago</label>
         <select class="w-full px-3 py-2 border border-gray-300 rounded-lg" formControlName="paymentMethod">

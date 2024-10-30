@@ -1,13 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { AppointmentDto } from '../../../common-user/utils/models/appointment.dto';
-import { ServiceDto } from '../../utils/models/service.dto';
 import { employeDto } from '../../../common-user/utils/models/employes.dto';
-import { appointmentReportDto } from '../../utils/models/appointment.dto';
-import { ServiceService } from '../../utils/services/service.service';
-import { EmployeeService } from '../../../common-user/utils/services/employe.service';
 import { AppointmentService } from '../../../common-user/utils/services/appointment.service';
 import { UserService } from '../../utils/services/user.service';
-import { appointmentReportSendDto } from '../../utils/models/appointmentReportSendDto';
 import { FormsModule } from '@angular/forms';
 import { clienteReportItem, clietnReportSend } from '../../utils/models/clienteReportItems';
 import { CancellationSurchargeDto } from '../../utils/models/cancellationDto';
@@ -122,15 +117,11 @@ export class ReportClientesComponent {
     })
   }
 
-  getCustomerIdCancellation(id: number): number {
-    return this.cancellarions.find(cna => cna.customer === id)?.customer || 0
-  }
 
   prepararAppointmesReporfilter() {
     this.customers.forEach(cus => {
-      if (this.getCustomerIdCancellation(cus.id)) {
-        let cantidad = 0
-        this.appointments.forEach(app => {
+      let cantidad = 0
+        this.cancellarions.forEach(app => {
           if (cus.id === app.customer) {
             cantidad++;
           }
@@ -141,7 +132,6 @@ export class ReportClientesComponent {
           email: cus.email,
           Nombre: cus.name
         })
-      }
     })
   }
 
