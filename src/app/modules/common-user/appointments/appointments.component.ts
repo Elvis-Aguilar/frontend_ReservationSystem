@@ -67,6 +67,7 @@ export class AppointmentsComponent {
 
 
   constructor(private formBuilder: FormBuilder) {
+    this.getBusinessConfiguration()
     this.calendarControls = createCalendarControlsPlugin()
   }
 
@@ -85,6 +86,12 @@ export class AppointmentsComponent {
     await this.getAllSpecificDate();
     await this.addClosedEventsForWeekends();
     this.initForm()
+  }
+
+  getRandomEmployee(): employeDto | undefined {
+    if (this.employee.length === 0) return undefined;
+    const randomIndex = Math.floor(Math.random() * this.employee.length);
+    return this.employee[randomIndex];
   }
 
   obtenerDiaDeLaSemana(fecha: string): string {
@@ -144,8 +151,14 @@ export class AppointmentsComponent {
 
     this.registerForm.value.endDate = endDate
     this.registerForm.value.startDate = startDate
-    this.registerForm.value.employeeId = Number(this.registerForm.value.employeeId)
     this.registerForm.value.service = Number(this.registerForm.value.service)
+
+    //validar si   se puede elegir empleado o hacerlo random
+    if (!this.businessConfiguration.employeeElection) {
+      this.registerForm.value.employeeId = Number(this.getRandomEmployee()?.id || 1)
+    } else {
+      this.registerForm.value.employeeId = Number(this.registerForm.value.employeeId)
+    }
 
     //TODO: hacer resto de validaciones, como no escoger una hora fuera del horario del dia permitido
 
@@ -383,7 +396,7 @@ export class AppointmentsComponent {
           end: `${this.formatDateTime(appoin.endDate)}`,
           allDay: true,
         })
-      }else{
+      } else {
         this.calendar.eventsService.add({
           id: `${appoin.id}`,
           title: 'RESERVADO',
