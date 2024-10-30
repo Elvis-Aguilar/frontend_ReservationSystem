@@ -31,6 +31,10 @@ export class AppointmentService {
     return this._http.patch<AppointmentDto>(`${this.apiConfig.API_APPOINTMENT}/canceled/${id}`, "appointment")
   }
 
+  cancelAppointment(id: number): Observable<AppointmentDto> {
+    return this._http.patch<AppointmentDto>(`${this.apiConfig.API_APPOINTMENT}/cancel/${id}`, null)
+  }
+
   downloadReport(userSalesReportPdf: appointmentReportSendDto) {
     // Realiza la petición POST enviando el objeto en el body
     this._http.post(`${this.apiConfig.API_APPOINTMENT}/downloadPDF`, userSalesReportPdf, {
