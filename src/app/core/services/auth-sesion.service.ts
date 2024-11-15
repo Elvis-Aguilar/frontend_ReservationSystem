@@ -31,6 +31,10 @@ export class AuthSesionService {
     return this._http.patch<any>(`${this.apiConfig.API_USER}/multifactor-authentication`, { code, authKey })
   }
 
+  disableMFA() {
+    return this._http.patch<any>(`${this.apiConfig.API_USER}/disable-a2f`, {  })
+  }
+
   signin(signInModel: SignInModel): Observable<any> {
     return this._http.post<any>(`${this.apiConfig.API_AUTH}/sign-in`, signInModel)
   }
