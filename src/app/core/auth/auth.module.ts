@@ -9,6 +9,7 @@ import { RegisterComponent } from './register/register.component';
 import { MfaComponent } from './mfa/mfa.component';
 import { RecoverComponent } from './recover/recover.component';
 import { SigninMfaComponent} from './signin-mfa/signin-mfa.component';
+import { RecoverPasswordComponent } from './recover-password/recover-password.component';
 
 @NgModule({
   declarations: [],
@@ -21,7 +22,8 @@ import { SigninMfaComponent} from './signin-mfa/signin-mfa.component';
     RegisterComponent,
     MfaComponent,
     RecoverComponent,
-    SigninMfaComponent
+    SigninMfaComponent,
+    RecoverPasswordComponent
   ]
 })
 export class AuthModule { }
