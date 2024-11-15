@@ -8,6 +8,7 @@ import { RegisterComponent } from './register/register.component';
 import { MfaComponent } from './mfa/mfa.component';
 import { RecoverComponent } from './recover/recover.component';
 import { SigninMfaComponent} from './signin-mfa/signin-mfa.component';
+import { RecoverPasswordComponent } from './recover-password/recover-password.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,9 @@ const routes: Routes = [
   },
   {
     path:'signin-mfa', component: SigninMfaComponent
+  },
+  {
+    path:'recover-password', component: RecoverPasswordComponent
   }
 ];
 

@@ -20,6 +20,7 @@ export class FindComponent {
 
   findAccount() {
     if (!this.email) {
+      //TODO: validar que sea un email lo ingresado en el input
       Swal.fire({
         icon: "question",
         title: "Oops...",
@@ -29,11 +30,11 @@ export class FindComponent {
     }
 
     this.authService.recoverPassword({ email: this.email }).subscribe({
-      next: value =>{
+      next: value => {
         localStorage.setItem("current_user", this.email)
         this.router.navigate(['session/recuperacion'])
       },
-      error: err =>{
+      error: err => {
         Swal.fire({
           icon: "error",
           title: "Correo invalido.",

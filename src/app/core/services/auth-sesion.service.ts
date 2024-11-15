@@ -47,5 +47,9 @@ export class AuthSesionService {
     return this._http.put<any>(`${this.apiConfig.API_AUTH}/recover-password`, { email, code })
   }
 
+  recoverPasswordChange(newPassword: string, id:number) {
+    return this._http.put<any>(`${this.apiConfig.API_USER}/change-password/${id}`, { newPassword })
+  }
+
 
 }
