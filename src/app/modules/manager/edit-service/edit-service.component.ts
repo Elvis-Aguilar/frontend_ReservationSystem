@@ -67,7 +67,7 @@ export class EditServiceComponent implements OnInit {
   }
 
   getUserPermissions(userId: number) {
-    this.CallaboratorService.getUserPermissions(userId).subscribe({
+    this.CallaboratorService.getRolePermissionsUserId(userId).subscribe({
       next: (permissions) => {
         this.permissions = permissions; // Asigna los permisos obtenidos
       },
@@ -78,7 +78,7 @@ export class EditServiceComponent implements OnInit {
   }
 
   canAccess(permission: string): boolean {
-    return this.role !== 'EMPLEADO' || this.permissions.some(p => p.name === permission);
+    return this.role === 'ADMIN' || this.permissions.some(p => p.name === permission);
   }
 
   validForm(): boolean {

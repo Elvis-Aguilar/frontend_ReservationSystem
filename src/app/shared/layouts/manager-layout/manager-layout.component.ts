@@ -49,7 +49,7 @@ export class ManagerLayoutComponent implements OnInit{
   }
 
   getUserPermissions(userId: number) {
-    this.CallaboratorService.getUserPermissions(userId).subscribe({
+    this.CallaboratorService.getRolePermissionsUserId(userId).subscribe({
       next: (permissions) => {
         this.permissions = permissions; // Asigna los permisos obtenidos
       },

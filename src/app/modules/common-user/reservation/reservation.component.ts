@@ -42,7 +42,7 @@ export class ReservationComponent implements OnInit {
   }
 
   loadEmployees() {
-    this.employeService.getEmployees().subscribe({
+    this.employeService.getEmployeesExcluding().subscribe({
       next: (employees) => {
         this.employees = employees;
       },

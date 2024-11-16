@@ -69,7 +69,7 @@ export class AppointmentsAdminComponent {
 
   getEmployees(): Promise<void> {
     return new Promise((resolve) => {
-      this.employeService.getEmployees().subscribe({
+      this.employeService.getEmployeesExcluding().subscribe({
         next: value => {
           this.employee = value;
           resolve();

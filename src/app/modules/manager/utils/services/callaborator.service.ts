@@ -47,8 +47,15 @@ export class CallaboratorService {
       );
   }
 
-  getRolePermissions(userId: number): Observable<PermissionDTO[]> {
-    return this.http.get<{ data: PermissionDTO[] }>(`${this.apiConfig.API_COLLABORATOR}/role-permissions/${userId}`)
+  getRolePermissionsUserId(userId: number): Observable<PermissionDTO[]> {
+    return this.http.get<{ data: PermissionDTO[] }>(`${this.apiConfig.API_COLLABORATOR}/role/permissions/${userId}`)
+      .pipe(
+        map(response => response.data)
+      );
+  }
+
+  getRolePermissions(roleId: number): Observable<PermissionDTO[]> {
+    return this.http.get<{ data: PermissionDTO[] }>(`${this.apiConfig.API_COLLABORATOR}/role-permissions/${roleId}`)
       .pipe(
         map(response => response.data)
       );

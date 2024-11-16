@@ -36,7 +36,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   openDialog(user: UserDto): void {
-    this.CallaboratorService.getUserPermissions(user.id).subscribe({
+    this.CallaboratorService.getRolePermissionsUserId(user.id).subscribe({
       next: (userPermissions: PermissionDTO[]) => {
         const userPermissionNames = userPermissions.map(permission => permission.name);
 
