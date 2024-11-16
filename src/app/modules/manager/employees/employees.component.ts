@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
   styleUrl: './employees.component.scss'
 })
 export class EmployeesComponent implements OnInit {
+
+  
   constructor(private CallaboratorService: CallaboratorService) {}
 
   roles: RoleDTO[] = [];

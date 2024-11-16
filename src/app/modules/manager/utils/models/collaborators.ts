@@ -29,3 +29,9 @@ export interface userUpdateDTO{
     role:RoleDTO;
     permissions: Array<number>;
 }
+
+export interface CreateRoleDto{
+    name: string;
+    description: string
+    permissions: Array<number>;
+}
