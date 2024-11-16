@@ -18,4 +18,8 @@ export class EmployeeService {
         return this._http.get<employeDto[]>(`${this.apiConfig.API_USER}/role/3`)
     }
 
+    getEmployeesExcluding(): Observable<employeDto[]> {
+        return this._http.get<employeDto[]>(`${this.apiConfig.API_USER}/role-excluding`)
+    }
+
 }

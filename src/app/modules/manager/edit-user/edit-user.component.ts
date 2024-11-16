@@ -73,7 +73,7 @@ export class EditUserComponent {
   }
 
   isCallaborator(): boolean {
-    return this.user.role.toLowerCase() === "EMPLEADO".toLowerCase();
+    return this.user.role.toLowerCase() !== "ADMIN".toLowerCase();
   }
 
   onRoleChangeUser(event: Event): void {

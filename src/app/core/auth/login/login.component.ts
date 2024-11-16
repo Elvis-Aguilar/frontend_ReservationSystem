@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -40,27 +40,27 @@ export class LoginComponent {
       password: this.loginForm.get('password')!.value!
     }
     this.authService.signin(signInModel).subscribe({
-      next: value =>{
+      next: value => {
         this.store.dispatch(setSession({ session: value }))
         localStorage.setItem("current_user", email)
-  
+
         if (value) {
           switch (value.role) {
             case "ADMIN":
               this.router.navigate(['manager/inicio'])
               break
-            case "EMPLEADO":
-              this.router.navigate(['manager/inicio'])
-              break
             case "CLIENTE":
               this.router.navigate(['user/dashboard'])
+              break
+            default:
+              this.router.navigate(['manager/inicio'])
               break
           }
         } else {
           this.router.navigate(['session/signin-mfa'])
         }
       },
-      error: err =>{
+      error: err => {
         Swal.fire({
           icon: "info",
           title: "Oops...",

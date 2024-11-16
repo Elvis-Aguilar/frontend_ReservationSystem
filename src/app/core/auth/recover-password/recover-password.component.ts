@@ -53,11 +53,11 @@ export class RecoverPasswordComponent {
             case "ADMIN":
               this.router.navigate(['manager/inicio'])
               break
-            case "EMPLEADO":
-              this.router.navigate(['manager/inicio'])
-              break
             case "CLIENTE":
               this.router.navigate(['user/dashboard'])
+              break
+            default:
+              this.router.navigate(['manager/inicio'])
               break
           }
 

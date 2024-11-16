@@ -1,0 +1,44 @@
+<div class="users-container p-6 bg-gray-100 rounded-lg shadow-lg">
+    <!-- Header with title and select -->
+    <div class="flex flex-wrap items-center justify-between mb-4">
+        <h2 class="text-2xl font-bold">Administración de Roles</h2>
+        <button class="px-4 py-2 bg-green-800 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+        (click)="createRole()">
+            Nuevo Rol
+        </button>
+    </div>
+
+    <!-- Responsive table -->
+    <div class="users-table overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+            <thead class="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
+                <tr>
+                    <th class="py-3 px-6 text-left font-semibold">#</th>
+                    <th class="py-3 px-6 text-left font-semibold">Rol</th>
+                    <th class="py-3 px-6 text-left font-semibold">Descripcion</th>
+                    <th class="py-3 px-6 text-left font-semibold">Permisos</th>
+                </tr>
+            </thead>
+            @if (roles.length > 0) {
+            <tbody class="text-gray-600 text-sm font-light">
+                @for (item of roles; track $index) {
+                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left">{{$index+1}}</td>
+                    <td class="py-3 px-6 text-left">{{item.name}}</td>
+                    <td class="py-3 px-6 text-left">{{item.description}}</td>
+                    <td class="py-3 px-6 text-left">
+                        @if (item.name !== 'ADMIN' && item.name !== 'CLIENTE') {
+                        <button 
+                            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
+                            (click)="editarRole(item)">
+                            Editar
+                        </button>
+                        }
+                    </td>
+                </tr>
+                }
+            </tbody>
+            }
+        </table>
+    </div>
+</div>

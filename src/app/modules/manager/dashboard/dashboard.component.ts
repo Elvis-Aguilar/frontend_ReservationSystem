@@ -24,12 +24,12 @@ export class DashboardComponent {
       this.role = user.role; // Obtener el rol del usuario
 
       // Llamar al método del servicio para obtener permisos
-      this.getUserPermissions(user.id);
+      this.getRolePermissionsUserId(user.id);
     }
   }
 
-  getUserPermissions(userId: number) {
-    this.CallaboratorService.getUserPermissions(userId).subscribe({
+  getRolePermissionsUserId(userId: number) {
+    this.CallaboratorService.getRolePermissionsUserId(userId).subscribe({
       next: (permissions) => {
         this.permissions = permissions; // Asigna los permisos obtenidos
       },
@@ -40,6 +40,6 @@ export class DashboardComponent {
   }
 
   canAccess(permission: string): boolean {
-    return this.role !== 'EMPLEADO' || this.permissions.some(p => p.name === permission);
+    return this.role === 'ADMIN' || this.permissions.some(p => p.name === permission);
   }
 }

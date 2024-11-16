@@ -35,24 +35,21 @@ export class SigninMfaComponent {
     }
     const currentUser: string = localStorage.getItem("current_user") || ""
     this.authService.signinMFA({ email: currentUser, code: this.code }).subscribe({
-      next: value =>{
+      next: value => {
         this.store.dispatch(setSession({ session: value }))
         //TODO: redireccionar a area de trabajo.
         switch (value.role) {
           case "ADMIN":
             this.router.navigate(['/manager/inicio'])
             break
-          case "EMPLEADO":
-            this.router.navigate(['/manager/inicio'])
-            break
           case "CLIENTE":
             this.router.navigate(['/user/dashboard'])
             break
           default:
-            this.router.navigate(['/session/login'])
+            this.router.navigate(['/manager/inicio'])
         }
       },
-      error: err =>{
+      error: err => {
         Swal.fire({
           icon: "question",
           title: "Oops...",

@@ -15,6 +15,7 @@ import { ReportCitasComponent } from './reports/report-citas/report-citas.compon
 import { ReportClientesComponent } from './reports/report-clientes/report-clientes.component';
 import { ReportEmpleadosComponent } from './reports/report-empleados/report-empleados.component';
 import { ReportServicesComponent } from './reports/report-services/report-services.component';
+import { RolesComponent } from './roles/roles.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,9 @@ const routes: Routes = [
   },
   {
     path:'empleados', component: EmployeesComponent
+  },
+  {
+    path:'roles', component: RolesComponent
   },
   {
     path:'configuracion', component: SettingsComponent

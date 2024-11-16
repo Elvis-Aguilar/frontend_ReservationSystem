@@ -1,15 +1,19 @@
 <div class="users-container p-6 bg-gray-100 rounded-lg shadow-lg">
-  <div>
-    <h2 class="text-2xl font-bold mb-4">Administración de Usuarios</h2>
+  <!-- Header with title and select -->
+  <div class="flex flex-wrap items-center justify-between mb-4">
+    <h2 class="text-2xl font-bold">Administración de Empleados</h2>
   </div>
 
+  <!-- Filter by role -->
   <div class="filter-buttons mb-4">
     <label for="roleFilter" class="block text-gray-700 font-medium mb-2">Filtrar por rol</label>
-    <select id="roleFilter" (change)="onRoleChange($event)" class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200">
+    <select id="roleFilter" (change)="onRoleChange($event)"
+      class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200">
       <option *ngFor="let item of roles" [value]="item.id">{{ item.name }}</option>
     </select>
   </div>
 
+  <!-- Responsive table -->
   <div class="users-table overflow-x-auto">
     <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
       <thead class="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
@@ -24,7 +28,8 @@
           <td class="py-3 px-6 text-left">{{ element.name }}</td>
           <td class="py-3 px-6 text-left">{{ element.role }}</td>
           <td class="py-3 px-6 text-left">
-            <button (click)="openDialog(element)" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none">
+            <button (click)="openDialog(element)"
+              class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none">
               Editar
             </button>
           </td>

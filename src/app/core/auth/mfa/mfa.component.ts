@@ -33,10 +33,10 @@ export class MfaComponent {
 
   enableMFA() {
     this.authService.enableMFA(this.code, this.secretKey).subscribe({
-      next: value =>{
+      next: value => {
         this.redirectionUser()
       },
-      error: err =>{
+      error: err => {
         Swal.fire({
           icon: "info",
           title: "Oops...",
@@ -55,11 +55,11 @@ export class MfaComponent {
       case "ADMIN":
         this.router.navigate(['manager/inicio'])
         break
-      case "EMPLEADO":
-        this.router.navigate(['manager/inicio'])
-        break
       case "CLIENTE":
         this.router.navigate(['user/dashboard'])
+        break
+      default:
+        this.router.navigate(['manager/inicio'])
         break
     }
   }
