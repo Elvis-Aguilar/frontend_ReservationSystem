@@ -60,7 +60,7 @@ export class ManagerLayoutComponent implements OnInit{
   }
 
   canAccess(permission: string): boolean {
-    return this.role !== 'EMPLEADO' || this.permissions.some(p => p.name === permission);
+    return this.role === 'ADMIN' || this.permissions.some(p => p.name === permission);
   }
 
   logout() {

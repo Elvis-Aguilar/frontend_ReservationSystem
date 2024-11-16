@@ -32,7 +32,7 @@ export class EmployeesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRoles();
-    this.getPermissions();
+    this.getUserRole(this.idRol)
   }
 
   openDialog(user: UserDto): void {
@@ -59,17 +59,6 @@ export class EmployeesComponent implements OnInit {
                   `).join('')}
                 </select>
               </div>
-              ${user.role === 'EMPLEADO' ? `
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Permisos</label>
-                ${this.permissions.map(permission => `
-                  <div class="flex items-center">
-                    <input type="checkbox" id="permission-${permission.id}" name="permissions" value="${permission.id}" ${userPermissions.some(up => up.id === permission.id) ? 'checked' : ''} class="mr-2">
-                    <label for="permission-${permission.id}" class="text-sm">${permission.name}</label>
-                  </div>
-                `).join('')}
-              </div>
-              ` : ''}
             </form>
             <button id="saveUser" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Guardar</button>
             <button id="closeModal" class="mt-4 bg-red-500 text-white px-4 py-2 rounded">Cerrar</button>
@@ -87,16 +76,11 @@ export class EmployeesComponent implements OnInit {
           const formData = new FormData(form);
 
           const selectedRoleId = Number(formData.get('role'));
-          const selectedPermissions = user.role === 'EMPLEADO'
-              ? Array.from(form.querySelectorAll('input[name="permissions"]:checked'))
-                  .map(input => Number((input as HTMLInputElement).value))
-                  .filter(id => !isNaN(id))
-              : [];
 
           const updatedUser: userUpdateDTO = {
             idUser: user.id,
             role: { id: selectedRoleId, name: this.roles.find(role => role.id === selectedRoleId)?.name || '', description: '' },
-            permissions: selectedPermissions
+            permissions: []
           };
 
           this.CallaboratorService.updateUser(updatedUser).subscribe({
@@ -109,6 +93,7 @@ export class EmployeesComponent implements OnInit {
                 showConfirmButton: false,
                 timer: 1500
               });
+              this.getUserRole(this.idRol);
             },
             error: err => {
               console.error('Error al actualizar usuario:', err);
@@ -131,6 +116,7 @@ export class EmployeesComponent implements OnInit {
     this.CallaboratorService.getRoles().subscribe({
       next: (value) => {
         this.roles = value;
+        this.getPermissions()
         this.checkDataLoaded(); // Verificar datos después de cargar roles
       },
       error: (err) => {
