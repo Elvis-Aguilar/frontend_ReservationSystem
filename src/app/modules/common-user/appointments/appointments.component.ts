@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { createCalendar, viewDay, viewMonthAgenda, viewMonthGrid, viewWeek, createViewWeek, CalendarEvent } from '@schedule-x/calendar'
@@ -13,7 +13,7 @@ import { ServiceService } from '../../manager/utils/services/service.service';
 import { ServiceDto } from '../../manager/utils/models/service.dto';
 import { ManagmentService } from '../../manager/utils/services/managment.service';
 import { BusinessConfigurationDto } from '../../manager/utils/models/business-congifuration.dto';
-import { employeDto } from '../utils/models/employes.dto';
+import { employe, employeDto } from '../utils/models/employes.dto';
 import { EmployeeService } from '../utils/services/employe.service';
 import { UserService } from '../../manager/utils/services/user.service';
 import { UserDto } from '../../manager/utils/models/user.dto';
@@ -22,7 +22,7 @@ import { createCalendarControlsPlugin } from '@schedule-x/calendar-controls'
 import Swal from 'sweetalert2';
 import { AppointmentService } from '../utils/services/appointment.service';
 import { AppointmentDto } from '../utils/models/appointment.dto';
-
+import { CallaboratorService } from '../../manager/utils/services/callaborator.service';
 
 @Component({
   selector: 'app-appointments',
@@ -38,7 +38,7 @@ export class AppointmentsComponent {
   businessHours: BusinessHour[] = []
   specialDays: BusinessHour[] = []
   services: ServiceDto[] = [];
-  employee: employeDto[] = []
+  employee: employe[] = []
   businessConfiguration!: BusinessConfigurationDto
   serviceTmp!: ServiceDto | undefined;
 
@@ -57,6 +57,9 @@ export class AppointmentsComponent {
   horasAtencion = '00:00 - 00:00'
   montoPreliminar = ''
 
+  imagenAux = 'https://res.cloudinary.com/ddkp3bobz/image/upload/v1732054787/periflFake_srsq5b.webp'
+
+  @ViewChild('carouselContainer') carouselContainer!: ElementRef<HTMLDivElement>;
 
 
   private readonly businessHoursService = inject(BusinessHoursService)
@@ -65,6 +68,7 @@ export class AppointmentsComponent {
   private readonly employeService = inject(EmployeeService)
   private readonly userService = inject(UserService)
   private readonly appointmentService = inject(AppointmentService)
+  private readonly collaboratorService = inject(CallaboratorService)
 
 
   constructor(private formBuilder: FormBuilder) {
@@ -213,10 +217,27 @@ export class AppointmentsComponent {
   }
 
   getEmployees() {
-    this.employeService.getEmployees().subscribe({
+    this.employeService.getEmployeesExcluding().subscribe({
       next: value => {
-        this.employee = value
+        this.obtenerProfecionales(value)
       }
+    })
+  }
+
+  //limpiar a los profecianels con permisos de gestionar citas!!
+  obtenerProfecionales(empl: employeDto[]) {
+    empl.forEach(emp => {
+      this.collaboratorService.getRolePermissionsUserId(emp.id).subscribe({
+        next: value => {
+          const citasPermiso = value.find(permiss => permiss.name === 'CITAS')
+          if (citasPermiso) {
+            this.employee.push({
+              ...emp,
+              permissions: value
+            })            
+          }
+        }
+      })
     })
   }
 
@@ -336,6 +357,7 @@ export class AppointmentsComponent {
           },
         },
       },
+      locale: 'es-ES',
       views: [createViewWeek(), viewDay, viewMonthGrid, viewMonthAgenda],
       plugins: [eventsServicePlugin, createEventModalPlugin(), this.calendarControls],
     });
@@ -370,7 +392,7 @@ export class AppointmentsComponent {
     this.isModalOpen = false;
   }
 
-  openModal2(){
+  openModal2() {
     this.isModalOpen2 = true;
   }
   closeModal2() {
@@ -451,5 +473,44 @@ export class AppointmentsComponent {
     });
   }
 
+  traducirDia(day: string): string {
+    switch (day.toUpperCase()) { // Convertir a mayúsculas para asegurar coincidencia
+      case 'MONDAY':
+        return 'Lunes';
+      case 'TUESDAY':
+        return 'Martes';
+      case 'WEDNESDAY':
+        return 'Miércoles';
+      case 'THURSDAY':
+        return 'Jueves';
+      case 'FRIDAY':
+        return 'Viernes';
+      case 'SATURDAY':
+        return 'Sábado';
+      case 'SUNDAY':
+        return 'Domingo';
+      default:
+        return 'Día no válido'; // Para manejar errores
+    }
+  }
+
+
+  getImagenProfesional(imag: string):string{
+    if (imag === null) {
+      return this.imagenAux
+    }
+    return imag
+  }
+
+
+  scrollLeft() {
+    const container = this.carouselContainer.nativeElement;
+    container.scrollBy({ left: -container.offsetWidth / 4, behavior: 'smooth' });
+  }
+
+  scrollRight() {
+    const container = this.carouselContainer.nativeElement;
+    container.scrollBy({ left: container.offsetWidth / 4, behavior: 'smooth' });
+  }
 
 }

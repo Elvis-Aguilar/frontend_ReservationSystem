@@ -1,9 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { BusinessHour } from '../utils/models/business-hours.dto';
+import { BusinessHour, UpdateUserBusinessHours, UserHoursDto } from '../utils/models/business-hours.dto';
 import { BusinessHoursService } from '../utils/services/business-hours.service';
 import Swal from 'sweetalert2';
+import { employe, employeDto } from '../../common-user/utils/models/employes.dto';
+import { EmployeeService } from '../../common-user/utils/services/employe.service';
+import { CallaboratorService } from '../utils/services/callaborator.service';
 
 
 
@@ -22,17 +25,26 @@ export class BussingHourComponent {
   specialDays: BusinessHour[] = []
   businessHourForm: FormGroup;
   specialDayForm: FormGroup;
+  employees: employe[] = []
+  employessHours: UserHoursDto[] = []
+  selectedEmployees: Set<number> = new Set();
+
 
   isEditing = false;
   isEditingSpecialDay = false;
   formBuilder: any;
 
   private readonly businessHoursService = inject(BusinessHoursService)
+  private readonly employeService = inject(EmployeeService)
+  private readonly collaboratorService = inject(CallaboratorService)
+
+
 
 
   constructor(private fb: FormBuilder) {
     this.getBussinesGeneral()
     this.getAllSpecificDate();
+    this.getEmployees()
     this.businessHourForm = this.fb.group({
       id: 1,
       business: 3,
@@ -113,16 +125,36 @@ export class BussingHourComponent {
   }
 
   saveChanges() {
-    if (this.businessHourForm.valid) {
-      this.businessHoursService.UpdateBussinesHourt(this.businessHourForm.value, this.businessHourForm.value.id).subscribe({
-        next: value => {
-          this.msgOk()
-          this.getBussinesGeneral();
-        }
-      })
-    } else {
-      console.log('Formulario inválido');
+    const selectedEmployeeList: number[] = Array.from(this.selectedEmployees);
+    if (this.businessHourForm.value.status === 'AVAILABLE' && selectedEmployeeList.length === 0) {
+      this.msgVacioEmpleados()
+      return
     }
+    if (!this.businessHourForm.valid) {
+      this.msgformInvalid()
+      return
+    }
+    const updateUserBusinesHours: UpdateUserBusinessHours = { users: selectedEmployeeList }
+    this.businessHoursService.UpdateUserBussinesHours(updateUserBusinesHours, this.businessHourForm.value.id).subscribe({
+      next: value => {
+        this.businessHoursService.UpdateBussinesHourt(this.businessHourForm.value, this.businessHourForm.value.id).subscribe({
+          next: value => {
+            this.msgOk()
+            this.getBussinesGeneral();
+            const modal = document.getElementById('modal')!;
+            modal.classList.add('hidden');
+          },
+          error: err => {
+            this.msgError()
+          }
+        })
+      },
+      error: err => {
+        const modal = document.getElementById('modal')!;
+        modal.classList.add('hidden');
+        this.msgError()
+      }
+    })
   }
 
   getAllSpecificDate() {
@@ -134,31 +166,77 @@ export class BussingHourComponent {
   }
 
   saveSpecialDayChanges() {
-    if (this.specialDayForm.valid) {
-      const formValues = this.specialDayForm.value;
-      if (this.isEditingSpecialDay) {
-        this.businessHoursService.UpdateBussinesHourt(this.specialDayForm.value, this.specialDayForm.value.id)
-        .subscribe({
-          next: value => {
-            this.msgOk()
-            this.getAllSpecificDate()
-          }
-        })
 
-      } else {
-        this.businessHoursService.createdBusinessHours(formValues).subscribe({
-          next: value => {
+    const selectedEmployeeList: number[] = Array.from(this.selectedEmployees);
+    if (this.specialDayForm.value.status === 'AVAILABLE' && selectedEmployeeList.length === 0) {
+      this.msgVacioEmpleados()
+      return
+    }
+
+    if (!this.specialDayForm.valid) {
+      this.msgformInvalid()
+      return
+    }
+
+    const formValues = this.specialDayForm.value;
+    if (this.isEditingSpecialDay) {
+      const updateUserBusinesHours: UpdateUserBusinessHours = { users: selectedEmployeeList }
+
+      this.businessHoursService.UpdateUserBussinesHours(updateUserBusinesHours, this.specialDayForm.value.id).subscribe({
+        next: value => {
+          this.businessHoursService.UpdateBussinesHourt(this.specialDayForm.value, this.specialDayForm.value.id)
+            .subscribe({
+              next: value => {
+                const modal = document.getElementById('special-day-modal')!;
+                modal.classList.add('hidden');
+                this.msgOk()
+                this.getAllSpecificDate()
+              },
+              error: err => {
+                const modal = document.getElementById('special-day-modal')!;
+                modal.classList.add('hidden');
+                this.msgError()
+              }
+            })
+        },
+        error: err => {
+          const modal = document.getElementById('special-day-modal')!;
+          modal.classList.add('hidden');
+          this.msgError()
+        }
+      })
+
+    } else {
+      this.businessHoursService.createdBusinessHours(formValues).subscribe({
+        next: value => {
+          const updateUserBusinesHours: UpdateUserBusinessHours = { users: selectedEmployeeList }
+          if (this.specialDayForm.value.status === 'AVAILABLE') {
+            this.businessHoursService.UpdateUserBussinesHours(updateUserBusinesHours, value.id).subscribe({
+              next: value => {
+                this.msgOkCreate();
+                this.getAllSpecificDate();
+                const modal = document.getElementById('special-day-modal')!;
+                modal.classList.add('hidden');
+              },
+              error: err => {
+                const modal = document.getElementById('special-day-modal')!;
+                modal.classList.add('hidden');
+                this.msgError()
+              }
+            })
+          } else {
             this.msgOkCreate();
             this.getAllSpecificDate();
-            console.log(value);
-          },
-          error: err => {
-            console.log(err);
+            const modal = document.getElementById('special-day-modal')!;
+            modal.classList.add('hidden');
           }
-        })
-      }
-    } else {
-      console.log('Formulario inválido');
+        },
+        error: err => {
+          const modal = document.getElementById('special-day-modal')!;
+          modal.classList.add('hidden');
+          this.msgError()
+        }
+      })
     }
   }
 
@@ -167,6 +245,7 @@ export class BussingHourComponent {
   openModal(day?: BusinessHour) {
     if (day) {
       this.businessHourForm.patchValue(day);
+      this.getEmployesHours(day.id)
       this.isEditing = true;
     } else {
       this.businessHourForm.reset();
@@ -179,14 +258,16 @@ export class BussingHourComponent {
   openSpecialDayModal(day?: BusinessHour) {
     if (day) {
       this.specialDayForm.patchValue(day);
+      this.getEmployesHours(day.id)
       this.isEditingSpecialDay = true;
     } else {
+      this.selectedEmployees = new Set();
       this.specialDayForm = this.fb.group({
         business: 3,
-        specificDate: ['2024-10-31'],
+        specificDate: ['2024-12-31'],
         dayOfWeek: ['MONDAY'],
         openingTime: ['00:00'],
-        closingTime: ['00:00'],
+        closingTime: ['23:59'],
         status: ['AVAILABLE'],
         availableAreas: 1,
         availableWorkers: 1
@@ -236,12 +317,79 @@ export class BussingHourComponent {
     });
   }
 
+  msgVacioEmpleados() {
+    Swal.fire({
+      title: "Upss",
+      text: "Tiene que asignar almenos a un empleado para atender ese dia!",
+      icon: "info"
+    });
+  }
+
+  msgformInvalid() {
+    Swal.fire({
+      title: "Formulario invalido",
+      text: "Debe llenar todos los campos correctamente",
+      icon: "question"
+    });
+  }
+
   msgOkCreate() {
     Swal.fire({
       title: "Horario especifico creado",
       text: "El horario con fecha especifico ha sido creado con exito",
       icon: "success"
     });
+  }
+
+  msgError() {
+    Swal.fire({
+      title: "Error al Editar el Horario",
+      text: "No se ha podido realizar la accion, intente mas tarde!",
+      icon: "success"
+    });
+  }
+
+  getEmployees() {
+    this.employeService.getEmployeesExcluding().subscribe({
+      next: value => {
+        this.obtenerProfecionales(value)
+      }
+    })
+  }
+
+  //limpiar a los profecianels con permisos de gestionar citas!!
+  obtenerProfecionales(empl: employeDto[]) {
+    empl.forEach(emp => {
+      this.collaboratorService.getRolePermissionsUserId(emp.id).subscribe({
+        next: value => {
+          const citasPermiso = value.find(permiss => permiss.name === 'CITAS')
+          if (citasPermiso) {
+            this.employees.push({
+              ...emp,
+              permissions: value
+            })
+          }
+        }
+      })
+    })
+  }
+
+  getEmployesHours(bussineshoursId: number) {
+    this.businessHoursService.getUserBusinessHours(bussineshoursId).subscribe({
+      next: value => {
+        this.employessHours = value
+        this.selectedEmployees = new Set();
+        this.employessHours.forEach(emp => this.selectedEmployees.add(emp.id));
+      }
+    })
+  }
+
+  toggleEmployeeSelection(employeeId: number): void {
+    if (this.selectedEmployees.has(employeeId)) {
+      this.selectedEmployees.delete(employeeId);
+    } else {
+      this.selectedEmployees.add(employeeId);
+    }
   }
 
 }

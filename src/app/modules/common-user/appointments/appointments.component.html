@@ -1,10 +1,43 @@
 <div class="titule">
-  <h2>
-    Calendario
-  </h2>
   <h3>
-    Horario de Atencion (Consulte horarios atencion)
+    Horario de Atencion
   </h3>
+</div>
+
+<div class="mx-8">
+  <div class="relative w-full max-w-screen-xl mx-auto px-4 py-8">
+    <h2 class="text-xl font-bold text-center mb-6">Profesionales</h2>
+    <div class="overflow-hidden">
+      <div class="flex -mx-2 overflow-hidden scroll-smooth no-scrollbar" #carouselContainer>
+        @for (item of employee; track $index) {
+        <div class="flex-none w-1/4 px-1">
+          <div class="flex flex-col items-center">
+            <img src={{getImagenProfesional(item.imageUrl)}} alt="imagen" class="w-24 h-24 rounded-full object-cover mb-2">
+            <span class="text-center font-medium">{{item.name}}</span>
+          </div>
+        </div>
+        }
+
+
+      </div>
+    </div>
+
+    <!-- Botones de navegación -->
+    <button
+      class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 focus:outline-none"
+      (click)="scrollLeft()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    <button
+      class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 focus:outline-none"
+      (click)="scrollRight()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </div>
 </div>
 
 <div class="flex justify-end">
@@ -18,11 +51,24 @@
   </button>
 </div>
 
-<main class="main">
-  <div class="content">
-    <sx-calendar [calendarApp]="calendar"></sx-calendar>
+<main class="main m-10">
+  <div class="content h-[500px] overflow-y-auto border border-gray-300 rounded-lg shadow-sm relative">
+    <!-- Cabecera Fija -->
+    <div class="sticky top-0 bg-white border-b border-gray-300 z-10">
+      <!-- Aquí puedes insertar un encabezado dinámico o fijo -->
+      <h3 class="text-center font-semibold text-gray-800 p-2">
+        Calendario General
+      </h3>
+    </div>
+
+    <!-- Calendario -->
+    <div>
+      <sx-calendar [calendarApp]="calendar"></sx-calendar>
+    </div>
   </div>
 </main>
+
+
 
 <!-- Modal -->
 @if (registerForm) {
@@ -105,7 +151,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let hour of businessHours">
-            <td class="border px-1 py-1 text-sm">{{ hour.dayOfWeek.toUpperCase() }}</td>
+            <td class="border px-1 py-1 text-sm">{{ traducirDia(hour.dayOfWeek).toUpperCase() }}</td>
             <td class="border px-1 py-1 text-sm">{{ hour.status === 'UNAVAILABLE' ? 'Cerrado' : hour.openingTime }}</td>
             <td class="border px-1 py-1 text-sm">{{ hour.status === 'UNAVAILABLE' ? 'Cerrado' : hour.closingTime }}</td>
             <td class="border px-1 py-1 text-sm">{{ hour.status === 'UNAVAILABLE' ? 'CERRADO' : 'ABIERTO' }}</td>
@@ -137,6 +183,7 @@
       </table>
     </div>
 
-    <button (click)="closeModal2()" class="mt-4 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded">Cerrar</button>
+    <button (click)="closeModal2()"
+      class="mt-4 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded">Cerrar</button>
   </div>
 </div>

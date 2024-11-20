@@ -43,8 +43,10 @@
         @for (specialDay of specialDays; track specialDays) {
         <tr>
           <td class="border px-2 py-2 text-sm">{{ specialDay.specificDate}}</td>
-          <td class="border px-2 py-2 text-sm">{{ specialDay.status === 'UNAVAILABLE' ? 'Cerrado' : specialDay.openingTime }}</td>
-          <td class="border px-2 py-2 text-sm">{{ specialDay.status === 'UNAVAILABLE' ? 'Cerrado' : specialDay.closingTime }}</td>
+          <td class="border px-2 py-2 text-sm">{{ specialDay.status === 'UNAVAILABLE' ? 'Cerrado' :
+            specialDay.openingTime }}</td>
+          <td class="border px-2 py-2 text-sm">{{ specialDay.status === 'UNAVAILABLE' ? 'Cerrado' :
+            specialDay.closingTime }}</td>
           <td class="border px-2 py-2 text-sm">{{ specialDay.status === 'UNAVAILABLE' ? 'CERRADO' : 'ABIERTO'}}</td>
           <td class="border px-2 py-2 text-sm">
             <button (click)="openSpecialDayModal(specialDay)"
@@ -84,13 +86,28 @@
             <option value="UNAVAILABLE">No Disponible</option>
           </select>
         </div>
-        <div class="flex justify-end">
-          <button type="button" (click)="saveChanges()"
-            class="bg-blue-500 text-white px-4 py-2 rounded">Guardar</button>
-          <button type="button" (click)="closeModal()"
-            class="ml-2 bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
-        </div>
       </form>
+
+      <div class="mb-4">
+        <label class="block mb-2">Empleados:</label>
+        <div class="flex flex-col space-y-2">
+          <label *ngFor="let employee of employees" class="flex items-center">
+            <input
+              type="checkbox"
+              [checked]="selectedEmployees.has(employee.id)"
+              (change)="toggleEmployeeSelection(employee.id)"
+              class="mr-2"
+            />
+            {{ employee.name }}
+          </label>
+        </div>
+      </div>
+
+      <div class="flex justify-end">
+        <button type="button" (click)="saveChanges()" class="bg-blue-500 text-white px-4 py-2 rounded">Guardar</button>
+        <button type="button" (click)="closeModal()"
+          class="ml-2 bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
+      </div>
     </div>
   </div>
 
@@ -118,6 +135,24 @@
             <option value="UNAVAILABLE">No Disponible</option>
           </select>
         </div>
+
+        @if (specialDayForm.value.status === 'AVAILABLE') {
+          <div class="mb-4">
+            <label class="block mb-2">Empleados:</label>
+            <div class="flex flex-col space-y-2">
+              <label *ngFor="let employee of employees" class="flex items-center">
+                <input
+                  type="checkbox"
+                  [checked]="selectedEmployees.has(employee.id)"
+                  (change)="toggleEmployeeSelection(employee.id)"
+                  class="mr-2"
+                />
+                {{ employee.name }}
+              </label>
+            </div>
+          </div>
+        }
+
         <div class="flex justify-end">
           <button type="button" (click)="saveSpecialDayChanges()"
             class="bg-blue-500 text-white px-4 py-2 rounded">Guardar</button>

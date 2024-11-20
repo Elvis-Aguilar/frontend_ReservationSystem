@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http"
 import { Injectable, inject } from "@angular/core"
 import { ApiConfigService } from "../../../../config/services/api-config.service"
-import { BusinessHour } from "../models/business-hours.dto"
+import { BusinessHour, UpdateUserBusinessHours, UserHoursDto } from "../models/business-hours.dto"
 import { Observable } from "rxjs"
 
 @Injectable({
@@ -28,5 +28,13 @@ export class BusinessHoursService {
 
   createdBusinessHours(buss: BusinessHour): Observable<BusinessHour> {
     return this._http.post<BusinessHour>(`${this.apiConfig.API_BUSINESS_HOURS}`, buss)
+  }
+
+  getUserBusinessHours(hoursId: number): Observable<UserHoursDto[]>{
+    return this._http.get<UserHoursDto[]>(`${this.apiConfig.API_BUSINESS_HOURS}/users/${hoursId}`)
+  }
+
+  UpdateUserBussinesHours(buss: UpdateUserBusinessHours, id: number): Observable<BusinessHour> {
+    return this._http.put<BusinessHour>(`${this.apiConfig.API_BUSINESS_HOURS}/users/${id}`, buss)
   }
 }
