@@ -4,21 +4,28 @@
   </h3>
 </div>
 
-<div class="mx-8">
+<div class="mx-8 px-6">
   <div class="relative w-full max-w-screen-xl mx-auto px-4 py-8">
     <h2 class="text-xl font-bold text-center mb-6">Profesionales</h2>
     <div class="overflow-hidden">
       <div class="flex -mx-2 overflow-hidden scroll-smooth no-scrollbar" #carouselContainer>
+        <!-- Iterar sobre empleados -->
         @for (item of employee; track $index) {
-        <div class="flex-none w-1/4 px-1">
-          <div class="flex flex-col items-center">
-            <img src={{getImagenProfesional(item.imageUrl)}} alt="imagen" class="w-24 h-24 rounded-full object-cover mb-2">
+        <div class="flex-none w-1/4 px-1 hover:cursor-pointer" (click)="calendarioEmpleado(item.id, item.name)">
+          <div class="relative flex flex-col items-center group">
+            <!-- Imagen del profesional -->
+            <img src={{getImagenProfesional(item.imageUrl)}} 
+                 alt="imagen" 
+                 class="w-24 h-24 rounded-full object-cover mb-2">
             <span class="text-center font-medium">{{item.name}}</span>
+            
+            <!-- Mensaje flotante -->
+            <div class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-30 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <span class="text-white text-sm font-semibold">Ver Calendario</span>
+            </div>
           </div>
         </div>
         }
-
-
       </div>
     </div>
 
@@ -40,6 +47,7 @@
   </div>
 </div>
 
+
 <div class="flex justify-end">
   <button (click)="openModal2()" type="button"
     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
@@ -57,7 +65,7 @@
     <div class="sticky top-0 bg-white border-b border-gray-300 z-10">
       <!-- Aquí puedes insertar un encabezado dinámico o fijo -->
       <h3 class="text-center font-semibold text-gray-800 p-2">
-        Calendario General
+        {{titleCalendar}}
       </h3>
     </div>
 

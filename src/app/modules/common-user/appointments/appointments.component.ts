@@ -57,6 +57,8 @@ export class AppointmentsComponent {
   horasAtencion = '00:00 - 00:00'
   montoPreliminar = ''
 
+  titleCalendar = 'Calendario General'
+
   imagenAux = 'https://res.cloudinary.com/ddkp3bobz/image/upload/v1732054787/periflFake_srsq5b.webp'
 
   @ViewChild('carouselContainer') carouselContainer!: ElementRef<HTMLDivElement>;
@@ -81,7 +83,6 @@ export class AppointmentsComponent {
     this.getMe()
     this.getEmployees()
     this.getServices()
-    this.getAllAppointment();
     this.initializeCalendar()
     this.initializeBusinessHoursAndSpecialDays()
   }
@@ -90,6 +91,7 @@ export class AppointmentsComponent {
     await this.getBussinesGeneral();
     await this.getAllSpecificDate();
     await this.addClosedEventsForWeekends();
+    this.addEventSpeficiDay()
     this.initForm()
   }
 
@@ -175,13 +177,10 @@ export class AppointmentsComponent {
         this.closeModal()
       },
       error: err => {
-        console.log(err);
         this.msgError()
         this.closeModal()
       }
     })
-
-    console.log(this.registerForm.value);
   }
 
   async getBussinesGeneral(): Promise<void> {
@@ -225,21 +224,26 @@ export class AppointmentsComponent {
   }
 
   //limpiar a los profecianels con permisos de gestionar citas!!
-  obtenerProfecionales(empl: employeDto[]) {
-    empl.forEach(emp => {
-      this.collaboratorService.getRolePermissionsUserId(emp.id).subscribe({
-        next: value => {
-          const citasPermiso = value.find(permiss => permiss.name === 'CITAS')
-          if (citasPermiso) {
-            this.employee.push({
-              ...emp,
-              permissions: value
-            })            
-          }
-        }
-      })
-    })
+  async obtenerProfecionales(empl: employeDto[]) {
+    // Creamos promesas para cada empleado y esperamos que todas se resuelvan
+    const promises = empl.map(async emp => {
+      const permissions = await this.collaboratorService.getRolePermissionsUserId(emp.id).toPromise();
+      const citasPermiso = permissions?.find(permiss => permiss.name === 'CITAS');
+      if (citasPermiso) {
+        this.employee.push({
+          ...emp,
+          permissions: permissions || []
+        });
+      }
+    });
+
+    // Esperamos que todas las promesas se completen
+    await Promise.all(promises);
+
+    // Ahora ejecutamos `getAllAppointment` después de terminar el procesamiento
+    this.getAllAppointment();
   }
+
 
   getCorrelativoNumber(dayOfWeek: string): number {
     switch (dayOfWeek) {
@@ -293,7 +297,6 @@ export class AppointmentsComponent {
 
   // Método para generar eventos "Cerrado" los fines de semana
   async addClosedEventsForWeekends(): Promise<void> {
-    let id: number = 0
     const startYear = 2024;
     const endYear = 2024;  // Puedes ajustar este rango según lo necesites
 
@@ -309,7 +312,7 @@ export class AppointmentsComponent {
             const formattedDate = currentDate.toISOString().split('T')[0];  // yyyy-mm-dd
 
             this.calendar.eventsService.add({
-              id: `${id++}`,
+              id: this.id++,
               title: 'Cerrado',
               start: `${formattedDate} 00:00`,
               end: `${formattedDate} 23:59`,
@@ -321,6 +324,24 @@ export class AppointmentsComponent {
         }
       }
     }
+  }
+
+  addEventSpeficiDay() {
+    this.specialDays.forEach(specifi => {
+      if (specifi.status === "UNAVAILABLE" && specifi.specificDate) {
+        const formattedDate = specifi.specificDate.split('T')[0]; // Formateamos la fecha como yyyy-mm-dd.
+
+        // Agregamos el evento de día cerrado al calendario.
+        this.calendar.eventsService.add({
+          id: this.id++,
+          title: 'Cerrado',
+          start: `${formattedDate} 00:00`,
+          end: `${formattedDate} 23:59`,
+          allDay: true,
+          calendarId: 'leisure'
+        });
+      }
+    });
   }
 
   // Inicializar el calendario
@@ -419,21 +440,23 @@ export class AppointmentsComponent {
     this.appointments.forEach(appoin => {
       if (appoin.customer === this.userDto.id) {
         this.calendar.eventsService.add({
-          id: `${appoin.id}`,
+          id: this.id++,
           title: 'MI RESERVACION',
           description: `Este horario esta reservado. Empleado que atendera: ${this.getEmpleado(appoin.employeeId)}`,
           start: `${this.formatDateTime(appoin.startDate)}`,
           end: `${this.formatDateTime(appoin.endDate)}`,
           allDay: true,
+          idEmploye: appoin.employeeId
         })
       } else {
         this.calendar.eventsService.add({
-          id: `${appoin.id}`,
+          id: this.id++,
           title: 'RESERVADO',
           description: `Este horario esta reservado. Empleado que atendera: ${this.getEmpleado(appoin.employeeId)}`,
           start: `${this.formatDateTime(appoin.startDate)}`,
           end: `${this.formatDateTime(appoin.endDate)}`,
           allDay: true,
+          idEmploye: appoin.employeeId,
           calendarId: 'oter'
         })
       }
@@ -495,7 +518,7 @@ export class AppointmentsComponent {
   }
 
 
-  getImagenProfesional(imag: string):string{
+  getImagenProfesional(imag: string): string {
     if (imag === null) {
       return this.imagenAux
     }
@@ -512,5 +535,50 @@ export class AppointmentsComponent {
     const container = this.carouselContainer.nativeElement;
     container.scrollBy({ left: container.offsetWidth / 4, behavior: 'smooth' });
   }
+
+  async calendarioEmpleado(empleadoId: number, name:string): Promise<void> {
+    const eventos: Array<any> = this.calendar.eventsService.getAll();
+  
+    if (!eventos) {
+      return;
+    }
+  
+    // Elimina eventos existentes y espera a que termine
+    await this.eliminarEventosAsync(eventos);
+  
+    // Agrega nuevos eventos basados en las citas
+    this.agregarEventos(empleadoId);
+    this.titleCalendar = `Calendario del Profesional -> ${name}`
+  }
+  
+  private async eliminarEventosAsync(eventos: Array<any>): Promise<void> {
+    for (const evento of eventos) {
+      if (evento.idEmploye) {
+        await this.calendar.eventsService.remove(evento.id); // Asegúrate de que `remove` sea una función asíncrona
+      }
+    }
+  }
+  
+  private agregarEventos(empleadoId: number): void {
+    for (const appointment of this.appointments) {
+      if (appointment.employeeId !== empleadoId) {
+        continue;
+      }
+  
+      const isUserReservation = appointment.customer === this.userDto.id;
+  
+      this.calendar.eventsService.add({
+        id: this.id++,
+        title: isUserReservation ? 'MI RESERVACION' : 'RESERVADO',
+        description: `Este horario está reservado. Empleado que atenderá: ${this.getEmpleado(appointment.employeeId)}`,
+        start: this.formatDateTime(appointment.startDate),
+        end: this.formatDateTime(appointment.endDate),
+        allDay: true,
+        idEmploye: appointment.employeeId,
+        calendarId: isUserReservation ? undefined : 'oter'
+      });
+    }
+  }
+  
 
 }
