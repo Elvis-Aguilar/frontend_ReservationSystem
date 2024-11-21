@@ -1,0 +1,22 @@
+.date-input {
+    background-color: #f9f9f9;
+  }
+  
+  .calendar th {
+    background-color: #f8f8f8;
+    font-weight: bold;
+  }
+  
+  .calendar td {
+    transition: background-color 0.3s ease;
+  }
+  
+  .calendar td:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .calendar .selected {
+    background-color: #007bff;
+    color: white;
+  }
+  

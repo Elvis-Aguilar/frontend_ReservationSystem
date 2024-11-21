@@ -2,13 +2,15 @@ import { HttpClient } from "@angular/common/http"
 import { Injectable, inject } from "@angular/core"
 import { ApiConfigService } from "../../../../config/services/api-config.service"
 import { Observable } from "rxjs"
-import { AppointmentDto } from "../models/appointment.dto"
+import { AppointmentCreateDto, AppointmentDto } from "../models/appointment.dto"
 import { appointmentReportSendDto } from "../../../manager/utils/models/appointmentReportSendDto"
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppointmentService {
+
+  appoinmentTemp: AppointmentCreateDto | null = null
 
   private readonly _http = inject(HttpClient)
   private readonly apiConfig = inject(ApiConfigService)

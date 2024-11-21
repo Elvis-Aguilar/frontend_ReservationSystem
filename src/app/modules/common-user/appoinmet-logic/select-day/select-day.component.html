@@ -1,0 +1,175 @@
+<div class="bg-gray-90 px-4 md:px-12 lg:px-28">
+    <div class="max-w-4xl mx-auto p-4">
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Reserva tu cita</h2>
+            <div class="flex items-center">
+                <div class="flex items-center flex-1">
+                    @if (!appointmentService.appoinmentTemp?.service) {
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-primary text-primary">
+                        <span>1</span>
+                    </div>
+                    }@else {
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full border-2 bg-primary border-primary text-primary-foreground">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                    </div>
+                    }
+                    <div class="flex-1 h-1 mx-2 bg-primary"></div>
+                    <div class="text-sm text-primary font-medium">{{nameService}}</div>
+                    <div class="flex-1 h-1 mx-2 bg-primary"></div>
+                </div>
+                <div class="flex items-center flex-1">
+                    @if (!appointmentService.appoinmentTemp?.day) {
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-primary text-primary">
+                        <span>2</span>
+                    </div>
+                    }@else {
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full border-2 bg-primary border-primary text-primary-foreground">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                    </div>
+                    }
+                    <div class="flex-1 h-1 mx-2 bg-primary"></div>
+                    <div class="text-sm text-primary font-medium">Elegir Fecha</div>
+                    <div class="flex-1 h-1 mx-2 bg-primary"></div>
+                </div>
+                <div class="flex items-center flex-1">
+                    @if (!appointmentService.appoinmentTemp?.employeeId) {
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-primary text-primary">
+                        <span>3</span>
+                    </div>
+                    }@else {
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full border-2 bg-primary border-primary text-primary-foreground">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                    </div>
+                    }
+                    <div class="flex-1 h-1 mx-2 bg-primary"></div>
+                    <div class="text-sm text-primary font-medium">Elegir Profesional</div>
+                    <div class="flex-1 h-1 mx-2 bg-primary"></div>
+                </div>
+                <div class="flex items-center flex-1">
+                    @if (!appointmentService.appoinmentTemp?.startDate) {
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-primary text-primary">
+                        <span>4</span>
+                    </div>
+                    }@else {
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full border-2 bg-primary border-primary text-primary-foreground">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                    </div>
+                    }
+                    <div class="flex-1 h-1 mx-2 bg-primary"></div>
+                    <div class="text-sm text-primary font-medium">Elegir Hora</div>
+                    <div class="flex-1 h-1 mx-2 bg-primary"></div>
+                </div>
+                <div class="flex items-center flex-1">
+                    <div
+                        class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-primary text-primary">
+                        <span>5</span>
+                    </div>
+                    <div class="flex-1 h-1 mx-2 bg-primary"></div>
+                    <div class="text-sm text-primary font-medium">Confirmar Reservacion</div>
+                    <div class="flex-1 h-1 mx-2 bg-primary"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container mx-auto px-4 py-4 max-w-sm bg-white shadow-md rounded-lg">
+        <div class="text-center mb-8">
+            <h3 class="text-xl font-semibold mb-2">Paso 2</h3>
+            <p class="text-gray-600">Elegir Fecha</p>
+        </div>
+        <div>
+            <input type="text"
+                class="date-input w-full p-2 border border-gray-300 rounded mb-4 text-center cursor-pointer"
+                [value]="selectedDate | date:'dd/MM/yyyy'" readonly />
+                <div class="flex justify-between items-center mb-4">
+                    <button 
+                        (click)="changeMonth(-1)" 
+                        class="p-2 bg-gray-200 rounded hover:bg-gray-300">
+                        &lt; Anterior
+                    </button>
+                    <span class="font-semibold">{{ currentMonth | date: 'MMMM yyyy' }}</span>
+                    <button 
+                        (click)="changeMonth(1)" 
+                        class="p-2 bg-gray-200 rounded hover:bg-gray-300">
+                        Siguiente &gt;
+                    </button>
+                </div>
+                
+            <table class="calendar w-full border-collapse">
+                <thead>
+                    <tr>
+                        <th class="py-2">Dom</th>
+                        <th class="py-2">Lun</th>
+                        <th class="py-2">Mar</th>
+                        <th class="py-2">Mié</th>
+                        <th class="py-2">Jue</th>
+                        <th class="py-2">Vie</th>
+                        <th class="py-2">Sáb</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (week of calendar; track $index) {
+                    <tr>
+                        @for (day of week; track $index) {
+                        <td (click)="selectDate(day)" [class.selected]="isSelected(day)" [class.cursor-pointer]="day"
+                            class="py-2 text-center border border-gray-200">
+                            {{ day?.getDate() || '' }}
+                        </td>
+                        }
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="flex justify-between items-center space-x-4 py-2 my-4">
+        <!-- Botón Anterior -->
+        <button class="px-4 py-2 bg-gray-500 text-white rounded flex items-center space-x-2" (click)="goBack()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>Anterior</span>
+        </button>
+
+        <!-- Botón Cancelar -->
+        <button class="px-4 py-2 bg-red-500 text-white rounded" (click)="cancel()">
+            Cancelar
+        </button>
+
+        <!-- Botón Siguiente -->
+        <button class="px-4 py-2 bg-blue-500 text-white rounded flex items-center space-x-2" (click)="goSiguiente()">
+            <span>Siguiente</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+    </div>
+</div>

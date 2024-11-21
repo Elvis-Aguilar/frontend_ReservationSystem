@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { createCalendar, viewDay, viewMonthAgenda, viewMonthGrid, viewWeek, createViewWeek, CalendarEvent } from '@schedule-x/calendar'
 import { CalendarComponent } from "@schedule-x/angular";
@@ -71,6 +71,7 @@ export class AppointmentsComponent {
   private readonly userService = inject(UserService)
   private readonly appointmentService = inject(AppointmentService)
   private readonly collaboratorService = inject(CallaboratorService)
+  private readonly router = inject(Router)
 
 
   constructor(private formBuilder: FormBuilder) {
@@ -399,7 +400,11 @@ export class AppointmentsComponent {
   }
 
   openModal() {
-    const day = this.obtenerDiaDeLaSemana(this.calendarControls.getDate())
+    this.appointmentService.appoinmentTemp = null
+    this.router.navigate(['/user/citas/servicio'])
+    
+    /**
+     * const day = this.obtenerDiaDeLaSemana(this.calendarControls.getDate())
     const dayVerif = this.dayAvaible(day)
     if (dayVerif) {
       this.horasAtencion = `${dayVerif.openingTime} - ${dayVerif.closingTime}`
@@ -407,6 +412,7 @@ export class AppointmentsComponent {
     } else {
       this.msgNotAvailabe();
     }
+     */
   }
 
   closeModal() {
