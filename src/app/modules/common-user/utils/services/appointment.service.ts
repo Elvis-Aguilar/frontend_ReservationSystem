@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http"
 import { Injectable, inject } from "@angular/core"
 import { ApiConfigService } from "../../../../config/services/api-config.service"
 import { Observable } from "rxjs"
-import { AppointmentCreateDto, AppointmentDto } from "../models/appointment.dto"
+import { AppointmentCreateDto, AppointmentDto, SendAppointmentCreateDto } from "../models/appointment.dto"
 import { appointmentReportSendDto } from "../../../manager/utils/models/appointmentReportSendDto"
 
 @Injectable({
@@ -17,12 +17,16 @@ export class AppointmentService {
 
   constructor() { }
 
-  createAppoinment(appointment: AppointmentDto): Observable<AppointmentDto> {
+  createAppoinment(appointment: AppointmentDto | SendAppointmentCreateDto): Observable<AppointmentDto> {
     return this._http.post<AppointmentDto>(`${this.apiConfig.API_APPOINTMENT}`, appointment)
   }
 
   getAllAppointment(): Observable<AppointmentDto[]> {
     return this._http.get<AppointmentDto[]>(`${this.apiConfig.API_APPOINTMENT}`)
+  }
+
+  getAllAppointmentByEmployeeId(employeeId:number): Observable<AppointmentDto[]> {
+    return this._http.get<AppointmentDto[]>(`${this.apiConfig.API_APPOINTMENT}/employee/${employeeId}`)
   }
 
   completed(id: number): Observable<AppointmentDto> {

@@ -175,8 +175,12 @@ export class SelectPersonalComponent {
   
     // Retornar el empleado seleccionado aleatoriamente.
     const empleadoSeleccionado = empleadoDisponibles[randomIndex];
+
+    this.employeeSelect = empleadoSeleccionado
     
     this.appointmentService.appoinmentTemp.employeeId = empleadoSeleccionado.id
+
+    this.mostrarHtml = true
   }
   
   

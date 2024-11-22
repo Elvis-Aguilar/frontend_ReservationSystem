@@ -1,0 +1,43 @@
+.container {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #333;
+}
+
+.card {
+  position: relative; /* Necesario para posicionar el botón */
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column; /* Permite organizar el contenido en columna */
+  justify-content: space-between; /* Espacio entre contenido y botón */
+  transition: transform 0.2s;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.btn-choose {
+  background-color: #a463e3;
+  color: #fff;
+  padding: 6px 10px; /* Tamaño más pequeño */
+  font-size: 12px; /* Texto más pequeño */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: absolute; /* Para posicionar en la esquina */
+  bottom: 8px; /* Distancia desde la parte inferior */
+  right: 8px; /* Distancia desde la parte derecha */
+  &:hover {
+    background-color: #8e4ed9;
+  }
+}
