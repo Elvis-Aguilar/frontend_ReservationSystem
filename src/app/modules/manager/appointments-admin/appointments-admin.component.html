@@ -1,8 +1,8 @@
 <div class="container mx-auto p-5">
     @if (role === 'ADMIN') {
-    <h1 class="text-2xl font-bold mb-4">Todas la Citas</h1>
+    <h1 class="text-2xl font-bold mb-4">Gestionar Todas la Citas</h1>
     }@else {
-    <h1 class="text-2xl font-bold mb-4">Mis Citas</h1>
+    <h1 class="text-2xl font-bold mb-4">Gestionar Mis Citas</h1>
     }
     <div class="overflow-x-auto">
         <table class="min-w-full bg-white border border-gray-300 mb-4 table-auto">
@@ -13,6 +13,7 @@
                     <th class="border px-2 py-2 text-left text-xs">Cliente</th>
                     <th class="border px-2 py-2 text-left text-xs">Estado</th>
                     <th class="border px-2 py-2 text-left text-xs">Servicio</th>
+                    <th class="border px-2 py-2 text-left text-xs">Cobro (Q)</th>
                     @if (role === 'ADMIN') {
                     <th class="border px-2 py-2 text-left text-xs">Empleado</th>
                     }
@@ -27,6 +28,7 @@
                     <td class="border px-2 py-2 text-sm">{{item.cliente}}</td>
                     <td class="border px-2 py-2 text-sm">{{item.estado}}</td>
                     <td class="border px-2 py-2 text-sm">{{item.servicio}}</td>
+                    <td class="border px-2 py-2 text-left text-xs">{{item.price}}</td>
                     @if (role === 'ADMIN') {
                     <td class="border px-2 py-2 text-sm">{{item.empleado}}</td>
                     }

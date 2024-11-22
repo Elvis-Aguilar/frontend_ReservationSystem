@@ -9,6 +9,8 @@ import { employeDto } from '../../common-user/utils/models/employes.dto';
 import { appointmentReportDto } from '../utils/models/appointment.dto';
 import { firstValueFrom } from 'rxjs';
 import Swal from 'sweetalert2';
+import { ManagmentService } from '../utils/services/managment.service';
+import { BusinessConfigurationDto } from '../utils/models/business-congifuration.dto';
 
 @Component({
   selector: 'app-appointments-admin',
@@ -27,11 +29,14 @@ export class AppointmentsAdminComponent {
   role = ''
   id = 1
   dropdownStates: boolean[] = [];
+  businessConfiguration!: BusinessConfigurationDto
+
 
   private readonly serviceService = inject(ServiceService)
   private readonly employeService = inject(EmployeeService)
   private readonly appointmentService = inject(AppointmentService)
   private readonly userService = inject(UserService)
+  private readonly managmetService = inject(ManagmentService)
 
   async ngOnInit() {
     this.id = JSON.parse(localStorage.getItem("session") || "{'id': ''}").id
@@ -40,6 +45,7 @@ export class AppointmentsAdminComponent {
     await this.getServices();
     await this.getAllAppointment();
     await this.getCustomers()
+    await this.getBusinessConfiguration();
     this.prepararAppointmesReport();
   }
 
@@ -48,8 +54,6 @@ export class AppointmentsAdminComponent {
       this.appointmentService.getAllAppointment().subscribe({
         next: value => {
           this.appointments = value;
-          console.log(value);
-
           resolve();
         }
       });
@@ -85,6 +89,18 @@ export class AppointmentsAdminComponent {
           this.customers = value;
           resolve();
         }
+      });
+    });
+  }
+
+  async getBusinessConfiguration(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.managmetService.getBussinesConfiguration().subscribe({
+        next: value => {
+          this.businessConfiguration = value;
+          resolve();
+        },
+        error: err => reject(err)
       });
     });
   }
@@ -148,7 +164,7 @@ export class AppointmentsAdminComponent {
         Swal.fire("No se realizo ninguan accions", "", "info");
       }
     });
-    
+
   }
 
 
@@ -168,8 +184,8 @@ export class AppointmentsAdminComponent {
     return this.employee.find(cus => cus.id === id)?.name || ''
   }
 
-  findService(id: number): string {
-    return this.services.find(cus => cus.id === id)?.name || ''
+  findService(id: number): ServiceDto | undefined {
+    return this.services.find(cus => cus.id === id)
   }
 
   traducirEstad(estad: string): string {
@@ -192,30 +208,41 @@ export class AppointmentsAdminComponent {
     this.dropdownStates = this.dropdownStates.map((state, i) => (i === index ? !state : false));
   }
 
+  calculoPrice(appoin: AppointmentDto, price: number): number {
+
+    if (appoin.fine === undefined) return price;
+
+    return appoin.fine ? (this.businessConfiguration.cancellationSurcharge + price) : price
+  }
+
   prepararAppointmesReport() {
     if (this.role === 'ADMIN') {
       this.appointments.forEach(app => {
+        const service = this.findService(app.service)
         this.appointmenReports.push({
           fecha: this.getDateOnly(app.startDate),
           horaInicio: this.getTimeOnly(app.startDate),
           cliente: this.findCustormer(app.customer),
           estado: this.traducirEstad(app.status),
-          servicio: this.findService(app.service),
+          servicio: service?.name || '',
           empleado: this.findEmployee(app.employeeId),
-          appointment: app
+          appointment: app,
+          price: this.calculoPrice(app, service?.price || 1)
         })
       })
     } else {
       this.appointments.forEach(app => {
         if (app.employeeId === this.id) {
+          const service = this.findService(app.service)
           this.appointmenReports.push({
             fecha: this.getDateOnly(app.startDate),
             horaInicio: this.getTimeOnly(app.startDate),
             cliente: this.findCustormer(app.customer),
             estado: this.traducirEstad(app.status),
-            servicio: this.findService(app.service),
+            servicio: service?.name || '',
             empleado: this.findEmployee(app.employeeId),
-            appointment: app
+            appointment: app,
+            price: this.calculoPrice(app, service?.price || 1)
           })
         }
       })

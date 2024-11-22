@@ -43,12 +43,14 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      @if (false) {
       <div>
         <label for="max_days_create" class="block mb-1 text-sm font-medium text-gray-700">Máx. Días para Cancelar
           Cita:</label>
         <input type="number" id="max_days_create" class="w-full p-2.5 border border-gray-300 rounded-md"
           placeholder="Ej: 30" formControlName="maxDaysCancellation">
       </div>
+      }
 
       <div>
         <label for="max_hours_cancel" class="block mb-1 text-sm font-medium text-gray-700">Máx. Horas para
@@ -59,11 +61,12 @@
 
       <div>
         <label for="cancellationSurcharge" class="block mb-1 text-sm font-medium text-gray-700">Sobrecargo de
-          cancelación o Q.:</label>
+          cancelación o Q.</label>
         <input type="number" id="cancellationSurcharge" class="w-full p-2.5 border border-gray-300 rounded-md"
           placeholder="Ej: 48" formControlName="cancellationSurcharge">
       </div>
 
+      @if (false) {
       <div>
         <label for="max_days_update" class="block mb-1 text-sm font-medium text-gray-700">Máx. Días para
           Actualizar:</label>
@@ -77,11 +80,14 @@
         <input type="number" id="max_hours_use" class="w-full p-2.5 border border-gray-300 rounded-md"
           placeholder="Ej: 72" formControlName="maxHoursUpdate">
       </div>
+      }
     </div>
 
     <div class="mb-6">
-      <label for="business_type" class="block mb-1 text-sm font-medium text-gray-700">Dejar que los Usuarios seleccionen al empleado que los atienda:</label>
-      <select id="business_type" class="w-full p-2.5 border border-gray-300 rounded-md" formControlName="employeeElection">
+      <label for="business_type" class="block mb-1 text-sm font-medium text-gray-700">Dejar que los Usuarios seleccionen
+        al empleado que los atienda:</label>
+      <select id="business_type" class="w-full p-2.5 border border-gray-300 rounded-md"
+        formControlName="employeeElection">
         <option value="true">Si</option>
         <option value="false">No</option>
       </select>

@@ -7,6 +7,7 @@ export interface AppointmentDto{
     endDate:string;
     status:string;
     paymentMethod:string;
+    fine?:boolean;
 }
 
 export interface AppointmentCreateDto{

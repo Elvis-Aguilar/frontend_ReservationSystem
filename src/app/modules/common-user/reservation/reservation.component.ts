@@ -9,6 +9,8 @@ import { employeDto } from '../utils/models/employes.dto';
 import { ServiceService } from '../../manager/utils/services/service.service';
 import { EmployeeService } from '../utils/services/employe.service';
 import Swal from 'sweetalert2';
+import { BusinessConfigurationDto } from '../../manager/utils/models/business-congifuration.dto';
+import { ManagmentService } from '../../manager/utils/services/managment.service';
 @Component({
   selector: 'app-reservation',
   standalone: true,
@@ -21,15 +23,28 @@ export class ReservationComponent implements OnInit {
   userId: number = JSON.parse(localStorage.getItem("session") || '{"id": ""}').id;
   services: ServiceDto[] = [];
   employees: employeDto[] = [];
+  businessConfiguration!: BusinessConfigurationDto
+
 
   private readonly appointmentService = inject(AppointmentService);
   private readonly serviceService = inject(ServiceService);
   private readonly employeService = inject(EmployeeService);
+  private readonly managmetService = inject(ManagmentService);
+
 
   ngOnInit() {
     this.loadServices();
     this.loadEmployees();
     this.loadUserAppointments();
+    this.getBusinessConfiguration();
+  }
+
+  getBusinessConfiguration() {
+    this.managmetService.getBussinesConfiguration().subscribe({
+      next: value => {
+        this.businessConfiguration = value;
+      }
+    });
   }
 
   loadServices() {
@@ -81,17 +96,35 @@ export class ReservationComponent implements OnInit {
   showPdfMessage(appointmentId: number) {
     this.appointmentService.downloadBill(appointmentId)
   }
+
+  permitirCancelacion(appointment: AppointmentDto): boolean {
+    // Obtener la hora máxima en horas antes de la cita
+    const horasMaxima = this.businessConfiguration.maxHoursCancellation;
+  
+    // Parsear la hora de inicio de la cita
+    const startDate = new Date(appointment.startDate);
+  
+    // Obtener la hora actual
+    const now = new Date();
+  
+    // Calcular la diferencia en milisegundos
+    const diffInMillis = startDate.getTime() - now.getTime();
+  
+    // Convertir la diferencia a horas
+    const diffInHours = diffInMillis / (1000 * 60 * 60);
+  
+    // Verificar si la diferencia es mayor o igual a las horas máximas permitidas
+    return diffInHours >= horasMaxima;
+  }
+  
   
 
   cancelAppointment(appointment: AppointmentDto) {
-    const now = new Date();
-    const endDate = new Date(appointment.endDate);
-    const timeRemaining = endDate.getTime() - now.getTime();
-
+    const permitir = this.permitirCancelacion(appointment)
     Swal.fire({
         title: '¿Estás seguro?',
-        text: "¡No podrás revertir esto!",
-        icon: 'warning',
+        text: permitir? 'Usted se encuentra en el rango permitido para cancelar sin multas': 'Al cancelar la cita esta incumpliendo con las politicas, por lo que se le cobrara una multa en su proxima cita, se le notificara ',
+        icon: permitir? 'question': 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
@@ -99,9 +132,9 @@ export class ReservationComponent implements OnInit {
     }).then((result) => {
         if (result.isConfirmed) {
             // Si queda menos de una hora, usamos `canceled`
-            const cancelObservable = timeRemaining <= 3600000
-                ? this.appointmentService.canceled(appointment.id)
-                : this.appointmentService.cancelAppointment(appointment.id);
+            const cancelObservable = permitir
+                ? this.appointmentService.cancelAppointment(appointment.id)
+                : this.appointmentService.canceled(appointment.id);
 
             cancelObservable.subscribe({
                 next: () => {
