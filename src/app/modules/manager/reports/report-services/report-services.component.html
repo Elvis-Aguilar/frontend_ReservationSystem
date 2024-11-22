@@ -1,10 +1,15 @@
 <main>
     <div class="header">
         <h2>Reporte de General de Servicios</h2>
-        <button class="submit-button" (click)="realizarReport()">Realizar Reporte</button>
+        <button class="text-sm py-2 px-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+            (click)="realizarReport()">Realizar Reporte</button>
         @if (serviceReport.length > 0) {
-        <button class="submit-button pdf" (click)="exportPDf()">Exporar PDF</button>
-        <button class="submit-button pdf" (click)="exportExcel()">Exporar Excel</button>
+        <button class="text-sm py-2 px-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            (click)="exportPDf()">Exportar PDF</button>
+        <button class="text-sm py-2 px-2 bg-green-600 text-white rounded hover:bg-green-700"
+            (click)="exportExcel()">Exportar Excel</button>
+        <button class="text-sm py-2 px-2 bg-slate-500 text-white rounded hover:bg-slate-700"
+            (click)="exportPNG()">Exportar PNG</button>
         }
     </div>
 

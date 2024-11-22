@@ -84,7 +84,7 @@ main {
     }
     .table-container {
         margin-top: 20px;
-        max-height: calc(100vh - 400px); /* Limita la altura total */
+        max-height: calc(100vh - 200px); /* Limita la altura total */
         overflow-y: auto; /* Habilita el scroll vertical si es necesario */
         background-color: #fff;
         border: 1px solid #ddd;

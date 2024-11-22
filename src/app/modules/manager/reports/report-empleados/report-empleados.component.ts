@@ -160,6 +160,15 @@ export class ReportEmpleadosComponent {
 
   }
 
+  exportPNG(){
+    const send: clietnReportSend = {
+      items: this.clientReport,
+      rangeDate: this.startDate + ' - ' + this.endDate,
+      filtro: this.selectedFilter
+    }
+    this.cancellationService.downloadPNGReport(send)
+  }
+
   exportExcel() {
     const send: clietnReportSend = {
       items: this.clientReport,

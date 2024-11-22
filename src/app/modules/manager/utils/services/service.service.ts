@@ -59,6 +59,27 @@ export class ServiceService {
     });
   }
 
+  downloadPNGReport(userSalesReportPNG: ServiceSendDto) {
+    // Realiza la petición POST enviando el objeto en el body
+    this._http.post(`${this.apiConfig.API_SERVICES}/downloadPNG`, userSalesReportPNG, {
+      responseType: 'blob' // Importante para manejar el PNG como Blob
+    }).subscribe({
+      next: (response) => {
+        // Descargar el archivo PNG
+        const blob = new Blob([response], { type: 'image/png' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'reporte_Servicios.png'; // Nombre del archivo descargado
+        a.click();
+        window.URL.revokeObjectURL(url); // Limpia la URL temporal
+      },
+      error: (err) => {
+        console.error('Error al descargar el PNG:', err);
+      }
+    });
+  }
+
   downloadReportSalesExcel(salesReportDtoPdf: ServiceSendDto) {
     // Realiza la petición POST enviando el objeto en el body
     this._http.post(`${this.apiConfig.API_SERVICES}/download-excel`, salesReportDtoPdf, {

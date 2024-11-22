@@ -104,7 +104,7 @@ export class ReportClientesComponent {
     this.customers.forEach(cus => {
       let cantidad = 0
       this.appointments.forEach(app => {
-        if (cus.id === app.customer) {
+        if (cus.id === app.customer && app.fine === false) {
           cantidad++;
         }
       })
@@ -121,17 +121,19 @@ export class ReportClientesComponent {
   prepararAppointmesReporfilter() {
     this.customers.forEach(cus => {
       let cantidad = 0
-        this.cancellarions.forEach(app => {
-          if (cus.id === app.customer) {
-            cantidad++;
-          }
-        })
+      this.appointments.forEach(app => {
+        if (cus.id === app.customer && app.fine === true) {
+          cantidad++;
+        }
+      })
+      if (cantidad > 0) {
         this.clientReport.push({
           Cantidad: cantidad,
           cui: cus.cui,
           email: cus.email,
           Nombre: cus.name
         })
+      }
     })
   }
 
@@ -155,10 +157,20 @@ export class ReportClientesComponent {
       filtro: this.selectedFilter
     }
     this.cancellationService.downloadReport(send)
+  }
+
+  exportPNG() {
+    const send: clietnReportSend = {
+      items: this.clientReport,
+      rangeDate: this.startDate + ' - ' + this.endDate,
+      filtro: this.selectedFilter
+    }
+    this.cancellationService.downloadPNGReport(send)
 
   }
 
-  exportExcel(){
+
+  exportExcel() {
     const send: clietnReportSend = {
       items: this.clientReport,
       rangeDate: this.startDate + ' - ' + this.endDate,
