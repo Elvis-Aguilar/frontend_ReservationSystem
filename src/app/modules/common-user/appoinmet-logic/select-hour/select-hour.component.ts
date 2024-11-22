@@ -92,26 +92,28 @@ export class SelectHourComponent {
   disponible(slot: AvailableSlots): boolean {
     const slotStart = this.timeToMinutes(slot.start);
     const slotEnd = this.timeToMinutes(slot.end);
-
+  
     for (let appointment of this.appointments) {
-      const appointmentStart = this.timeToMinutes(appointment.startDate.split(' ')[1]);
-      const appointmentEnd = this.timeToMinutes(appointment.endDate.split(' ')[1]);
-
+      console.log(appointment);
+  
+      // Extraer las horas y minutos directamente del formato ISO 8601
+      const appointmentStart = this.timeToMinutes(appointment.startDate.split('T')[1].slice(0, 5));
+      const appointmentEnd = this.timeToMinutes(appointment.endDate.split('T')[1].slice(0, 5));
+  
       // Verificar si el bloque se solapa con la reserva
-      if (
-        (appointmentStart < slotEnd && appointmentEnd > slotStart) // Hay intersección
-      ) {
+      if (appointmentStart < slotEnd && appointmentEnd > slotStart) {
         return false; // No disponible
       }
     }
-
+  
     return true; // Disponible
   }
-
+  
   private timeToMinutes(time: string): number {
     const [hours, minutes] = time.split(':').map(Number);
     return hours * 60 + minutes;
   }
+  
 
   async getServiceById(): Promise<void> {
     if (this.appointmentService.appoinmentTemp === null) {
