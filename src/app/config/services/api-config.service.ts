@@ -29,4 +29,11 @@ export class ApiConfigService {
 
     //callaborator
     API_COLLABORATOR = `${this.API_BASE}/api/callaborator`
+
+    //export reports
+    API_EXPORT = `${this.API_BASE}/report`
+    API_EXPORT_APPOINTMENT = `${this.API_EXPORT}/appointment`
+    API_EXPORT_CANCELLATION = `${this.API_EXPORT}/cancellation`
+    API_EXPORT_SERVICES = `${this.API_EXPORT}/services`
+
 }

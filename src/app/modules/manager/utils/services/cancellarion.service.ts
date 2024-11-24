@@ -20,7 +20,7 @@ export class CancellarionService {
 
   downloadReport(userSalesReportPdf: clietnReportSend) {
     // Realiza la petición POST enviando el objeto en el body
-    this._http.post(`${this.apiConfig.API_CANCELLATION}/downloadPDF`, userSalesReportPdf, {
+    this._http.post(`${this.apiConfig.API_EXPORT_CANCELLATION}/downloadPDF`, userSalesReportPdf, {
       responseType: 'blob' // Importante para manejar el PDF como Blob
     }).subscribe({
       next: (response) => {
@@ -41,7 +41,7 @@ export class CancellarionService {
 
   downloadPNGReport(userSalesReportPNG: clietnReportSend) {
     // Realiza la petición POST enviando el objeto en el body
-    this._http.post(`${this.apiConfig.API_CANCELLATION}/downloadPNG`, userSalesReportPNG, {
+    this._http.post(`${this.apiConfig.API_EXPORT_CANCELLATION}/downloadPNG`, userSalesReportPNG, {
       responseType: 'blob' // Importante para manejar el PNG como Blob
     }).subscribe({
       next: (response) => {
@@ -62,7 +62,7 @@ export class CancellarionService {
 
   downloadReportSalesExcel(salesReportDtoPdf: clietnReportSend) {
     // Realiza la petición POST enviando el objeto en el body
-    this._http.post(`${this.apiConfig.API_CANCELLATION}/download-excel`, salesReportDtoPdf, {
+    this._http.post(`${this.apiConfig.API_EXPORT_CANCELLATION}/download-excel`, salesReportDtoPdf, {
       responseType: 'blob' // Importante para manejar el Excel como Blob
     }).subscribe({
       next: (response) => {

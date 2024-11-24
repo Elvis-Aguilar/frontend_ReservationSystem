@@ -43,7 +43,7 @@ export class AppointmentService {
 
   downloadReport(userSalesReportPdf: appointmentReportSendDto) {
     // Realiza la petición POST enviando el objeto en el body
-    this._http.post(`${this.apiConfig.API_APPOINTMENT}/downloadPDF`, userSalesReportPdf, {
+    this._http.post(`${this.apiConfig.API_EXPORT_APPOINTMENT}/downloadPDF`, userSalesReportPdf, {
       responseType: 'blob' // Importante para manejar el PDF como Blob
     }).subscribe({
       next: (response) => {
@@ -64,7 +64,7 @@ export class AppointmentService {
 
   downloadPNGReport(userSalesReportPNG: appointmentReportSendDto) {
     // Realiza la petición POST enviando el objeto en el body
-    this._http.post(`${this.apiConfig.API_APPOINTMENT}/downloadPNG`, userSalesReportPNG, {
+    this._http.post(`${this.apiConfig.API_EXPORT_APPOINTMENT}/downloadPNG`, userSalesReportPNG, {
       responseType: 'blob' // Importante para manejar el PNG como Blob
     }).subscribe({
       next: (response) => {
@@ -82,11 +82,10 @@ export class AppointmentService {
       }
     });
   }
-  
 
   downloadReportSalesExcel(salesReportDtoPdf: appointmentReportSendDto) {
     // Realiza la petición POST enviando el objeto en el body
-    this._http.post(`${this.apiConfig.API_APPOINTMENT}/download-excel`, salesReportDtoPdf, {
+    this._http.post(`${this.apiConfig.API_EXPORT_APPOINTMENT}/download-excel`, salesReportDtoPdf, {
       responseType: 'blob' // Importante para manejar el Excel como Blob
     }).subscribe({
       next: (response) => {
@@ -107,7 +106,7 @@ export class AppointmentService {
 
   downloadBill(idAppointment: number) {
     // Realiza la petición POST enviando el objeto en el body
-    this._http.post(`${this.apiConfig.API_APPOINTMENT}/downloadBill/${idAppointment}`, "userSalesReportPdf", {
+    this._http.post(`${this.apiConfig.API_EXPORT_APPOINTMENT}/downloadBill/${idAppointment}`, "userSalesReportPdf", {
       responseType: 'blob' // Importante para manejar el PDF como Blob
     }).subscribe({
       next: (response) => {

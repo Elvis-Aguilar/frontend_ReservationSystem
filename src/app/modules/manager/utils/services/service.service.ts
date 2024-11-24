@@ -40,7 +40,7 @@ export class ServiceService {
 
   downloadReport(userSalesReportPdf: ServiceSendDto) {
     // Realiza la petición POST enviando el objeto en el body
-    this._http.post(`${this.apiConfig.API_SERVICES}/downloadPDF`, userSalesReportPdf, {
+    this._http.post(`${this.apiConfig.API_EXPORT_SERVICES}/downloadPDF`, userSalesReportPdf, {
       responseType: 'blob' // Importante para manejar el PDF como Blob
     }).subscribe({
       next: (response) => {
@@ -61,7 +61,7 @@ export class ServiceService {
 
   downloadPNGReport(userSalesReportPNG: ServiceSendDto) {
     // Realiza la petición POST enviando el objeto en el body
-    this._http.post(`${this.apiConfig.API_SERVICES}/downloadPNG`, userSalesReportPNG, {
+    this._http.post(`${this.apiConfig.API_EXPORT_SERVICES}/downloadPNG`, userSalesReportPNG, {
       responseType: 'blob' // Importante para manejar el PNG como Blob
     }).subscribe({
       next: (response) => {
@@ -82,7 +82,7 @@ export class ServiceService {
 
   downloadReportSalesExcel(salesReportDtoPdf: ServiceSendDto) {
     // Realiza la petición POST enviando el objeto en el body
-    this._http.post(`${this.apiConfig.API_SERVICES}/download-excel`, salesReportDtoPdf, {
+    this._http.post(`${this.apiConfig.API_EXPORT_SERVICES}/download-excel`, salesReportDtoPdf, {
       responseType: 'blob' // Importante para manejar el Excel como Blob
     }).subscribe({
       next: (response) => {
