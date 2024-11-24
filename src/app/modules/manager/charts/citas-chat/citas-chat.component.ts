@@ -79,8 +79,6 @@ export class CitasChatComponent {
     if (changes) {
       this.mostrarHtml = false;
 
-      console.log(this.mesReport);
-
       const filterFechas = this.getMonthStartAndEnd();
       const dateSumTotal: Record<string, number> = this.calcularIngresosPorDia(filterFechas);
 
@@ -158,8 +156,6 @@ export class CitasChatComponent {
         }
       }
     }
-
-    console.log(dateSumTotal);
 
     return dateSumTotal;
 

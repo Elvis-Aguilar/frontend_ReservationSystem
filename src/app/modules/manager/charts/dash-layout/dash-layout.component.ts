@@ -11,11 +11,19 @@ import { employeDto } from '../../../common-user/utils/models/employes.dto';
 import { ManagmentService } from '../../utils/services/managment.service';
 import { BusinessConfigurationDto } from '../../utils/models/business-congifuration.dto';
 import { CompledCitasChartComponent } from '../compled-citas-chart/compled-citas-chart.component';
+import { CompareServicesChartComponent } from '../compare-services-chart/compare-services-chart.component';
+import { CompareEmpleadosChartComponent } from '../compare-empleados-chart/compare-empleados-chart.component';
 
 @Component({
   selector: 'app-dash-layout',
   standalone: true,
-  imports: [CitasChatComponent, FormsModule, CompledCitasChartComponent],
+  imports: [
+    CitasChatComponent,
+    FormsModule,
+    CompledCitasChartComponent,
+    CompareServicesChartComponent,
+    CompareEmpleadosChartComponent
+  ],
   templateUrl: './dash-layout.component.html',
   styleUrl: './dash-layout.component.scss'
 })

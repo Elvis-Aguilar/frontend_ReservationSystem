@@ -80,8 +80,6 @@ export class CompledCitasChartComponent {
     if (changes) {
       this.mostrarHtml = false;
 
-      console.log(this.mesReport);
-
       const filterFechas = this.getMonthStartAndEnd();
       const dateSumTotal: Record<string, number> = this.calcularResevacionesPorDia(filterFechas);
 
@@ -149,8 +147,6 @@ export class CompledCitasChartComponent {
 
       }
     }
-
-    console.log(dateSumTotal);
 
     return dateSumTotal;
 

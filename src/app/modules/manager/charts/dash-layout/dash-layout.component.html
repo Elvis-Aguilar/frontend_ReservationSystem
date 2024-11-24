@@ -57,13 +57,13 @@
             <h3 class="text-sm font-medium text-gray-500">Top Servicio</h3>
             <p class="text-2xl font-bold">{{topServiceDash}}</p>
             <p class="text-green-500 text-sm">↑ 13%</p>
-            <p class="text-gray-500 text-xs">Servicio mas reservado</p>
+            <p class="text-gray-500 text-xs">Servicio mas reservado (Todos)</p>
         </div>
         <div class="bg-white rounded-lg shadow p-4">
             <h3 class="text-sm font-medium text-gray-500">Top Empleado</h3>
             <p class="text-2xl font-bold">{{topEmpleadoDash}}</p>
             <p class="text-green-500 text-sm">↑ 7%</p>
-            <p class="text-gray-500 text-xs">Mas citas Reservadas</p>
+            <p class="text-gray-500 text-xs">Mas citas Reservadas (Todos)</p>
         </div>
         <div class="bg-white rounded-lg shadow p-4">
             <h3 class="text-sm font-medium text-gray-500">Total de Citas</h3>
@@ -96,9 +96,20 @@
         </div>
 
         <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-medium text-gray-700">CPM vs. CPP</h3>
+            <h3 class="text-lg font-medium text-gray-700">Todas las Reservaciones: Servicios vs. Servicios</h3>
             <!-- Aquí irá tu gráfica -->
-            <div class="h-64 bg-gray-200 rounded mt-4"></div>
+            <div style="text-align:center">
+                <app-compare-services-chart [appointments]="appointments" [services]="services"
+                    [mesReport]="mesReport"></app-compare-services-chart>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-medium text-gray-700">Todas las Reservaciones: Empleados vs. Empleados</h3>
+            <!-- Aquí irá tu gráfica -->
+            <div style="text-align:center">
+                <app-compare-empleados-chart [appointments]="appointments" [employee]="employee"
+                    [mesReport]="mesReport"></app-compare-empleados-chart>
+            </div>
         </div>
     </div>
 </div>

@@ -1,0 +1,37 @@
+@if (mostrarHtml) {
+<div>
+    <div class="relative w-full my-4" style="padding-bottom: 50%;">
+        <!-- Gráfico de Dona -->
+        <svg viewBox="0 0 100 100" class="absolute inset-0 w-full h-full">
+            <circle cx="50" cy="50" r="40" fill="transparent" stroke-width="20" stroke="#E5E7EB"></circle>
+            <!-- Segmentos dinámicos -->
+            @for (segment of segments; track $index) {
+            <ng-container>
+                <circle cx="50" cy="50" r="40" fill="transparent" [attr.stroke]="segment.color" stroke-width="20"
+                    [attr.stroke-dasharray]="segment.dashArray"
+                    [attr.transform]="'rotate(' + segment.rotation + ' 50 50)'">
+                </circle>
+            </ng-container>
+            }
+            <!-- Texto central -->
+            <circle cx="50" cy="50" r="30" fill="white"></circle>
+            <text x="50" y="50" text-anchor="middle" dominant-baseline="middle" class="text-xl font-bold">
+                {{ totalReservaciones }}
+            </text>
+        </svg>
+    </div>
+
+    <!-- Leyenda -->
+    <div class="mt-4 grid grid-cols-2 gap-2">
+        @for (segment of segments; track $index) {
+        <ng-container>
+            <div class="flex items-center">
+                <span class="w-3 h-3 rounded-full mr-2" [style.background-color]="segment.color"></span>
+                <span class="text-sm">{{ segment.name }} ({{ segment.percentage }}%, {{ segment.count }})</span>
+            </div>
+        </ng-container>
+        }
+
+    </div>
+</div>
+}
