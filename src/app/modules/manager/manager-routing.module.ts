@@ -40,6 +40,9 @@ const routes: Routes = [
     path:'roles', component: RolesComponent
   },
   {
+    path:'users/mal-comportamiento', component: ClientsComponent
+  },
+  {
     path:'configuracion', component: SettingsComponent
   },
   {

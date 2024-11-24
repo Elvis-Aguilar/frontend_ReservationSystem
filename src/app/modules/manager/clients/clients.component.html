@@ -1,1 +1,27 @@
-<p>clients works!</p>
+<div class="container mx-auto p-5">
+    <h1 class="text-2xl font-bold mb-4">Usuarios de mal comportamiento, Mal uso del sistema</h1>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-300 mb-4 table-auto">
+            <thead>
+                <tr>
+                    <th class="border px-2 py-2 text-left text-xs">#</th>
+                    <th class="border px-2 py-2 text-left text-xs">Cliente</th>
+                    <th class="border px-2 py-2 text-left text-xs">Correo</th>
+                    <th class="border px-2 py-2 text-left text-xs">Citas canceladas</th>
+                    <th class="border px-2 py-2 text-left text-xs">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of clientReport; track $index) {
+                <tr>
+                    <td class="border px-2 py-2 text-sm">{{$index+1}}</td>
+                    <td class="border px-2 py-2 text-sm">{{item.Nombre}}</td>
+                    <td class="border px-2 py-2 text-sm">{{item.email}}</td>
+                    <td class="border px-2 py-2 text-sm">{{item.Cantidad}}</td>
+                    <td class="border px-2 py-2 text-sm"></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
