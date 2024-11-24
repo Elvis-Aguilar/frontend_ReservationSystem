@@ -3,10 +3,12 @@ import { RouterLink } from '@angular/router';
 import { PermissionDTO } from '../utils/models/collaborators';
 import { CallaboratorService } from '../utils/services/callaborator.service';
 import { CommonModule } from '@angular/common';
+import { DashLayoutComponent } from '../charts/dash-layout/dash-layout.component';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, DashLayoutComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

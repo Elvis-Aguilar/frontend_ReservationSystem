@@ -8,6 +8,7 @@ export interface employeDto{
     cui: string,
     phone: string,
     imageUrl:string
+    createdAt?:string;
 }
 
 export interface employe{

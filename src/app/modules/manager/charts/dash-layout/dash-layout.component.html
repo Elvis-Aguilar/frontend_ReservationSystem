@@ -1,0 +1,105 @@
+@if (mostrarHtml) {
+<div class="min-h-screen bg-gray-100 p-6">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow p-4 mb-6">
+        <h1 class="text-2xl font-bold">Dashboard Citas</h1>
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Filtro por mes</label>
+                <select
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    [(ngModel)]="mesReport" (change)="generarDatosDashobard()">
+                    @for (mounth of months; track $index) {
+                    <option value={{mounth}}>{{mounth}}</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Servicios</label>
+                <select
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    [(ngModel)]="filterService" (change)="generarDatosDashobard()">
+                    <option value={{0}}>Todos</option>
+                    @for (item of services; track $index) {
+                    <option value={{item.id}}>{{item.name}}</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Empleado</label>
+                <select
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    [(ngModel)]="filterEmpleado" (change)="generarDatosDashobard()">
+                    <option value={{0}}>Todos</option>
+                    @for (item of employee; track $index) {
+                    <option value={{item.id}}>{{item.name}}</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-sm font-medium text-gray-500">Total de ingresos</h3>
+            <p class="text-2xl font-bold">Q{{totolIngreso}}</p>
+            <p class="text-green-500 text-sm">↑ Q12</p>
+            <p class="text-gray-500 text-xs">Todas las citas y sobrecargos</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-sm font-medium text-gray-500">Clientes Registrados</h3>
+            <p class="text-2xl font-bold">{{totalClientersRegistrados}}</p>
+            <p class="text-green-500 text-sm">↑ 0.8%</p>
+            <p class="text-gray-500 text-xs">Todos los registros del mes</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-sm font-medium text-gray-500">Top Servicio</h3>
+            <p class="text-2xl font-bold">{{topServiceDash}}</p>
+            <p class="text-green-500 text-sm">↑ 13%</p>
+            <p class="text-gray-500 text-xs">Servicio mas reservado</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-sm font-medium text-gray-500">Top Empleado</h3>
+            <p class="text-2xl font-bold">{{topEmpleadoDash}}</p>
+            <p class="text-green-500 text-sm">↑ 7%</p>
+            <p class="text-gray-500 text-xs">Mas citas Reservadas</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-sm font-medium text-gray-500">Total de Citas</h3>
+            <p class="text-2xl font-bold">{{totalCitasCompletadas}}</p>
+            <p class="text-green-500 text-sm">↑ 7%</p>
+            <p class="text-gray-500 text-xs">Reservaciones Atendidas</p>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-medium text-gray-700">Ingresos por dia del mes</h3>
+            <!-- Aquí irá tu gráfica -->
+            <div style="text-align:center">
+                <app-citas-chat [appointments]="appointments" [services]="services" [filterEmpleado]="filterEmpleado"
+                    [filterService]="filterService" [mesReport]="mesReport"
+                    [businessConfiguration]="businessConfiguration"></app-citas-chat>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-medium text-gray-700">Reservacioens Atendidas por dia del mes</h3>
+            <!-- Aquí irá tu gráfica -->
+            <div style="text-align:center">
+                <app-compled-citas-chart [appointments]="appointments" [services]="services"
+                    [filterEmpleado]="filterEmpleado" [filterService]="filterService" [mesReport]="mesReport"
+                    [businessConfiguration]="businessConfiguration"></app-compled-citas-chart>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-medium text-gray-700">CPM vs. CPP</h3>
+            <!-- Aquí irá tu gráfica -->
+            <div class="h-64 bg-gray-200 rounded mt-4"></div>
+        </div>
+    </div>
+</div>
+}
