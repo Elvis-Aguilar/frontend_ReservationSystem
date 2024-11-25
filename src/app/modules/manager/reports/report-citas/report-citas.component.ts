@@ -27,8 +27,8 @@ export class ReportCitasComponent {
   selectedFilter = 'all'
   totol = 0
 
-  startDate = '2000-01-01';
-  endDate = '2099-12-31';
+  startDate = '2024-09-01';
+  endDate = '2025-01-31';
 
   private readonly serviceService = inject(ServiceService)
   private readonly employeService = inject(EmployeeService)
@@ -122,24 +122,15 @@ export class ReportCitasComponent {
   }
 
   prepararAppointmesReportTodos() {
-    this.appointments.forEach(app => {
-      const servi = this.findService(app.service)
-      this.appointmenReports.push({
-        fecha: this.getDateOnly(app.startDate),
-        horaInicio: this.getTimeOnly(app.startDate),
-        cliente: this.findCustormer(app.customer),
-        estado: this.traducirEstad(app.status),
-        servicio: servi?.name || '',
-        empleado: this.findEmployee(app.employeeId),
-        price: servi?.price || 0,
-        appointment: app
-      })
-    })
-  }
 
-  prepararAppointmesReporfilter(filstro: string) {
+    const startFilterDate = new Date(this.startDate)
+    const endFilterDate = new Date(this.endDate)
+
+
     this.appointments.forEach(app => {
-      if (filstro === app.status) {
+      const appointDate = new Date(app.startDate.split("T")[0]);
+
+      if (appointDate >= startFilterDate && appointDate <= endFilterDate) {
         const servi = this.findService(app.service)
         this.appointmenReports.push({
           fecha: this.getDateOnly(app.startDate),
@@ -155,20 +146,40 @@ export class ReportCitasComponent {
     })
   }
 
-  calcluoTotal(){
+  prepararAppointmesReporfilter(filstro: string) {
+
+    const startFilterDate = new Date(this.startDate)
+    const endFilterDate = new Date(this.endDate)
+
+    this.appointments.forEach(app => {
+      const appointDate = new Date(app.startDate.split("T")[0]);
+
+      if (filstro === app.status && (appointDate >= startFilterDate && appointDate <= endFilterDate)) {
+        
+        const servi = this.findService(app.service)
+        this.appointmenReports.push({
+          fecha: this.getDateOnly(app.startDate),
+          horaInicio: this.getTimeOnly(app.startDate),
+          cliente: this.findCustormer(app.customer),
+          estado: this.traducirEstad(app.status),
+          servicio: servi?.name || '',
+          empleado: this.findEmployee(app.employeeId),
+          price: servi?.price || 0,
+          appointment: app
+        })
+      }
+    })
+  }
+
+  calcluoTotal() {
     this.totol = 0
-    this.appointmenReports.forEach(app =>{
+    this.appointmenReports.forEach(app => {
       this.totol += app.price || 0
     })
   }
 
 
   realizarReport() {
-
-    console.log(this.startDate);
-    console.log(this.endDate);
-
-    
 
     this.appointmenReports = []
     switch (this.selectedFilter) {
@@ -188,31 +199,31 @@ export class ReportCitasComponent {
     this.calcluoTotal()
   }
 
-  exportPDf(){
+  exportPDf() {
     const send: appointmentReportSendDto = {
       items: this.appointmenReports,
       total: this.totol,
-      rangeDate: this.startDate + ' - '+ this.endDate,
+      rangeDate: this.startDate + ' - ' + this.endDate,
       filtro: this.appointmenReports[0].estado
     }
     this.appointmentService.downloadReport(send)
   }
 
-  exportPNG(){
+  exportPNG() {
     const send: appointmentReportSendDto = {
       items: this.appointmenReports,
       total: this.totol,
-      rangeDate: this.startDate + ' - '+ this.endDate,
+      rangeDate: this.startDate + ' - ' + this.endDate,
       filtro: this.appointmenReports[0].estado
     }
     this.appointmentService.downloadPNGReport(send)
   }
 
-  exportExcel(){
+  exportExcel() {
     const send: appointmentReportSendDto = {
       items: this.appointmenReports,
       total: this.totol,
-      rangeDate: this.startDate + ' - '+ this.endDate,
+      rangeDate: this.startDate + ' - ' + this.endDate,
       filtro: this.appointmenReports[0].estado
     }
     this.appointmentService.downloadReportSalesExcel(send)

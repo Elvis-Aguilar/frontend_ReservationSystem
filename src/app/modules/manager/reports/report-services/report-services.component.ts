@@ -20,8 +20,8 @@ export class ReportServicesComponent {
   selectedFilter = 'Todos'
   totol = 0
 
-  startDate = '2000-01-01';
-  endDate = '2099-12-31';
+  startDate = '2024-09-01';
+  endDate = '2025-01-31';
 
   private readonly serviceService = inject(ServiceService)
   private readonly appointmentService = inject(AppointmentService)
@@ -88,10 +88,17 @@ export class ReportServicesComponent {
   }
 
   prepararAppointmesReportTodos() {
+
+    const startFilterDate = new Date(this.startDate)
+    const endFilterDate = new Date(this.endDate)
+
     this.services.forEach(ser => {
       let citas = 0
       this.appointments.forEach(app => {
-        if (app.service === ser.id) {
+
+        const appointDate = new Date(app.startDate.split("T")[0]);
+
+        if (app.service === ser.id  && (appointDate >= startFilterDate && appointDate <= endFilterDate)) {
           citas++
         }
       })
@@ -108,11 +115,18 @@ export class ReportServicesComponent {
   }
 
   prepararAppointmesReporfilter(filstro: string) {
+
+    const startFilterDate = new Date(this.startDate)
+    const endFilterDate = new Date(this.endDate)
+
     this.services.forEach(ser => {
       if (filstro === ser.status) {
         let citas = 0
         this.appointments.forEach(app => {
-          if (app.service === ser.id) {
+
+          const appointDate = new Date(app.startDate.split("T")[0]);
+
+          if (app.service === ser.id && (appointDate >= startFilterDate && appointDate <= endFilterDate)) {
             citas++
           }
         })

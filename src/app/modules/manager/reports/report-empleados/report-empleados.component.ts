@@ -25,14 +25,14 @@ export class ReportEmpleadosComponent {
   totol = 0
   cancellarions: CancellationSurchargeDto[] = []
 
-  startDate = '2000-01-01';
-  endDate = '2099-12-31';
+
+  startDate = '2024-09-01';
+  endDate = '2025-01-31';
 
 
   private readonly appointmentService = inject(AppointmentService)
   private readonly cancellationService = inject(CancellarionService)
   private readonly employeService = inject(EmployeeService)
-  private readonly userService = inject(UserService)
 
 
   async ngOnInit() {
@@ -103,10 +103,17 @@ export class ReportEmpleadosComponent {
   }
 
   prepararAppointmesReportTodos() {
+
+    const startFilterDate = new Date(this.startDate)
+    const endFilterDate = new Date(this.endDate)
+
     this.employees.forEach(cus => {
       let cantidad = 0
       this.appointments.forEach(app => {
-        if (cus.id === app.employeeId) {
+
+        const appointDate = new Date(app.startDate.split("T")[0]);
+
+        if (cus.id === app.employeeId && (appointDate >= startFilterDate && appointDate <= endFilterDate)) {
           cantidad++;
         }
       })
@@ -121,13 +128,22 @@ export class ReportEmpleadosComponent {
 
 
   prepararAppointmesReporfilter() {
+
+    const startFilterDate = new Date(this.startDate)
+    const endFilterDate = new Date(this.endDate)
+
     this.employees.forEach(cus => {
       let cantidad = 0
-      this.cancellarions.forEach(app => {
-        if (cus.id === app.customer) {
+      this.appointments.forEach(app => {
+
+        const appointDate = new Date(app.startDate.split("T")[0]);
+
+
+        if (cus.id === app.employeeId && app.fine && (appointDate >= startFilterDate && appointDate <= endFilterDate)) {
           cantidad++;
         }
       })
+      
       this.clientReport.push({
         Cantidad: cantidad,
         cui: cus.cui,
@@ -160,7 +176,7 @@ export class ReportEmpleadosComponent {
 
   }
 
-  exportPNG(){
+  exportPNG() {
     const send: clietnReportSend = {
       items: this.clientReport,
       rangeDate: this.startDate + ' - ' + this.endDate,

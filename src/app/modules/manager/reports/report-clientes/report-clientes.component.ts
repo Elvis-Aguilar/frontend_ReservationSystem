@@ -24,8 +24,8 @@ export class ReportClientesComponent {
   totol = 0
   cancellarions: CancellationSurchargeDto[] = []
 
-  startDate = '2000-01-01';
-  endDate = '2099-12-31';
+  startDate = '2024-09-01';
+  endDate = '2025-01-31';
 
 
   private readonly appointmentService = inject(AppointmentService)
@@ -101,10 +101,16 @@ export class ReportClientesComponent {
   }
 
   prepararAppointmesReportTodos() {
+
+    const startFilterDate = new Date(this.startDate)
+    const endFilterDate = new Date(this.endDate)
+
     this.customers.forEach(cus => {
       let cantidad = 0
       this.appointments.forEach(app => {
-        if (cus.id === app.customer && app.fine === false) {
+        const appointDate = new Date(app.startDate.split("T")[0]);
+
+        if (cus.id === app.customer && app.fine === false && (appointDate >= startFilterDate && appointDate <= endFilterDate)) {
           cantidad++;
         }
       })
@@ -119,10 +125,16 @@ export class ReportClientesComponent {
 
 
   prepararAppointmesReporfilter() {
+
+    const startFilterDate = new Date(this.startDate)
+    const endFilterDate = new Date(this.endDate)
+
     this.customers.forEach(cus => {
       let cantidad = 0
       this.appointments.forEach(app => {
-        if (cus.id === app.customer && app.fine === true) {
+        const appointDate = new Date(app.startDate.split("T")[0]);
+
+        if (cus.id === app.customer && app.fine === true && (appointDate >= startFilterDate && appointDate <= endFilterDate)) {
           cantidad++;
         }
       })
