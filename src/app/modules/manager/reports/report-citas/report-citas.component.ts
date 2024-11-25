@@ -164,6 +164,12 @@ export class ReportCitasComponent {
 
 
   realizarReport() {
+
+    console.log(this.startDate);
+    console.log(this.endDate);
+
+    
+
     this.appointmenReports = []
     switch (this.selectedFilter) {
       case 'all':
