@@ -52,6 +52,44 @@ export class RegisterComponent {
     };
   }
 
+  private validateForm() {
+    const formValues = this.registerForm.value;
+    const errors: string[] = [];
+
+    // Validar que 'name' sea un string
+    if (typeof formValues.name !== 'string' || formValues.name.trim() === '') {
+      errors.push('El campo "name" debe ser un texto válido.');
+    }
+
+    // Validar que 'cui', 'nit' y 'phone' sean números válidos
+    ['cui', 'nit', 'phone'].forEach((field) => {
+      if (isNaN(Number(formValues[field]))) {
+        errors.push(`El campo "${field}" debe ser un número válido.`);
+      }
+    });
+
+    // Validar que 'email' sea un email válido
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formValues.email)) {
+      errors.push('El campo "email" debe contener un email válido.');
+    }
+
+    // Mostrar errores con SweetAlert si los hay
+    if (errors.length > 0) {
+      Swal.fire({
+        title: 'Errores en el formulario',
+        icon: 'error',
+        html: `<ul>${errors.map((error) => `<li>${error}</li>`).join('')}</ul>`,
+        confirmButtonText: 'Entendido',
+      });
+      return false;
+    }
+
+    // Si todo es válido
+    return true;
+  }
+
+
   register() {
     console.log("register() fue llamado");
 
@@ -71,6 +109,9 @@ export class RegisterComponent {
 
       return;
     }
+
+    if (!this.validateForm()) return;
+
     // Valida si las contraseñas coinciden
     if (this.registerForm.value.password !== this.registerForm.value.passwordConfirm) {
       Swal.fire({

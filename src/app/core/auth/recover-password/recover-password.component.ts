@@ -47,7 +47,7 @@ export class RecoverPasswordComponent {
       this.authService.recoverPasswordChange(this.newPassword, Number(id)).subscribe({
         next: value => {
           let roleUpper = value.role.toUpperCase()
-
+          this.msOk()
           this.store.dispatch(setSession({ session: value }))
           switch (roleUpper) {
             case "ADMIN":
@@ -71,6 +71,14 @@ export class RecoverPasswordComponent {
       this.acctionInvlid()
     }
 
+  }
+
+  private msOk() {
+    Swal.fire({
+      icon: "success",
+      title: "Recuperacion Exitosa.",
+      text: "Ah logrado recuperar la Cuenta y cambiado su contrasenia",
+    });
   }
 
   private msgInvalid() {

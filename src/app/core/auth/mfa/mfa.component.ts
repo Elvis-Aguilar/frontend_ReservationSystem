@@ -51,6 +51,13 @@ export class MfaComponent {
     let session = JSON.parse(localStorage.getItem("session") || "{'accessToken': ''}")
     //TODO: enrutar a las areas de trabajo.
     const roleUpper = session.role.toUpperCase()
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Registro completado con exito!!",
+      showConfirmButton: false,
+      timer: 1500
+    });
     switch (roleUpper) {
       case "ADMIN":
         this.router.navigate(['manager/inicio'])

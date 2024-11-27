@@ -94,14 +94,13 @@ export class SelectHourComponent {
     const slotEnd = this.timeToMinutes(slot.end);
   
     for (let appointment of this.appointments) {
-      console.log(appointment);
   
       // Extraer las horas y minutos directamente del formato ISO 8601
       const appointmentStart = this.timeToMinutes(appointment.startDate.split('T')[1].slice(0, 5));
       const appointmentEnd = this.timeToMinutes(appointment.endDate.split('T')[1].slice(0, 5));
   
       // Verificar si el bloque se solapa con la reserva
-      if (appointmentStart < slotEnd && appointmentEnd > slotStart) {
+      if ((appointmentStart < slotEnd && appointmentEnd > slotStart) && appointment.status !== 'CANCELED') {
         return false; // No disponible
       }
     }
